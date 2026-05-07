@@ -4,8 +4,8 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Sebastian Marzola — Sistemi digitali su misura</title>
-<link rel="icon" type="image/png" href="assets/favicon.png" />
-<link rel="apple-touch-icon" href="assets/favicon.png" />
+<link rel="icon" type="image/png" href="project/assets/favicon.png" />
+<link rel="apple-touch-icon" href="project/assets/favicon.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -514,7 +514,7 @@
 <!-- NAV -->
 <nav class="nav">
   <div class="nav-inner">
-    <div class="nav-logo"><img class="memoji" src="assets/favicon.png" alt="" /> Sebastian Marzola</div>
+    <div class="nav-logo"><img class="memoji" src="project/assets/favicon.png" alt="" /> Sebastian Marzola</div>
     <div class="nav-links">
       <a href="#servizi">Servizi</a>
       <a href="#processo">Processo</a>
@@ -618,10 +618,10 @@
     <div class="portrait-wrap reveal">
       <div class="portrait-halo"></div>
       <div class="portrait-card" id="tiltCard" style="width:300px;height:100%;aspect-ratio:auto;align-self:stretch">
-        <img src="assets/sebastian.jpg" alt="Sebastian Marzola" />
+        <img src="project/assets/sebastian.jpg" alt="Sebastian Marzola" />
       </div>
       <div class="portrait-tag tag-top" style="gap:10px;top:23px;left:7px">
-        <div class="sig"><img src="assets/memoji.png" alt="" /></div>
+        <div class="sig"><img src="project/assets/memoji.png" alt="" /></div>
         <div><h1 style="margin:0;font-weight:700;font-size:16px;line-height:1.1;font-family:'Inter',system-ui,sans-serif;color:#fff">Sebastian Marzola</h1><div style="color:rgba(255,255,255,0.682);font-size:13px;margin-top:2px">Sviluppatore Web</div></div>
       </div>
     </div>
@@ -891,16 +891,16 @@ window.addEventListener('scroll', ()=>{
 
 /* ============== TOOL MARQUEE ============== */
 const tools = [
-  {name:'WhatsApp Business', src:'assets/tools/whatsapp.webp'},
-  {name:'Meta Ads', src:'assets/tools/meta.webp'},
-  {name:'Google Ads', src:'assets/tools/google-ads.webp'},
-  {name:'Brevo', src:'assets/tools/brevo.webp'},
-  {name:'Shopify', src:'assets/tools/shopify.webp'},
-  {name:'WordPress', src:'assets/tools/wordpress.webp'},
-  {name:'ClickUp', src:'assets/tools/clickup.webp'},
-  {name:'Canva', src:'assets/tools/canva.webp'},
-  {name:'ChatGPT', src:'assets/tools/chatgpt.webp'},
-  {name:'Claude', src:'assets/tools/claude.webp'},
+  {name:'WhatsApp Business', src:'project/assets/tools/whatsapp.webp'},
+  {name:'Meta Ads', src:'project/assets/tools/meta.webp'},
+  {name:'Google Ads', src:'project/assets/tools/google-ads.webp'},
+  {name:'Brevo', src:'project/assets/tools/brevo.webp'},
+  {name:'Shopify', src:'project/assets/tools/shopify.webp'},
+  {name:'WordPress', src:'project/assets/tools/wordpress.webp'},
+  {name:'ClickUp', src:'project/assets/tools/clickup.webp'},
+  {name:'Canva', src:'project/assets/tools/canva.webp'},
+  {name:'ChatGPT', src:'project/assets/tools/chatgpt.webp'},
+  {name:'Claude', src:'project/assets/tools/claude.webp'},
 ];
 const mqTrack = document.getElementById('mqTrack');
 const renderTools = () => tools.map(t => `<div class="mq-item" title="${t.name}"><img src="${t.src}" alt="${t.name}" loading="lazy" /></div>`).join('');
@@ -1217,7 +1217,7 @@ updateProcess();
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-<script type="text/babel" src="tweaks-panel.jsx"></script>
-<script type="text/babel" src="tweaks.jsx"></script>
+<script type="text/babel" src="project/tweaks-panel.jsx"></script>
+<script type="text/babel" src="project/tweaks.jsx"></script>
 </body>
 </html>
