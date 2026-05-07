@@ -773,7 +773,7 @@
   <div class="wrap">
     <div class="section-head">
       
-      <h2 class="title reveal-words" data-words>Meno Lavoro, <span class="em">Più Risultati</span>.</h2>
+      <h2 class="title reveal-words" data-words>Meno Lavoro, <span class="em">Più Risultati</span></h2>
       <p class="section-sub reveal" style="max-width: 750px; width: 750px">Ogni progetto parte dai numeri e dalle persone, non da un template.<br />L’obiettivo è migliorare le performance, farti lavorare meno e costruire sistemi che crescono con te.</p>
     </div>
     <div class="why-grid">
@@ -1492,27 +1492,12 @@ let cgx=0,cgy=0,tx=0,ty=0;
 document.addEventListener('mousemove', e=>{ tx=e.clientX; ty=e.clientY });
 (function loop(){ cgx+=(tx-cgx)*.08; cgy+=(ty-cgy)*.08; cg.style.left=cgx+'px'; cg.style.top=cgy+'px'; requestAnimationFrame(loop); })();
 
-/* ============== STABLE VIEWPORT HEIGHT (iOS Safari URL-bar fix) ============== */
-// Use a hidden 1svh element to get the stable small-viewport height in CSS units
-// Falls back to window.innerHeight which is captured before any scroll
-(function(){
-  const el = document.createElement('div');
-  el.style.cssText = 'position:fixed;height:1svh;top:-9999px;visibility:hidden';
-  document.body.appendChild(el);
-  window._svhPx = el.offsetHeight || (window.innerHeight * 0.01);
-  document.body.removeChild(el);
-})();
-let stableVH = window._svhPx * 100;
-let vhResizeTimer;
-window.addEventListener('resize', ()=>{
-  clearTimeout(vhResizeTimer);
-  vhResizeTimer = setTimeout(()=>{
-    const el = document.createElement('div');
-    el.style.cssText = 'position:fixed;height:1svh;top:-9999px;visibility:hidden';
-    document.body.appendChild(el);
-    stableVH = (el.offsetHeight || (window.innerHeight * 0.01)) * 100;
-    document.body.removeChild(el);
-  }, 200);
+/* ============== STABLE VIEWPORT HEIGHT ============== */
+// Captured once at load (URL bar visible = svh equivalent).
+// Updated only on orientation change, never during scroll.
+let stableVH = window.innerHeight;
+window.addEventListener('orientationchange', ()=>{
+  setTimeout(()=>{ stableVH = window.innerHeight; recacheAll(); }, 400);
 });
 
 /* ============== IMPACT QUOTE — pinned scroll ============== */
@@ -1523,10 +1508,18 @@ window.addEventListener('resize', ()=>{
   const words = q.textContent.trim().split(/\s+/);
   q.innerHTML = words.map(w=>`<span class="word">${w}</span>`).join(' ');
   const spans = q.querySelectorAll('.word');
+
+  let pinTop = impactPin.getBoundingClientRect().top + window.scrollY;
+  let total = impactPin.offsetHeight - stableVH;
+
+  window._recacheImpact = function(){
+    pinTop = impactPin.getBoundingClientRect().top + window.scrollY;
+    total = impactPin.offsetHeight - stableVH;
+    update();
+  };
+
   function update(){
-    const rect = impactPin.getBoundingClientRect();
-    const total = impactPin.offsetHeight - stableVH;
-    const scrolled = Math.min(Math.max(-rect.top, 0), total);
+    const scrolled = Math.min(Math.max(window.scrollY - pinTop, 0), total);
     const pct = total > 0 ? scrolled / total : 0;
     q.style.transform = `scale(${0.5 + pct * 0.5})`;
     const litCount = Math.min(Math.max((pct - 0.15) / 0.73, 0), 1) * spans.length;
@@ -1536,7 +1529,7 @@ window.addEventListener('resize', ()=>{
     });
   }
   window.addEventListener('scroll', update, {passive:true});
-  window.addEventListener('resize', ()=>setTimeout(update,250));
+  window.addEventListener('resize', ()=>setTimeout(window._recacheImpact, 300));
   update();
 })();
 
@@ -1544,23 +1537,32 @@ window.addEventListener('resize', ()=>{
 const pin = document.querySelector('.process-pin');
 const inner = document.getElementById('processInner');
 const bar = document.getElementById('processBar');
+
+let processPinTop = pin.getBoundingClientRect().top + window.scrollY;
+let processTotal = pin.offsetHeight - stableVH;
+let processDistance = inner.scrollWidth - window.innerWidth + 60;
+const processNodes = document.querySelectorAll('#processNodes .node');
+
+function recacheAll(){
+  processPinTop = pin.getBoundingClientRect().top + window.scrollY;
+  processTotal = pin.offsetHeight - stableVH;
+  processDistance = inner.scrollWidth - window.innerWidth + 60;
+  if(window._recacheImpact) window._recacheImpact();
+  updateProcess();
+}
+
 function updateProcess(){
-  const rect = pin.getBoundingClientRect();
-  const total = pin.offsetHeight - stableVH;
-  const scrolled = Math.min(Math.max(-rect.top, 0), total);
-  const pct = total>0 ? scrolled/total : 0;
-  const distance = inner.scrollWidth - window.innerWidth + 60;
-  inner.style.transform = `translateX(${-pct * distance}px)`;
-  bar.style.width = (pct*100)+'%';
-  const nodes = document.querySelectorAll('#processNodes .node');
-  const n = nodes.length;
-  nodes.forEach((node,i)=>{
-    const nodePct = i/(n-1);
-    node.classList.toggle('active', pct >= nodePct - 0.001);
+  const scrolled = Math.min(Math.max(window.scrollY - processPinTop, 0), processTotal);
+  const pct = processTotal > 0 ? scrolled / processTotal : 0;
+  inner.style.transform = `translateX(${-pct * processDistance}px)`;
+  bar.style.width = (pct * 100) + '%';
+  const n = processNodes.length;
+  processNodes.forEach((node, i)=>{
+    node.classList.toggle('active', pct >= i/(n-1) - 0.001);
   });
 }
 window.addEventListener('scroll', updateProcess, {passive:true});
-window.addEventListener('resize', ()=>setTimeout(updateProcess,250));
+window.addEventListener('resize', ()=>setTimeout(recacheAll, 300));
 updateProcess();
 </script>
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
