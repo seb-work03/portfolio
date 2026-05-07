@@ -413,6 +413,15 @@
   .faq-body-inner li{display:flex;gap:10px;align-items:baseline}
   .faq-body-inner li::before{content:"–";color:var(--blue);flex:none}
 
+  /* Form success overlay */
+  .form-success{position:fixed;inset:0;z-index:300;display:flex;align-items:center;justify-content:center;background:rgba(3,4,8,.75);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);opacity:0;pointer-events:none;transition:opacity .4s cubic-bezier(.4,0,.2,1)}
+  .form-success.show{opacity:1;pointer-events:all}
+  .form-success-card{text-align:center;padding:52px 44px;border-radius:28px;border:1px solid rgba(120,150,255,.2);background:linear-gradient(180deg,rgba(16,22,38,.98),rgba(6,8,14,.98));box-shadow:0 40px 80px rgba(0,0,0,.6);max-width:360px;width:90%;transform:translateY(24px) scale(.96);transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+  .form-success.show .form-success-card{transform:translateY(0) scale(1)}
+  .form-success dotlottie-wc{display:block;width:160px;height:160px;margin:0 auto 4px}
+  .form-success h3{margin:0 0 8px;font-family:'Instrument Serif',serif;font-style:italic;font-size:28px;font-weight:400;color:#fff}
+  .form-success p{margin:0;color:var(--ink-dim);font-size:15px;line-height:1.5}
+
   /* Contact */
   .contact{padding:120px 0 160px}
   .contact-card{position:relative;padding:64px;border-radius:32px;border:1px solid var(--line-2);background:linear-gradient(180deg, rgba(18,24,40,.6), rgba(8,10,16,.8));backdrop-filter:blur(14px);overflow:hidden}
@@ -551,6 +560,7 @@
     *{animation-duration:.001ms !important; transition-duration:.001ms !important}
   }
 </style>
+<script type="module" src="https://cdn.jsdelivr.net/npm/@dotlottie/dotlottie-wc@0.6.5/dist/dotlottie-wc.js"></script>
 <!-- Iubenda consent solution -->
 <script type="text/javascript" src="https://embeds.iubenda.com/widgets/86c89c54-6493-4edd-8202-8ae507dcc4a2.js"></script>
 </head>
@@ -836,7 +846,7 @@
             <a href="#"><span class="ic">⎋</span> Calendario — prenota 30 min</a>
           </div>
         </div>
-        <form onsubmit="event.preventDefault(); this.innerHTML='<div style=\'padding:40px;text-align:center;color:#9ab4ff\'>Grazie — ti rispondo entro 24h.</div>'">
+        <form id="contactForm" onsubmit="submitContactForm(event)">
           <div class="field"><label>Nome</label><input type="text" required placeholder="Mario Rossi"/></div>
           <div class="field"><label>Email</label><input type="email" required placeholder="mario@azienda.it"/></div>
           <div class="field"><label>Progetto</label>
@@ -867,6 +877,15 @@
   </div>
 </footer>
 <script type="text/javascript">(function(w,d){var loader=function(){var s=d.createElement("script"),tag=d.getElementsByTagName("script")[0];s.src="https://cdn.iubenda.com/iubenda.js";tag.parentNode.insertBefore(s,tag);};if(w.addEventListener){w.addEventListener("load",loader,false);}else if(w.attachEvent){w.attachEvent("onload",loader);}else{w.onload=loader;}})(window,document);</script>
+
+<!-- Form success overlay -->
+<div class="form-success" id="formSuccess" role="dialog" aria-modal="true">
+  <div class="form-success-card">
+    <dotlottie-wc src="project/assets/face-id.lottie" autoplay></dotlottie-wc>
+    <h3>Messaggio inviato</h3>
+    <p>Ti rispondo entro 24 ore.<br>A presto!</p>
+  </div>
+</div>
 
 <!-- Portfolio modal -->
 <div class="modal" id="pfModal" role="dialog" aria-hidden="true">
@@ -1276,6 +1295,20 @@ const io = new IntersectionObserver((entries)=>{
   entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
 }, {threshold:0.05, rootMargin:'0px 0px 80px'});
 document.querySelectorAll('.reveal, .reveal-words').forEach(el=>io.observe(el));
+
+/* ============== FORM SUBMIT + LOTTIE SUCCESS ============== */
+function submitContactForm(e){
+  e.preventDefault();
+  const overlay = document.getElementById('formSuccess');
+  const player = overlay.querySelector('dotlottie-wc');
+  overlay.classList.add('show');
+  if(player){ try{ player.play(); }catch(_){} }
+  document.getElementById('contactForm').reset();
+  setTimeout(()=>overlay.classList.remove('show'), 4500);
+  overlay.addEventListener('click', function handler(ev){
+    if(ev.target===overlay){ overlay.classList.remove('show'); overlay.removeEventListener('click',handler); }
+  });
+}
 
 /* ============== FAQ ACCORDION ============== */
 (function(){
