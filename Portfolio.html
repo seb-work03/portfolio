@@ -40,7 +40,7 @@
   #heroWave{
     position:fixed;
     top:0;left:0;
-    width:100vw;height:100vh;
+    width:100vw;height:100vh;height:100svh;
     z-index:-1;
     pointer-events:none;
     display:block;
@@ -102,7 +102,7 @@
   @media (max-width:780px){.nav-links{display:none}}
 
   /* ===== HERO ===== */
-  .hero{position:relative;padding:0;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;isolation:isolate}
+  .hero{position:relative;padding:0;min-height:100vh;min-height:100svh;display:flex;align-items:center;justify-content:center;overflow:hidden;isolation:isolate}
   .hero .wrap{position:relative;z-index:2}
   .hero .eyebrow{color:#e9ecf3;background:rgba(10,14,24,.55);border-color:rgba(255,255,255,.18);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);text-shadow:0 1px 12px rgba(0,0,0,.6)}
   .hero :is(h1,h2).display{color:#fff;font-family:'Instrument Serif',serif;font-style:normal;font-weight:400;text-shadow:0 2px 30px rgba(0,0,0,.55), 0 1px 2px rgba(0,0,0,.4)}
@@ -330,7 +330,7 @@
 
   /* Process - horizontal scroll pinned */
   .process{position:relative;padding-top:80px}
-  .process-pin{position:relative;height: 420vh;margin-top:-180px;}
+  .process-pin{position:relative;height:420vh;height:420svh;margin-top:-180px;}
   .process-stick{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;display:flex;align-items:center;padding-top:0}
   .process-inner{display:flex;gap:24px;padding: 0 8vw;will-change:transform}
   .step{flex:none;width:min(520px, 80vw);height:min(420px, 60vh);border-radius:28px;padding:34px;position:relative;overflow:hidden;background:linear-gradient(160deg, rgba(20,28,50,.75), rgba(10,14,22,.85));border:1px solid var(--line-2);backdrop-filter:blur(10px);display:flex;flex-direction:column;justify-content:space-between}
@@ -361,8 +361,8 @@
 
   /* Impact */
   .impact{position:relative;background:var(--bg)}
-  .impact-pin{position:relative;height:300vh}
-  .impact-stick{position:sticky;top:0;height:100vh;height:100svh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#000;isolation:isolate;will-change:transform;transform:translateZ(0)}
+  .impact-pin{position:relative;height:300vh;height:300svh}
+  .impact-stick{position:sticky;top:0;height:100vh;height:100svh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#000;isolation:isolate}
   .impact-stick::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 50% at 50% 50%, rgba(79,139,255,.07), transparent 70%);pointer-events:none}
   .impact .quote{font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(22px,4vw,64px);line-height:1.18;letter-spacing:-.01em;max-width:min(1100px,90vw);margin:0 auto;transform:scale(.5);transform-origin:50% 50%;text-align:center;padding:0 24px}
   .impact .quote::before{content:'\201C';font-family:'Instrument Serif',serif;font-style:italic;color:#4f8bff;margin-right:.12em;font-size:1.2em;vertical-align:-.08em;line-height:0}
@@ -515,16 +515,16 @@
     /* Hero: ritratto sopra il testo, contenuto nel viewport */
     .hero{padding-top:80px;padding-bottom:48px;min-height:auto;align-items:flex-start;overflow:hidden}
     .hero-grid{grid-template-columns:1fr;gap:28px;width:100%;max-width:100%}
-    .portrait-wrap{display:flex;justify-content:center;margin-top:0;order:-1;overflow:hidden;max-width:100%;position:relative;padding:0 40px}
+    .portrait-wrap{display:flex;justify-content:center;margin-top:0;order:-1;overflow:hidden;max-width:100%;position:relative;padding:20px 40px 0}
     .portrait-card{width:100% !important;max-width:240px;aspect-ratio:4/5 !important;height:auto !important;align-self:auto !important;margin-top:0 !important}
     /* Portrait-halo nascosto, tag centrato in basso */
     .portrait-halo{display:none}
-    .portrait-tag{position:absolute;top:auto !important;left:50% !important;bottom:4px;transform:translateX(-50%) scale(.85);transform-origin:bottom center;font-size:11px;white-space:nowrap}
+    .portrait-tag{position:absolute;top:auto !important;left:50% !important;bottom:0px;transform:translateX(-50%) scale(.85);transform-origin:bottom center;font-size:11px;white-space:nowrap;padding:10px 40px}
     /* Nasconde il primo paragrafo lede (descrizione lunga) su mobile */
     .hero .lede:not(.cycle-line){display:none}
     /* lede: non deve sforare */
     .lede{max-width:100% !important}
-    .cta-row{gap:10px}
+    .cta-row{gap:10px;margin-top:5px}
     .uvbtn{min-width:unset;width:100%;justify-content:center;height:52px;font-size:15px}
     .btn{width:100%;justify-content:center}
     .proof-row{gap:12px;flex-wrap:wrap;justify-content:center}
@@ -533,7 +533,7 @@
     .mq-track{gap:20px;animation-duration:22s}
     .mq-item{padding:12px 16px}
     /* Impact */
-    .impact-pin{height:250vh}
+    .impact-pin{height:250vh;height:250svh}
     /* Portfolio: testo sempre visibile su mobile */
     .pf-grid{grid-template-columns:1fr}
     .pf-card p{opacity:1;transform:translateY(0)}
@@ -573,7 +573,7 @@
     .contact-card{padding:24px 18px}
     .modal-body{padding:24px 20px}
     .modal-body h3{font-size:22px}
-    .impact-pin{height:220vh}
+    .impact-pin{height:220vh;height:220svh}
     .portrait-card{width:min(190px,65vw) !important}
     .impact .quote{font-size:clamp(28px,8vw,44px);padding:0 8px}
     .process-progress{bottom:80px}
@@ -1493,11 +1493,26 @@ document.addEventListener('mousemove', e=>{ tx=e.clientX; ty=e.clientY });
 (function loop(){ cgx+=(tx-cgx)*.08; cgy+=(ty-cgy)*.08; cg.style.left=cgx+'px'; cg.style.top=cgy+'px'; requestAnimationFrame(loop); })();
 
 /* ============== STABLE VIEWPORT HEIGHT (iOS Safari URL-bar fix) ============== */
-let stableVH = window.innerHeight;
+// Use a hidden 1svh element to get the stable small-viewport height in CSS units
+// Falls back to window.innerHeight which is captured before any scroll
+(function(){
+  const el = document.createElement('div');
+  el.style.cssText = 'position:fixed;height:1svh;top:-9999px;visibility:hidden';
+  document.body.appendChild(el);
+  window._svhPx = el.offsetHeight || (window.innerHeight * 0.01);
+  document.body.removeChild(el);
+})();
+let stableVH = window._svhPx * 100;
 let vhResizeTimer;
 window.addEventListener('resize', ()=>{
   clearTimeout(vhResizeTimer);
-  vhResizeTimer = setTimeout(()=>{ stableVH = window.innerHeight; }, 200);
+  vhResizeTimer = setTimeout(()=>{
+    const el = document.createElement('div');
+    el.style.cssText = 'position:fixed;height:1svh;top:-9999px;visibility:hidden';
+    document.body.appendChild(el);
+    stableVH = (el.offsetHeight || (window.innerHeight * 0.01)) * 100;
+    document.body.removeChild(el);
+  }, 200);
 });
 
 /* ============== IMPACT QUOTE — pinned scroll ============== */
