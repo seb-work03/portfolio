@@ -269,6 +269,7 @@
   /* ===== MARQUEE ===== */
   .marquee-section,.why,.svc,.process,.impact,.portfolio,.contact,footer{position:relative;background:var(--bg)}
   .marquee-section{padding:60px 0 20px;background:var(--bg)}
+  div#mqTrack{padding-top:20px}
   .marquee{position:relative;overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
   .mq-label{display:flex;justify-content:center;align-items:center;gap:14px;color:var(--ink-mute);font-size:12px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:26px}
   .mq-label::before,.mq-label::after{content:"";height:1px;flex:1;max-width:120px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent)}
@@ -326,7 +327,7 @@
   .svc-card:hover .bg{opacity:1}
 
   /* Process - horizontal scroll pinned */
-  .process{position:relative}
+  .process{position:relative;padding-top:80px}
   .process-pin{position:relative;height: 420vh;margin-top:-180px;}
   .process-stick{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:center;padding-top:0}
   .process-inner{display:flex;gap:24px;padding: 0 8vw;will-change:transform}
@@ -362,6 +363,8 @@
   .impact-stick{position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#000;isolation:isolate}
   .impact-stick::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 50% at 50% 50%, rgba(79,139,255,.07), transparent 70%);pointer-events:none}
   .impact .quote{font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(22px,4vw,64px);line-height:1.18;letter-spacing:-.01em;max-width:min(1100px,90vw);margin:0 auto;transform:scale(.5);transform-origin:50% 50%;text-align:center;padding:0 24px}
+  .impact .quote::before{content:'\201C';font-family:'Instrument Serif',serif;font-style:italic;color:#4f8bff;margin-right:.12em;font-size:1.2em;vertical-align:-.08em;line-height:0}
+  .impact .quote::after{content:'\201D';font-family:'Instrument Serif',serif;font-style:italic;color:#4f8bff;margin-left:.12em;font-size:1.2em;vertical-align:-.08em;line-height:0}
   .impact .quote .word{display:inline-block;color:rgba(255,255,255,.12);transition:color .45s cubic-bezier(.4,0,.2,1)}
   .impact .quote .word.lit{color:#fff}
 
@@ -369,8 +372,12 @@
   .portfolio{padding:120px 0}
   .pf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
   .pf-card{position:relative;border-radius:22px;overflow:hidden;border:1px solid var(--line);background:#0b0e18;aspect-ratio:16/11;cursor:pointer;transition:transform .45s cubic-bezier(.2,.8,.2,1), border-color .3s}
-  @media (max-width:900px){.pf-grid{grid-template-columns:1fr}}
-  .pf-logo{position:absolute;top:16px;left:16px;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(8px);display:grid;place-items:center;z-index:2;overflow:hidden;flex-shrink:0}
+  @media (max-width:900px){
+    .pf-grid{grid-template-columns:1fr}
+    .pf-card p{opacity:1;transform:translateY(0)}
+  }
+  .pf-logo{position:absolute;top:16px;left:16px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);box-shadow:0 2px 8px rgba(0,0,0,.35);display:grid;place-items:center;z-index:2;overflow:hidden}
+  .pf-logo svg{width:100%;height:100%;display:block}
   .pf-card:hover{transform:translateY(-4px);border-color:rgba(120,150,255,.3)}
   .pf-thumb{position:absolute;inset:0;transition:transform .6s, filter .5s}
   .pf-card:hover .pf-thumb{transform:scale(1.04);filter:blur(2px) brightness(.7)}
@@ -952,6 +959,7 @@ function textToHtml(t){
 
 const projects = [
   {t:'Animatrail',m:['Ecommerce','Shopify'],hue:145,
+   logo:`<svg viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg"><circle cx="19" cy="19" r="19" fill="#f97316"/><path d="M5 31 L19 10 L33 31Z" fill="rgba(0,0,0,.25)"/><circle cx="25" cy="13" r="3" fill="#0d0d0d"/><path d="M25 16c-2 3-4 5-3 9m3-9c2 3 3 5 4 8M22 21c-3 0-5 1-6 3m10-3c2-1 4-2 5-3" stroke="#0d0d0d" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg>`,
    d:'E-commerce progettato per valorizzare il prodotto e semplificare l\'acquisto, con un backend pensato per essere gestito in autonomia.',
    detail:`Animatrail è un brand che vende scarpe, abbigliamento e accessori per il trail running e l'outdoor, con un'attenzione particolare alla qualità dei prodotti e alla sostenibilità.
 
@@ -973,6 +981,7 @@ Per Animatrail ho sviluppato un e-commerce con un focus preciso: <strong>esperie
 Il backend è configurato per essere <strong>intuitivo e scalabile</strong>, permettendo di aggiungere contenuti e prodotti mantenendo la struttura pulita del frontend. A supporto, un blog leggibile e <u>snippet SEO ottimizzati</u> nelle pagine e nelle caratteristiche dei prodotti.`},
 
   {t:'Panozzo Editore',m:['Ecommerce','Shopify'],hue:38,
+   logo:`<svg viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg"><circle cx="19" cy="19" r="19" fill="#f5f5f5"/><text x="19" y="26" text-anchor="middle" fill="#111" font-family="Georgia,'Times New Roman',serif" font-size="15" font-weight="bold" letter-spacing="-1">PE</text></svg>`,
    d:'E-commerce per una casa editrice con catalogo fisico ed ebook, spedizioni internazionali e cambio valuta automatico.',
    detail:`Panozzo Editore è una casa editrice che pubblica libri legati al territorio, alla cultura e alla storia locale, con un catalogo che spazia tra narrativa, saggistica e pubblicazioni tematiche. Tra i bestseller è presente anche <strong>un manuale per imparare l'italiano</strong> distribuito a clienti in tutto il mondo.
 
@@ -993,6 +1002,7 @@ Per Panozzo ho sviluppato un e-commerce con un focus su <strong>chiarezza dei co
 L'interfaccia è ottimizzata per conversione: pulsante aggiungi al carrello sticky, struttura chiara anche con cataloghi ampi, percorso d'acquisto <strong>semplice e lineare</strong>. Il backend è facilmente gestibile e scalabile.`},
 
   {t:'Aletheia Marketing',m:['Sito web','Portfolio'],hue:275,
+   logo:`<svg viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg"><circle cx="19" cy="19" r="19" fill="#1c3f45"/><text x="19" y="26" text-anchor="middle" fill="#e8a87c" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="600">A&#955;</text></svg>`,
    d:'Sito per un\'agenzia di comunicazione digitale, costruito per valorizzare il posizionamento e raccontare i risultati ottenuti con i clienti.',
    detail:`Aletheia Marketing è un'agenzia che si occupa di <strong>strategia, contenuti e comunicazione digitale</strong>, con un approccio orientato al valore e alla qualità dei progetti.
 
@@ -1013,6 +1023,7 @@ Grande importanza è data al <strong>portfolio clienti</strong>, strutturato per
 La struttura è facilmente aggiornabile con un backend dedicato, permettendo di aggiungere nuovi progetti e contenuti mantenendo <strong>coerenza nel tempo</strong>.`},
 
   {t:'ViDi Creative Studios',m:['Sito web','Multilingua'],hue:195,
+   logo:`<svg viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg"><circle cx="19" cy="19" r="19" fill="#fff"/><text x="13" y="28" fill="#f04d2a" font-family="'Inter',Arial,sans-serif" font-size="21" font-weight="900">J</text><circle cx="28" cy="27" r="3" fill="#3b82f6"/><circle cx="20" cy="12" r="3" fill="#f97316"/></svg>`,
    d:'Sito per uno studio di comunicazione con framework di servizi strutturato in quattro aree operative, disponibile in tre lingue.',
    detail:`ViDi Creative Studios è uno studio di comunicazione che <strong>aiuta i brand a crescere, performare e mantenere una propria identità coerente nel tempo</strong>.
 
@@ -1027,6 +1038,7 @@ Ognuna descritta in modo chiaro e orientato al valore. L'interfaccia è progetta
 Il progetto è inoltre sviluppato in versione <strong>multilingua</strong> (italiano, inglese e spagnolo) per coprire il bacino internazionale di clienti e garantire una comunicazione efficace verso i diversi mercati.`},
 
   {t:'Linea Video',m:['Gestionale','Web App'],hue:22,
+   logo:`<svg viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg"><circle cx="19" cy="19" r="19" fill="#1a2d4f"/><text x="20" y="23" text-anchor="middle" fill="#6bb8d8" font-family="'Inter',Arial,sans-serif" font-size="8" font-weight="900" letter-spacing="1.5">LINEA</text><text x="20" y="32" text-anchor="middle" fill="#4d9fcf" font-family="'Inter',Arial,sans-serif" font-size="8" font-weight="900" letter-spacing="1.2">VIDEO</text></svg>`,
    d:'Sistema gestionale interno per la gestione completa delle lavorazioni di digitalizzazione video in un laboratorio fotografico specializzato.',
    detail:`<strong>Gestionale Linea Video</strong> è un sistema interno sviluppato per la gestione completa delle lavorazioni di digitalizzazione video e archiviazione per un laboratorio fotografico specializzato.
 
@@ -1048,7 +1060,7 @@ document.getElementById('pfGrid').innerHTML = projects.map((p,i)=>`
       radial-gradient(70% 50% at 30% 30%, oklch(0.45 0.15 ${p.hue}), transparent 70%),
       radial-gradient(60% 60% at 80% 70%, oklch(0.35 0.17 ${p.hue+30}), transparent 70%),
       linear-gradient(135deg, oklch(0.2 0.08 ${p.hue}), oklch(0.12 0.04 ${p.hue}));"></div>
-    <div class="pf-logo" id="pf-logo-${i}"></div>
+    <div class="pf-logo" id="pf-logo-${i}">${p.logo||''}</div>
     <div class="view"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></div>
     <div class="pf-overlay">
       <div class="pf-meta">${p.m.map(x=>`<span>${x}</span>`).join('')}</div>
