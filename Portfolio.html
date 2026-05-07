@@ -361,18 +361,16 @@
   .impact-pin{position:relative;height:300vh}
   .impact-stick{position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#000;isolation:isolate}
   .impact-stick::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 50% at 50% 50%, rgba(79,139,255,.07), transparent 70%);pointer-events:none}
-  .impact .quote{--fs:0%;--fe:0%;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(22px,4vw,64px);line-height:1.18;letter-spacing:-.01em;max-width:min(1100px,90vw);margin:0 auto;transform:scale(.5);transform-origin:50% 50%;text-align:center;padding:0 24px;background:linear-gradient(90deg,#fff 0%,#fff var(--fs),rgba(255,255,255,.12) var(--fe),rgba(255,255,255,.12) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .impact .quote{font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(22px,4vw,64px);line-height:1.18;letter-spacing:-.01em;max-width:min(1100px,90vw);margin:0 auto;transform:scale(.5);transform-origin:50% 50%;text-align:center;padding:0 24px}
+  .impact .quote .word{display:inline-block;color:rgba(255,255,255,.12);transition:color .45s cubic-bezier(.4,0,.2,1)}
+  .impact .quote .word.lit{color:#fff}
 
   /* Portfolio */
   .portfolio{padding:120px 0}
-  .pf-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
-  .pf-card{grid-column:span 6;position:relative;border-radius:22px;overflow:hidden;border:1px solid var(--line);background:#0b0e18;aspect-ratio: 16/11;cursor:pointer;transition: transform .45s cubic-bezier(.2,.8,.2,1), border-color .3s}
-  .pf-card:nth-child(1){grid-column:span 7}
-  .pf-card:nth-child(2){grid-column:span 5}
-  .pf-card:nth-child(3){grid-column:span 5}
-  .pf-card:nth-child(4){grid-column:span 7}
-  .pf-card:nth-child(5){grid-column:span 12}
-  @media (max-width:900px){.pf-card,.pf-card:nth-child(n){grid-column:span 12}}
+  .pf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .pf-card{position:relative;border-radius:22px;overflow:hidden;border:1px solid var(--line);background:#0b0e18;aspect-ratio:16/11;cursor:pointer;transition:transform .45s cubic-bezier(.2,.8,.2,1), border-color .3s}
+  @media (max-width:900px){.pf-grid{grid-template-columns:1fr}}
+  .pf-logo{position:absolute;top:16px;left:16px;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(8px);display:grid;place-items:center;z-index:2;overflow:hidden;flex-shrink:0}
   .pf-card:hover{transform:translateY(-4px);border-color:rgba(120,150,255,.3)}
   .pf-thumb{position:absolute;inset:0;transition:transform .6s, filter .5s}
   .pf-card:hover .pf-thumb{transform:scale(1.04);filter:blur(2px) brightness(.7)}
@@ -439,6 +437,8 @@
   #modalDesc p{color:var(--ink-dim);line-height:1.7;margin:0 0 12px}
   #modalDesc ul{color:var(--ink-dim);line-height:1.7;margin:0 0 14px;padding-left:20px}
   #modalDesc li{margin-bottom:4px}
+  #modalDesc strong{color:#e0ecff;font-weight:600}
+  #modalDesc u{text-decoration-color:rgba(120,165,255,.45);text-underline-offset:3px;color:var(--ink)}
   .modal-body .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}
   .modal-body .kpis div{padding:16px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.02)}
   .modal-body .kpis b{display:block;font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#cfe0ff;font-size:26px}
@@ -703,7 +703,6 @@
       <p class="section-sub reveal" style="max-width: 750px">Una selezione di casi in cui sistemi, automazioni ed ecommerce hanno fatto la differenza. Clicca per vedere i dettagli.</p>
     </div>
     <div class="pf-grid" id="pfGrid"></div>
-    <div class="pf-more"><a class="btn btn-ghost" href="#contatti">Mostra altri progetti <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
   </div>
 </section>
 
@@ -956,96 +955,90 @@ const projects = [
    d:'E-commerce progettato per valorizzare il prodotto e semplificare l\'acquisto, con un backend pensato per essere gestito in autonomia.',
    detail:`Animatrail è un brand che vende scarpe, abbigliamento e accessori per il trail running e l'outdoor, con un'attenzione particolare alla qualità dei prodotti e alla sostenibilità.
 
-Per Animatrail ho sviluppato un e-commerce con un focus preciso: esperienza utente premium lato frontend e gestione semplice lato backend. Il sistema è costruito su attributi personalizzati che permettono di comporre dinamicamente contenuti, collezioni e schede prodotto: varianti, label e caratteristiche dei prodotti si aggiornano in modo coerente senza interventi manuali complessi.
+Per Animatrail ho sviluppato un e-commerce con un focus preciso: <strong>esperienza utente premium lato frontend</strong> e <strong>gestione semplice lato backend</strong>. Il sistema è costruito su attributi personalizzati che permettono di comporre dinamicamente contenuti, collezioni e schede prodotto: varianti, label e caratteristiche si aggiornano in modo coerente senza interventi manuali complessi.
 
-La pagina prodotto è ottimizzata per conversione e chiarezza:
+<u>Pagina prodotto ottimizzata per conversione:</u>
 – guide alle taglie integrate a seconda del tipo di prodotto
 – label come "eco-friendly" per aumentare fiducia e trasparenza
-– prezzo dinamico (es. PayPal a 3 rate) e informazioni aggiornate in tempo reale (omnibus compliant)
+– <strong>prezzo dinamico</strong> (es. PayPal a 3 rate) e informazioni aggiornate in tempo reale (omnibus compliant)
 – informazioni visive e caratteristiche pensate per una scelta immediata
 
-L'esperienza nel sito è pensata per essere fluida:
+<u>Esperienza di navigazione fluida:</u>
 – filtri visivi con logo brand per riconoscere subito i prodotti
 – pulsanti sticky nei punti chiave (aggiungi al carrello, pagamento)
-– call to action adattive (nelle scarpe acquisto diretto, negli altri prodotti quantità selezionabile)
+– call to action adattive nelle scarpe acquisto diretto, negli altri prodotti quantità selezionabile
 – calcolo dinamico della soglia per la spedizione gratuita direttamente nel carrello
-– condivisione semplice ed efficace dei prodotti
-– codice sconto newsletter visibile subito dopo l'iscrizione, in modo da portare a termine l'esperienza di acquisto senza distrazioni e prendendo allo stesso tempo il contatto
+– <strong>codice sconto newsletter</strong> visibile subito dopo l'iscrizione, per chiudere l'acquisto e raccogliere il contatto senza distrazioni
 
-Il backend è configurato per essere intuitivo e scalabile, permettendo di aggiungere contenuti e prodotti mantenendo la struttura pulita del frontend. A supporto, un blog leggibile e ben navigabile e snippet SEO ottimizzati nelle pagine e nelle caratteristiche dei prodotti per migliorare la visibilità.`},
+Il backend è configurato per essere <strong>intuitivo e scalabile</strong>, permettendo di aggiungere contenuti e prodotti mantenendo la struttura pulita del frontend. A supporto, un blog leggibile e <u>snippet SEO ottimizzati</u> nelle pagine e nelle caratteristiche dei prodotti.`},
 
-  {t:'Panozzo Editore',m:['Ecommerce','CMS','Multilingua'],hue:38,
+  {t:'Panozzo Editore',m:['Ecommerce','Shopify'],hue:38,
    d:'E-commerce per una casa editrice con catalogo fisico ed ebook, spedizioni internazionali e cambio valuta automatico.',
-   detail:`Panozzo Editore è una casa editrice che pubblica libri legati al territorio, alla cultura e alla storia locale, con un catalogo che spazia tra narrativa, saggistica e pubblicazioni tematiche. Tra i bestseller è presente anche un manuale per imparare l'italiano distribuito a clienti in tutto il mondo.
+   detail:`Panozzo Editore è una casa editrice che pubblica libri legati al territorio, alla cultura e alla storia locale, con un catalogo che spazia tra narrativa, saggistica e pubblicazioni tematiche. Tra i bestseller è presente anche <strong>un manuale per imparare l'italiano</strong> distribuito a clienti in tutto il mondo.
 
-Per Panozzo Editore ho sviluppato un e-commerce con un focus su chiarezza dei contenuti, facilità di acquisto e valorizzazione del catalogo editoriale, supportando sia clienti locali che internazionali. Il sistema è strutturato per gestire prodotti fisici ed ebook, con una configurazione completa di spedizioni dinamiche in base a stato e peso dell'ordine, ritiro in sede e cambio valuta automatico.
+Per Panozzo ho sviluppato un e-commerce con un focus su <strong>chiarezza dei contenuti, facilità di acquisto e valorizzazione del catalogo</strong>, supportando sia clienti locali che internazionali. Il sistema gestisce prodotti fisici ed ebook, con spedizioni dinamiche per stato e peso, ritiro in sede e <u>cambio valuta automatico</u>.
 
-La pagina prodotto è progettata per facilitare la scelta e aumentare il coinvolgimento:
+<u>Pagina prodotto progettata per il lettore:</u>
 – caratteristiche del libro subito visibili
 – trama strutturata e leggibile
-– possibilità di leggere un'anteprima delle prime pagine del libro per invogliare i potenziali clienti
-– accesso a risorse dedicate tramite registrazione, utile per la raccolta lead
+– possibilità di leggere un'anteprima delle prime pagine
+– accesso a risorse dedicate tramite registrazione, utile per la <strong>raccolta lead</strong>
 – gestione coerente di formati multipli (cartaceo / ebook)
 
-L'esperienza di navigazione è pensata per un pubblico editoriale:
+<u>Esperienza di navigazione editoriale:</u>
 – blog pulito e organizzato, con libri associati agli articoli
 – categorie basate sugli autori principali, con presentazione dedicata
-– filtri per genere e periodo di pubblicazione per facilitare la ricerca dell'utente
+– filtri per genere e periodo di pubblicazione
 
-L'interfaccia è ottimizzata per conversione e usabilità:
-– pulsante "aggiungi al carrello" sticky durante lo scroll
-– struttura chiara e leggibile anche con cataloghi ampi
-– percorso di acquisto semplice e lineare
-
-Il backend è configurato per essere facile da gestire, permettendo di aggiornare catalogo, contenuti e risorse mantenendo una struttura ordinata e scalabile.`},
+L'interfaccia è ottimizzata per conversione: pulsante aggiungi al carrello sticky, struttura chiara anche con cataloghi ampi, percorso d'acquisto <strong>semplice e lineare</strong>. Il backend è facilmente gestibile e scalabile.`},
 
   {t:'Aletheia Marketing',m:['Sito web','Portfolio'],hue:275,
    d:'Sito per un\'agenzia di comunicazione digitale, costruito per valorizzare il posizionamento e raccontare i risultati ottenuti con i clienti.',
-   detail:`Aletheia Marketing è un'agenzia che si occupa di strategia, contenuti e comunicazione digitale, con un approccio orientato al valore e alla qualità dei progetti.
+   detail:`Aletheia Marketing è un'agenzia che si occupa di <strong>strategia, contenuti e comunicazione digitale</strong>, con un approccio orientato al valore e alla qualità dei progetti.
 
-Per Aletheia ho sviluppato un sito con un obiettivo preciso: rappresentare in modo chiaro il posizionamento dell'agenzia e valorizzare i risultati ottenuti con i clienti. Il progetto è costruito attorno a una presentazione elegante e coerente, con animazioni fluide e transizioni leggere che accompagnano la navigazione senza distrarre, mantenendo sempre il focus sui contenuti.
+Per Aletheia ho sviluppato un sito con un obiettivo preciso: <u>rappresentare in modo chiaro il posizionamento dell'agenzia</u> e valorizzare i risultati ottenuti con i clienti. Il progetto è costruito attorno a una presentazione elegante e coerente, con animazioni fluide e transizioni leggere che accompagnano la navigazione senza distrarre.
 
-Grande importanza è data al portfolio clienti, strutturato per mostrare non solo i progetti realizzati ma anche il metodo di lavoro e lo stile dell'agenzia. Ogni caso è raccontato con contenuti visivi (foto e video) e una descrizione del valore generato.
+Grande importanza è data al <strong>portfolio clienti</strong>, strutturato per mostrare non solo i progetti realizzati ma anche il metodo di lavoro e lo stile dell'agenzia. Ogni caso è raccontato con contenuti visivi (foto e video) e una descrizione del valore generato.
 
-L'esperienza è pensata per essere chiara e progressiva:
+<u>Esperienza chiara e progressiva:</u>
 – gerarchia dei contenuti che guida la lettura
 – sezioni costruite per spiegare servizi e approccio senza sovraccaricare
 – equilibrio tra testo e contenuti visivi
 
-Il sito valorizza anche la produzione di contenuti:
-– integrazione di foto e video come parte centrale della comunicazione
+<u>Valorizzazione dei contenuti creativi:</u>
+– integrazione di <strong>foto e video come parte centrale</strong> della comunicazione
 – layout progettati per dare spazio ai materiali creativi
 – continuità visiva tra progetti e identità del brand
 
-A livello tecnico, la struttura è pensata per essere facilmente aggiornabile con un backend dedicato, così da permettere all'agenzia di aggiungere nuovi progetti e contenuti mantenendo coerenza nel tempo.`},
+La struttura è facilmente aggiornabile con un backend dedicato, permettendo di aggiungere nuovi progetti e contenuti mantenendo <strong>coerenza nel tempo</strong>.`},
 
   {t:'ViDi Creative Studios',m:['Sito web','Multilingua'],hue:195,
    d:'Sito per uno studio di comunicazione con framework di servizi strutturato in quattro aree operative, disponibile in tre lingue.',
-   detail:`ViDi Creative Studios è uno studio di comunicazione che aiuta i brand a crescere, performare e mantenere una propria identità coerente nel tempo.
+   detail:`ViDi Creative Studios è uno studio di comunicazione che <strong>aiuta i brand a crescere, performare e mantenere una propria identità coerente nel tempo</strong>.
 
-Per ViDi ho sviluppato un sito pensato per comunicare in modo chiaro il posizionamento dello studio e strutturare i suoi servizi come un sistema coerente e preciso. La comunicazione è costruita attorno a quattro aree principali, presentate come un framework operativo:
-– Strategy
-– Content Creation
-– Campaigns
-– Web Automation
+Per ViDi ho sviluppato un sito pensato per comunicare in modo chiaro il posizionamento dello studio e strutturare i suoi servizi come <u>un sistema coerente e preciso</u>. La comunicazione è costruita attorno a quattro aree principali, presentate come un framework operativo:
+– <strong>Strategy</strong>
+– <strong>Content Creation</strong>
+– <strong>Campaigns</strong>
+– <strong>Web Automation</strong>
 
-Ognuna descritta in modo chiaro e orientato al valore. L'interfaccia è progettata per essere chiara, leggibile e altamente strutturata, con una forte enfasi sulla gerarchia dei contenuti e sulla comunicazione del metodo.
+Ognuna descritta in modo chiaro e orientato al valore. L'interfaccia è progettata per essere <u>chiara, leggibile e altamente strutturata</u>, con una forte enfasi sulla gerarchia dei contenuti e sulla comunicazione del metodo.
 
-Il progetto è inoltre sviluppato in versione multilingua (italiano, inglese e spagnolo) per coprire il bacino internazionale di clienti e garantire una comunicazione efficace verso i diversi mercati.`},
+Il progetto è inoltre sviluppato in versione <strong>multilingua</strong> (italiano, inglese e spagnolo) per coprire il bacino internazionale di clienti e garantire una comunicazione efficace verso i diversi mercati.`},
 
   {t:'Linea Video',m:['Gestionale','Web App'],hue:22,
    d:'Sistema gestionale interno per la gestione completa delle lavorazioni di digitalizzazione video in un laboratorio fotografico specializzato.',
-   detail:`Gestionale Linea Video è un sistema interno sviluppato per la gestione completa delle lavorazioni di digitalizzazione video e archiviazione per un laboratorio fotografico specializzato.
+   detail:`<strong>Gestionale Linea Video</strong> è un sistema interno sviluppato per la gestione completa delle lavorazioni di digitalizzazione video e archiviazione per un laboratorio fotografico specializzato.
 
-Il gestionale nasce per digitalizzare un flusso di lavoro tradizionalmente analogico e complesso, trasformando operazioni manuali e frammentate in un sistema unico, strutturato e tracciabile. Tutto il processo operativo è centralizzato: dalla registrazione delle lavorazioni alla gestione dei codici servizio, fino alla fatturazione finale.
+Il gestionale nasce per <u>digitalizzare un flusso di lavoro tradizionalmente analogico e complesso</u>, trasformando operazioni manuali e frammentate in un sistema unico, strutturato e tracciabile. Tutto il processo operativo è centralizzato: dalla registrazione delle lavorazioni alla gestione dei codici servizio, fino alla fatturazione finale.
 
-Il sistema è costruito attorno a codici di lavorazione personalizzati, che standardizzano servizi come riversamenti, conversioni e duplicazioni, mantenendo coerenza tra operazioni, prezzi e output.
+Il sistema è costruito attorno a <strong>codici di lavorazione personalizzati</strong>, che standardizzano servizi come riversamenti, conversioni e duplicazioni, mantenendo coerenza tra operazioni, prezzi e output.
 
-Funzionalità principali:
+<u>Funzionalità principali:</u>
 – registro lavorazioni con tracciamento per barcode, data e dettaglio attività
-– bolla settimanale automatica per aggregazione lavorazioni per periodo
-– fatturazione mensile con riepilogo completo di imponibile, IVA e totale
-– generazione automatica di documenti PDF pronti per la stampa (bolle, fatture, riepiloghi)
+– <strong>bolla settimanale automatica</strong> per aggregazione lavorazioni per periodo
+– <strong>fatturazione mensile</strong> con riepilogo completo di imponibile, IVA e totale
+– generazione automatica di <u>documenti PDF pronti per la stampa</u> (bolle, fatture, riepiloghi)
 – funzionalità di backup e ripristino per continuità operativa
 – interfaccia operativa con ricerca per codice o barcode e accesso diretto alle informazioni quotidiane`},
 ];
@@ -1055,6 +1048,7 @@ document.getElementById('pfGrid').innerHTML = projects.map((p,i)=>`
       radial-gradient(70% 50% at 30% 30%, oklch(0.45 0.15 ${p.hue}), transparent 70%),
       radial-gradient(60% 60% at 80% 70%, oklch(0.35 0.17 ${p.hue+30}), transparent 70%),
       linear-gradient(135deg, oklch(0.2 0.08 ${p.hue}), oklch(0.12 0.04 ${p.hue}));"></div>
+    <div class="pf-logo" id="pf-logo-${i}"></div>
     <div class="view"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></div>
     <div class="pf-overlay">
       <div class="pf-meta">${p.m.map(x=>`<span>${x}</span>`).join('')}</div>
@@ -1268,15 +1262,21 @@ document.addEventListener('mousemove', e=>{ tx=e.clientX; ty=e.clientY });
   const impactPin = document.querySelector('.impact-pin');
   const q = document.getElementById('impactQuote');
   if(!q || !impactPin) return;
+  const words = q.textContent.trim().split(/\s+/);
+  q.innerHTML = words.map(w=>`<span class="word">${w}</span>`).join(' ');
+  const spans = q.querySelectorAll('.word');
   function update(){
     const rect = impactPin.getBoundingClientRect();
     const total = impactPin.offsetHeight - window.innerHeight;
     const scrolled = Math.min(Math.max(-rect.top, 0), total);
     const pct = total > 0 ? scrolled / total : 0;
     q.style.transform = `scale(${0.5 + pct * 0.5})`;
-    const fill = Math.min(Math.max((pct - 0.15) / 0.73, 0), 1) * 100;
-    q.style.setProperty('--fs', Math.max(0, fill - 12) + '%');
-    q.style.setProperty('--fe', Math.min(100, fill + 12) + '%');
+    // fractional fill: litCount is a float, so the "active" word fades smoothly
+    const litCount = Math.min(Math.max((pct - 0.15) / 0.73, 0), 1) * spans.length;
+    spans.forEach((s, i) => {
+      const alpha = Math.min(Math.max(litCount - i, 0), 1);
+      s.style.color = `rgba(255,255,255,${(0.12 + alpha * 0.88).toFixed(3)})`;
+    });
   }
   window.addEventListener('scroll', update, {passive:true});
   window.addEventListener('resize', update);
