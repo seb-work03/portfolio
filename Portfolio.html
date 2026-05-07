@@ -331,7 +331,7 @@
   /* Process - horizontal scroll pinned */
   .process{position:relative;padding-top:80px}
   .process-pin{position:relative;height: 420vh;margin-top:-180px;}
-  .process-stick{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:center;padding-top:0}
+  .process-stick{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;display:flex;align-items:center;padding-top:0}
   .process-inner{display:flex;gap:24px;padding: 0 8vw;will-change:transform}
   .step{flex:none;width:min(520px, 80vw);height:min(420px, 60vh);border-radius:28px;padding:34px;position:relative;overflow:hidden;background:linear-gradient(160deg, rgba(20,28,50,.75), rgba(10,14,22,.85));border:1px solid var(--line-2);backdrop-filter:blur(10px);display:flex;flex-direction:column;justify-content:space-between}
   .step .step-num{font-family:'Instrument Serif',serif;font-style:italic;font-size:140px;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(140,170,255,.35);position:absolute;top:18px;right:28px;user-select:none}
@@ -362,7 +362,7 @@
   /* Impact */
   .impact{position:relative;background:var(--bg)}
   .impact-pin{position:relative;height:300vh}
-  .impact-stick{position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#000;isolation:isolate;will-change:transform;transform:translateZ(0)}
+  .impact-stick{position:sticky;top:0;height:100vh;height:100svh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#000;isolation:isolate;will-change:transform;transform:translateZ(0)}
   .impact-stick::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 50% at 50% 50%, rgba(79,139,255,.07), transparent 70%);pointer-events:none}
   .impact .quote{font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(22px,4vw,64px);line-height:1.18;letter-spacing:-.01em;max-width:min(1100px,90vw);margin:0 auto;transform:scale(.5);transform-origin:50% 50%;text-align:center;padding:0 24px}
   .impact .quote::before{content:'\201C';font-family:'Instrument Serif',serif;font-style:italic;color:#4f8bff;margin-right:.12em;font-size:1.2em;vertical-align:-.08em;line-height:0}
@@ -506,7 +506,7 @@
     :is(h1,h2).display{font-size:clamp(36px,10vw,56px);line-height:1.05}
     .lede{font-size:17px;max-width:100%}
     .section-head{margin-bottom:36px}
-    h2.title, .title{font-size:40px !important;line-height:1.1}
+    h2.title, .title{font-size:39px !important;line-height:1.1}
     .impact .quote{font-size:clamp(32px,8vw,54px);max-width:100% !important;padding:0 12px}
     /* Sezione why: subtitle non deve sforare */
     .section-sub{max-width:100% !important;width:auto !important}
@@ -515,11 +515,11 @@
     /* Hero: ritratto sopra il testo, contenuto nel viewport */
     .hero{padding-top:80px;padding-bottom:48px;min-height:auto;align-items:flex-start;overflow:hidden}
     .hero-grid{grid-template-columns:1fr;gap:28px;width:100%;max-width:100%}
-    .portrait-wrap{display:flex;justify-content:center;margin-top:0;order:-1;overflow:hidden;max-width:100%;position:relative}
-    .portrait-card{width:min(220px,68vw) !important;aspect-ratio:4/5 !important;height:auto !important;align-self:auto !important;margin-top:0 !important}
+    .portrait-wrap{display:flex;justify-content:center;margin-top:0;order:-1;overflow:hidden;max-width:100%;position:relative;padding:0 40px}
+    .portrait-card{width:100% !important;max-width:240px;aspect-ratio:4/5 !important;height:auto !important;align-self:auto !important;margin-top:0 !important}
     /* Portrait-halo nascosto, tag centrato in basso */
     .portrait-halo{display:none}
-    .portrait-tag{position:absolute;top:auto !important;left:50% !important;bottom:12px;transform:translateX(-50%) scale(.85);transform-origin:bottom center;font-size:11px;white-space:nowrap}
+    .portrait-tag{position:absolute;top:auto !important;left:50% !important;bottom:4px;transform:translateX(-50%) scale(.85);transform-origin:bottom center;font-size:11px;white-space:nowrap}
     /* Nasconde il primo paragrafo lede (descrizione lunga) su mobile */
     .hero .lede:not(.cycle-line){display:none}
     /* lede: non deve sforare */
@@ -1492,6 +1492,14 @@ let cgx=0,cgy=0,tx=0,ty=0;
 document.addEventListener('mousemove', e=>{ tx=e.clientX; ty=e.clientY });
 (function loop(){ cgx+=(tx-cgx)*.08; cgy+=(ty-cgy)*.08; cg.style.left=cgx+'px'; cg.style.top=cgy+'px'; requestAnimationFrame(loop); })();
 
+/* ============== STABLE VIEWPORT HEIGHT (iOS Safari URL-bar fix) ============== */
+let stableVH = window.innerHeight;
+let vhResizeTimer;
+window.addEventListener('resize', ()=>{
+  clearTimeout(vhResizeTimer);
+  vhResizeTimer = setTimeout(()=>{ stableVH = window.innerHeight; }, 200);
+});
+
 /* ============== IMPACT QUOTE — pinned scroll ============== */
 (function(){
   const impactPin = document.querySelector('.impact-pin');
@@ -1502,11 +1510,10 @@ document.addEventListener('mousemove', e=>{ tx=e.clientX; ty=e.clientY });
   const spans = q.querySelectorAll('.word');
   function update(){
     const rect = impactPin.getBoundingClientRect();
-    const total = impactPin.offsetHeight - window.innerHeight;
+    const total = impactPin.offsetHeight - stableVH;
     const scrolled = Math.min(Math.max(-rect.top, 0), total);
     const pct = total > 0 ? scrolled / total : 0;
     q.style.transform = `scale(${0.5 + pct * 0.5})`;
-    // fractional fill: litCount is a float, so the "active" word fades smoothly
     const litCount = Math.min(Math.max((pct - 0.15) / 0.73, 0), 1) * spans.length;
     spans.forEach((s, i) => {
       const alpha = Math.min(Math.max(litCount - i, 0), 1);
@@ -1514,7 +1521,7 @@ document.addEventListener('mousemove', e=>{ tx=e.clientX; ty=e.clientY });
     });
   }
   window.addEventListener('scroll', update, {passive:true});
-  window.addEventListener('resize', update);
+  window.addEventListener('resize', ()=>setTimeout(update,250));
   update();
 })();
 
@@ -1524,7 +1531,7 @@ const inner = document.getElementById('processInner');
 const bar = document.getElementById('processBar');
 function updateProcess(){
   const rect = pin.getBoundingClientRect();
-  const total = pin.offsetHeight - window.innerHeight;
+  const total = pin.offsetHeight - stableVH;
   const scrolled = Math.min(Math.max(-rect.top, 0), total);
   const pct = total>0 ? scrolled/total : 0;
   const distance = inner.scrollWidth - window.innerWidth + 60;
@@ -1538,7 +1545,7 @@ function updateProcess(){
   });
 }
 window.addEventListener('scroll', updateProcess, {passive:true});
-window.addEventListener('resize', updateProcess);
+window.addEventListener('resize', ()=>setTimeout(updateProcess,250));
 updateProcess();
 </script>
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
