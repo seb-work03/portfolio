@@ -46,6 +46,8 @@
     display:block;
     filter:blur(1px);
     transition:opacity .4s;
+    will-change:transform;
+    transform:translateZ(0);
   }
   html{background:#06070b}
   body{background:transparent}
@@ -271,7 +273,7 @@
   .marquee-section{padding:60px 0 20px;background:var(--bg)}
   div#mqTrack{padding-top:20px}
   .marquee{position:relative;overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
-  .mq-label{display:flex;justify-content:center;align-items:center;gap:14px;color:var(--ink-mute);font-size:12px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:26px}
+  .mq-label{display:flex;justify-content:center;align-items:center;gap:14px;color:#fff;font-size:12px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:26px}
   .mq-label::before,.mq-label::after{content:"";height:1px;flex:1;max-width:120px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent)}
   .mq-track{display:flex;gap:44px;width:max-content;animation:mqScroll 40s linear infinite}
   .mq-item{display:flex;align-items:center;justify-content:center;padding:18px 28px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,0.03);transition:background .25s ease, border-color .25s ease, transform .25s ease}
@@ -329,7 +331,7 @@
   /* Process - horizontal scroll pinned */
   .process{position:relative;padding-top:80px}
   .process-pin{position:relative;height: 420vh;margin-top:-180px;}
-  .process-stick{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:center;padding-top:0}
+  .process-stick{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:center;padding-top:0;will-change:transform;transform:translateZ(0)}
   .process-inner{display:flex;gap:24px;padding: 0 8vw;will-change:transform}
   .step{flex:none;width:min(520px, 80vw);height:min(420px, 60vh);border-radius:28px;padding:34px;position:relative;overflow:hidden;background:linear-gradient(160deg, rgba(20,28,50,.75), rgba(10,14,22,.85));border:1px solid var(--line-2);backdrop-filter:blur(10px);display:flex;flex-direction:column;justify-content:space-between}
   .step .step-num{font-family:'Instrument Serif',serif;font-style:italic;font-size:140px;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(140,170,255,.35);position:absolute;top:18px;right:28px;user-select:none}
@@ -360,7 +362,7 @@
   /* Impact */
   .impact{position:relative;background:var(--bg)}
   .impact-pin{position:relative;height:300vh}
-  .impact-stick{position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#000;isolation:isolate}
+  .impact-stick{position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#000;isolation:isolate;will-change:transform;transform:translateZ(0)}
   .impact-stick::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 50% at 50% 50%, rgba(79,139,255,.07), transparent 70%);pointer-events:none}
   .impact .quote{font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(22px,4vw,64px);line-height:1.18;letter-spacing:-.01em;max-width:min(1100px,90vw);margin:0 auto;transform:scale(.5);transform-origin:50% 50%;text-align:center;padding:0 24px}
   .impact .quote::before{content:'\201C';font-family:'Instrument Serif',serif;font-style:italic;color:#4f8bff;margin-right:.12em;font-size:1.2em;vertical-align:-.08em;line-height:0}
@@ -393,7 +395,7 @@
   .pf-more{display:flex;justify-content:center;margin-top:40px}
 
   /* FAQ */
-  .faq{padding:120px 0;background:transparent}
+  .faq{padding:120px 0;background:var(--bg)}
   .faq .section-head{text-align:center;margin-bottom:64px}
   .faq .section-head h2{margin:0 0 18px;font-family:'Instrument Serif',serif;font-style:normal;font-size:clamp(38px,5vw,68px);line-height:1.05;letter-spacing:-.02em;font-weight:400;color:#fff}
   .faq .section-head h2 em{font-style:italic;background:linear-gradient(180deg,#cfe0ff,#6aa3ff);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
@@ -499,24 +501,29 @@
     .why,.svc,.faq,.portfolio{padding:64px 0}
     .contact{padding:64px 0 80px}
     .marquee-section{padding:40px 0 16px}
-    .faq{padding:64px 0;background:transparent}
+    .faq{padding:64px 0;background:var(--bg)}
     /* Typography */
     :is(h1,h2).display{font-size:clamp(36px,10vw,56px);line-height:1.05}
     .lede{font-size:17px;max-width:100%}
     .section-head{margin-bottom:36px}
     h2.title{font-size:clamp(30px,8vw,46px)}
-    .impact .quote{font-size:clamp(26px,6vw,42px)}
+    .impact .quote{font-size:clamp(28px,7vw,48px)}
+    /* Sezione why: subtitle non deve sforare */
+    .section-sub{max-width:100% !important;width:auto !important}
     /* Nav */
     .nav-cta{padding:7px 12px;font-size:12px}
-    /* Hero */
+    /* Hero: ritratto sopra il testo */
     .hero{padding-top:80px;padding-bottom:48px;min-height:auto;align-items:flex-start}
     .hero-grid{grid-template-columns:1fr;gap:32px}
-    .portrait-wrap{display:flex;justify-content:center;margin-top:0}
-    .portrait-card{width:min(280px,80vw) !important;aspect-ratio:4/5 !important;height:auto !important;align-self:auto !important}
+    .portrait-wrap{display:flex;justify-content:center;margin-top:0;order:-1}
+    .portrait-card{width:min(240px,72vw) !important;aspect-ratio:4/5 !important;height:auto !important;align-self:auto !important}
     .cta-row{gap:10px}
     .uvbtn{min-width:unset;width:100%;justify-content:center;height:52px;font-size:15px}
     .btn{width:100%;justify-content:center}
     .proof-row{gap:16px;flex-wrap:wrap}
+    /* Marquee: più veloce e compatto */
+    .mq-track{gap:20px;animation-duration:22s}
+    .mq-item{padding:12px 16px}
     /* Impact */
     .impact-pin{height:250vh}
     /* Portfolio: testo sempre visibile su mobile */
@@ -524,6 +531,13 @@
     .pf-card p{opacity:1;transform:translateY(0)}
     .pf-card .view{opacity:1;transform:translateY(0)}
     .pf-card h3{font-size:18px}
+    /* Process: step card narrower, kpi più piccolo */
+    .step{min-width:80vw}
+    .step .kpi b{font-size:20px}
+    .step .kpi div{font-size:10px}
+    /* Progress bar più alta per non coprire iubenda */
+    .process-progress{bottom:72px}
+    .process-progress .label{font-size:10px;letter-spacing:.02em}
     /* Contact */
     .contact-grid{grid-template-columns:1fr}
     .contact-card{padding:32px 22px}
@@ -538,8 +552,6 @@
     /* Svc */
     .svc-grid{grid-template-columns:1fr}
     .svc-card{min-height:unset}
-    /* Process: step card narrower on mobile (keeps horizontal scroll) */
-    .step{min-width:80vw}
   }
 
   /* ===== PICCOLI SCHERMI (max 480px) ===== */
@@ -554,8 +566,9 @@
     .modal-body{padding:24px 20px}
     .modal-body h3{font-size:22px}
     .impact-pin{height:220vh}
-    .portrait-card{width:min(240px,75vw) !important}
-    .impact .quote{font-size:clamp(22px,6vw,36px)}
+    .portrait-card{width:min(200px,68vw) !important}
+    .impact .quote{font-size:clamp(24px,7vw,40px)}
+    .process-progress{bottom:80px}
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -883,7 +896,7 @@
 <!-- Form success overlay -->
 <div class="form-success" id="formSuccess" role="dialog" aria-modal="true">
   <div class="form-success-card">
-    <lottie-player id="faceIdPlayer" src="project/assets/face-id.json" loop speed="1" style="width:160px;height:160px;margin:0 auto"></lottie-player>
+    <lottie-player id="faceIdPlayer" src="project/assets/face-id.json" speed="1" style="width:160px;height:160px;margin:0 auto"></lottie-player>
     <h3>Messaggio inviato</h3>
     <p>Ti rispondo entro 24 ore.<br>A presto!</p>
   </div>
