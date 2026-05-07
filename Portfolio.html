@@ -24,7 +24,7 @@
     --glass: rgba(16,19,28,0.55);
   }
   *{box-sizing:border-box}
-  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
   body{overflow-x:hidden}
   a{color:inherit;text-decoration:none}
   button{font-family:inherit}
@@ -51,7 +51,7 @@
   }
   html{background:#06070b}
   body{background:transparent}
-  .hero{overflow:visible !important}
+  @media (min-width:769px){.hero{overflow:visible !important}}
   .hero-shade{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(60% 80% at 30% 45%, rgba(5,7,14,0.35), transparent 70%),radial-gradient(70% 60% at 80% 80%, rgba(5,7,14,0.35), transparent 70%),linear-gradient(180deg, rgba(6,7,11,0) 0%, rgba(6,7,11,0) 50%, rgba(6,7,11,0.95) 100%)}
   .hero .wrap{position:relative;z-index:2}
   .hero-shade{
@@ -507,20 +507,27 @@
     .lede{font-size:17px;max-width:100%}
     .section-head{margin-bottom:36px}
     h2.title{font-size:clamp(30px,8vw,46px)}
-    .impact .quote{font-size:clamp(28px,7vw,48px)}
+    .impact .quote{font-size:clamp(32px,8vw,54px);max-width:100% !important;padding:0 12px}
     /* Sezione why: subtitle non deve sforare */
     .section-sub{max-width:100% !important;width:auto !important}
     /* Nav */
     .nav-cta{padding:7px 12px;font-size:12px}
-    /* Hero: ritratto sopra il testo */
-    .hero{padding-top:80px;padding-bottom:48px;min-height:auto;align-items:flex-start}
-    .hero-grid{grid-template-columns:1fr;gap:32px}
-    .portrait-wrap{display:flex;justify-content:center;margin-top:0;order:-1}
-    .portrait-card{width:min(240px,72vw) !important;aspect-ratio:4/5 !important;height:auto !important;align-self:auto !important}
+    /* Hero: ritratto sopra il testo, contenuto nel viewport */
+    .hero{padding-top:80px;padding-bottom:48px;min-height:auto;align-items:flex-start;overflow:hidden}
+    .hero-grid{grid-template-columns:1fr;gap:28px;width:100%;max-width:100%}
+    .portrait-wrap{display:flex;justify-content:center;margin-top:0;order:-1;overflow:visible;max-width:100%}
+    .portrait-card{width:min(220px,68vw) !important;aspect-ratio:4/5 !important;height:auto !important;align-self:auto !important;margin-top:0 !important}
+    /* Nasconde elementi che escono dal viewport su mobile */
+    .portrait-halo{display:none}
+    .portrait-tag{transform:scale(.8);transform-origin:top left;font-size:11px}
+    .tag-top{top:8px !important;left:4px !important}
+    /* lede: non deve sforare */
+    .lede{max-width:100% !important}
+    .hero .lede[style]{max-width:100% !important;width:auto !important}
     .cta-row{gap:10px}
     .uvbtn{min-width:unset;width:100%;justify-content:center;height:52px;font-size:15px}
     .btn{width:100%;justify-content:center}
-    .proof-row{gap:16px;flex-wrap:wrap}
+    .proof-row{gap:12px;flex-wrap:wrap;justify-content:center}
     /* Marquee: più veloce e compatto */
     .mq-track{gap:20px;animation-duration:22s}
     .mq-item{padding:12px 16px}
@@ -566,8 +573,8 @@
     .modal-body{padding:24px 20px}
     .modal-body h3{font-size:22px}
     .impact-pin{height:220vh}
-    .portrait-card{width:min(200px,68vw) !important}
-    .impact .quote{font-size:clamp(24px,7vw,40px)}
+    .portrait-card{width:min(190px,65vw) !important}
+    .impact .quote{font-size:clamp(28px,8vw,44px);padding:0 8px}
     .process-progress{bottom:80px}
   }
 
