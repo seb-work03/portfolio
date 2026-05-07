@@ -331,7 +331,7 @@
   /* Process - horizontal scroll pinned */
   .process{position:relative;padding-top:80px}
   .process-pin{position:relative;height:420vh;height:420svh;margin-top:-180px;}
-  .process-stick{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;display:flex;align-items:center;padding-top:0}
+  .process-stick{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;overflow:clip;display:flex;align-items:center;padding-top:0}
   .process-inner{display:flex;gap:24px;padding: 0 8vw;will-change:transform}
   .step{flex:none;width:min(520px, 80vw);height:min(420px, 60vh);border-radius:28px;padding:34px;position:relative;overflow:hidden;background:linear-gradient(160deg, rgba(20,28,50,.75), rgba(10,14,22,.85));border:1px solid var(--line-2);backdrop-filter:blur(10px);display:flex;flex-direction:column;justify-content:space-between}
   .step .step-num{font-family:'Instrument Serif',serif;font-style:italic;font-size:140px;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(140,170,255,.35);position:absolute;top:18px;right:28px;user-select:none}
@@ -345,7 +345,7 @@
   .step .glow{position:absolute;inset:auto -11% -22% auto;width:90%;height:85%;background:radial-gradient(60% 70% at 75% 75%, rgba(79,139,255,.6), transparent 75%);filter:blur(50px);pointer-events:none}
   .process-progress{position:absolute;left:8vw;right:8vw;bottom:46px;height:40px;display:flex;align-items:center}
   .process-progress .track{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);height:1px;background:rgba(255,255,255,.12)}
-  .process-progress .fill{position:absolute;left:0;top:50%;transform:translateY(-50%);height:1px;background:var(--blue);width:0%;transition:width .1s linear}
+  .process-progress .fill{position:absolute;left:0;right:0;top:50%;height:1px;background:var(--blue);transform:translateY(-50%) scaleX(0);transform-origin:left center}
   .process-progress .nodes{position:relative;width:100%;display:flex;justify-content:space-between;align-items:center}
   .process-progress .node{display:flex;flex-direction:column;align-items:center;gap:14px;position:relative}
   .process-progress .dot{width:14px;height:14px;border-radius:50%;background:#0a0d14;border:1.5px solid rgba(255,255,255,.25);transition:all .25s ease;position:relative;z-index:2}
@@ -1533,7 +1533,12 @@ window.addEventListener('orientationchange', ()=>{
       s.style.color = `rgba(255,255,255,${(0.12 + alpha * 0.88).toFixed(3)})`;
     });
   }
-  window.addEventListener('scroll', update, {passive:true});
+  let impactRaf;
+  function onImpactScroll(){
+    if(impactRaf) return;
+    impactRaf = requestAnimationFrame(()=>{ impactRaf=null; update(); });
+  }
+  window.addEventListener('scroll', onImpactScroll, {passive:true});
   window.addEventListener('resize', ()=>setTimeout(window._recacheImpact, 300));
   update();
 })();
@@ -1560,14 +1565,21 @@ function updateProcess(){
   const scrolled = Math.min(Math.max(window.scrollY - processPinTop, 0), processTotal);
   const pct = processTotal > 0 ? scrolled / processTotal : 0;
   inner.style.transform = `translateX(${-pct * processDistance}px)`;
-  bar.style.width = (pct * 100) + '%';
+  bar.style.transform = `translateY(-50%) scaleX(${pct})`;
   const n = processNodes.length;
   processNodes.forEach((node, i)=>{
     node.classList.toggle('active', pct >= i/(n-1) - 0.001);
   });
 }
-window.addEventListener('scroll', updateProcess, {passive:true});
+let processRaf;
+function onProcessScroll(){
+  if(processRaf) return;
+  processRaf = requestAnimationFrame(()=>{ processRaf=null; updateProcess(); });
+}
+window.addEventListener('scroll', onProcessScroll, {passive:true});
 window.addEventListener('resize', ()=>setTimeout(recacheAll, 300));
+// Recache after full page load to pick up layout shifts from late-loading images
+window.addEventListener('load', ()=>setTimeout(recacheAll, 100));
 updateProcess();
 
 /* ============== BACK TO TOP ============== */
