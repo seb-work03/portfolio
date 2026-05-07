@@ -14,7 +14,7 @@
     --bg: #07080c;
     --bg-2:#0b0d14;
     --ink: #e9ecf3;
-    --ink-dim:#a7adbe;
+    --ink-dim:#d1d1d1;
     --ink-mute:#6a7285;
     --line: rgba(255,255,255,0.08);
     --line-2: rgba(255,255,255,0.14);
@@ -477,6 +477,8 @@
     *{animation-duration:.001ms !important; transition-duration:.001ms !important}
   }
 </style>
+<!-- Iubenda consent solution -->
+<script type="text/javascript" src="https://embeds.iubenda.com/widgets/5c32ed7e-ab95-4029-9097-743f550c374f.js"></script>
 </head>
 <body>
 <div id="tweaks-root"></div>
@@ -784,13 +786,14 @@
 <footer>
   <div class="wrap" style="display:flex;justify-content:space-between;width:100%;flex-wrap:wrap;gap:12px">
     <div>© 2026 Sebastian Marzola · P.IVA XXXXXXXXXXX</div>
-    <div style="display:flex;gap:18px">
-      <a href="#">Privacy</a>
-      <a href="#">Cookie</a>
+    <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">
+      <a href="https://www.iubenda.com/privacy-policy/68800381" class="iubenda-white iubenda-noiframe iubenda-embed" title="Privacy Policy">Privacy Policy</a>
+      <a href="https://www.iubenda.com/privacy-policy/68800381/cookie-policy" class="iubenda-white iubenda-noiframe iubenda-embed" title="Cookie Policy">Cookie Policy</a>
       <a href="#contatti">Contatti</a>
     </div>
   </div>
 </footer>
+<script type="text/javascript">(function(w,d){var loader=function(){var s=d.createElement("script"),tag=d.getElementsByTagName("script")[0];s.src="https://cdn.iubenda.com/iubenda.js";tag.parentNode.insertBefore(s,tag);};if(w.addEventListener){w.addEventListener("load",loader,false);}else if(w.attachEvent){w.attachEvent("onload",loader);}else{w.onload=loader;}})(window,document);</script>
 
 <!-- Portfolio modal -->
 <div class="modal" id="pfModal" role="dialog" aria-hidden="true">
