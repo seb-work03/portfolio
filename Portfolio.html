@@ -24,7 +24,7 @@
     --glass: rgba(16,19,28,0.55);
   }
   *{box-sizing:border-box}
-  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
   body{overflow-x:hidden}
   a{color:inherit;text-decoration:none}
   button{font-family:inherit}
@@ -331,7 +331,7 @@
   /* Process - horizontal scroll pinned */
   .process{position:relative;padding-top:80px}
   .process-pin{position:relative;height: 420vh;margin-top:-180px;}
-  .process-stick{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:center;padding-top:0;will-change:transform;transform:translateZ(0)}
+  .process-stick{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:center;padding-top:0}
   .process-inner{display:flex;gap:24px;padding: 0 8vw;will-change:transform}
   .step{flex:none;width:min(520px, 80vw);height:min(420px, 60vh);border-radius:28px;padding:34px;position:relative;overflow:hidden;background:linear-gradient(160deg, rgba(20,28,50,.75), rgba(10,14,22,.85));border:1px solid var(--line-2);backdrop-filter:blur(10px);display:flex;flex-direction:column;justify-content:space-between}
   .step .step-num{font-family:'Instrument Serif',serif;font-style:italic;font-size:140px;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(140,170,255,.35);position:absolute;top:18px;right:28px;user-select:none}
@@ -502,11 +502,11 @@
     .contact{padding:64px 0 80px}
     .marquee-section{padding:40px 0 16px}
     .faq{padding:64px 0;background:var(--bg)}
-    /* Typography */
+    /* Typography: titoli 40px fissi su mobile */
     :is(h1,h2).display{font-size:clamp(36px,10vw,56px);line-height:1.05}
     .lede{font-size:17px;max-width:100%}
     .section-head{margin-bottom:36px}
-    h2.title{font-size:clamp(30px,8vw,46px)}
+    h2.title, .title{font-size:40px !important;line-height:1.1}
     .impact .quote{font-size:clamp(32px,8vw,54px);max-width:100% !important;padding:0 12px}
     /* Sezione why: subtitle non deve sforare */
     .section-sub{max-width:100% !important;width:auto !important}
@@ -515,20 +515,21 @@
     /* Hero: ritratto sopra il testo, contenuto nel viewport */
     .hero{padding-top:80px;padding-bottom:48px;min-height:auto;align-items:flex-start;overflow:hidden}
     .hero-grid{grid-template-columns:1fr;gap:28px;width:100%;max-width:100%}
-    .portrait-wrap{display:flex;justify-content:center;margin-top:0;order:-1;overflow:visible;max-width:100%}
+    .portrait-wrap{display:flex;justify-content:center;margin-top:0;order:-1;overflow:hidden;max-width:100%;position:relative}
     .portrait-card{width:min(220px,68vw) !important;aspect-ratio:4/5 !important;height:auto !important;align-self:auto !important;margin-top:0 !important}
-    /* Nasconde elementi che escono dal viewport su mobile */
+    /* Portrait-halo nascosto, tag centrato in basso */
     .portrait-halo{display:none}
-    .portrait-tag{transform:scale(.8);transform-origin:top left;font-size:11px}
-    .tag-top{top:8px !important;left:4px !important}
+    .portrait-tag{position:absolute;top:auto !important;left:50% !important;bottom:12px;transform:translateX(-50%) scale(.85);transform-origin:bottom center;font-size:11px;white-space:nowrap}
+    /* Nasconde il primo paragrafo lede (descrizione lunga) su mobile */
+    .hero .lede:not(.cycle-line){display:none}
     /* lede: non deve sforare */
     .lede{max-width:100% !important}
-    .hero .lede[style]{max-width:100% !important;width:auto !important}
     .cta-row{gap:10px}
     .uvbtn{min-width:unset;width:100%;justify-content:center;height:52px;font-size:15px}
     .btn{width:100%;justify-content:center}
     .proof-row{gap:12px;flex-wrap:wrap;justify-content:center}
-    /* Marquee: più veloce e compatto */
+    /* Marquee: centrato, più veloce e compatto */
+    .mq-label{text-align:center;justify-content:center}
     .mq-track{gap:20px;animation-duration:22s}
     .mq-item{padding:12px 16px}
     /* Impact */
@@ -629,7 +630,7 @@
   html[data-density] .why, html[data-density] .svc, html[data-density] .impact, html[data-density] .portfolio, html[data-density] .contact{padding-top: var(--tweak-section-pad); padding-bottom: var(--tweak-section-pad)}
   html[data-density] .why-grid, html[data-density] .svc-grid, html[data-density] .grid-pf{gap: var(--tweak-gap) !important}
   html[data-density] .why-card, html[data-density] .svc-card, html[data-density] .pf-card{padding: var(--tweak-card-pad) !important}
-  html[data-density] .title{font-size: clamp(28px, calc(3.6vw * var(--tweak-h2-scale)), 56px) !important}
+  html[data-density] .title{font-size: clamp(40px, calc(3.6vw * var(--tweak-h2-scale)), 56px) !important}
   html[data-density] .hero :is(h1,h2).display{font-size: clamp(32px, calc(4.2vw * var(--tweak-display-scale)), 64px) !important}
 </style>
 
