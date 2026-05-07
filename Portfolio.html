@@ -418,7 +418,7 @@
   .form-success.show{opacity:1;pointer-events:all}
   .form-success-card{text-align:center;padding:52px 44px;border-radius:28px;border:1px solid rgba(120,150,255,.2);background:linear-gradient(180deg,rgba(16,22,38,.98),rgba(6,8,14,.98));box-shadow:0 40px 80px rgba(0,0,0,.6);max-width:360px;width:90%;transform:translateY(24px) scale(.96);transition:transform .45s cubic-bezier(.2,.8,.2,1)}
   .form-success.show .form-success-card{transform:translateY(0) scale(1)}
-  .form-success dotlottie-wc{display:block;width:160px;height:160px;margin:0 auto 4px}
+  .form-success lottie-player{display:block;width:160px;height:160px;margin:0 auto 4px}
   .form-success h3{margin:0 0 8px;font-family:'Instrument Serif',serif;font-style:italic;font-size:28px;font-weight:400;color:#fff}
   .form-success p{margin:0;color:var(--ink-dim);font-size:15px;line-height:1.5}
 
@@ -515,13 +515,6 @@
     .uvbtn{min-width:unset;width:100%;justify-content:center;height:52px;font-size:15px}
     .btn{width:100%;justify-content:center}
     .proof-row{gap:16px;flex-wrap:wrap}
-    /* Process: stacking verticale */
-    .process{padding-top:48px}
-    .process-pin{height:auto !important;margin-top:0}
-    .process-stick{position:relative !important;height:auto !important;overflow:visible;padding-bottom:32px}
-    .process-inner{flex-direction:column;padding:0 20px !important;transform:none !important;gap:16px}
-    .step{min-width:unset !important;width:100%}
-    .process-progress{display:none}
     /* Impact */
     .impact-pin{height:250vh}
     /* Portfolio */
@@ -540,6 +533,8 @@
     /* Svc */
     .svc-grid{grid-template-columns:1fr}
     .svc-card{min-height:unset}
+    /* Process: step card narrower on mobile (keeps horizontal scroll) */
+    .step{min-width:80vw}
   }
 
   /* ===== PICCOLI SCHERMI (max 480px) ===== */
@@ -560,7 +555,7 @@
     *{animation-duration:.001ms !important; transition-duration:.001ms !important}
   }
 </style>
-<script type="module" src="https://cdn.jsdelivr.net/npm/@dotlottie/dotlottie-wc@0.6.5/dist/dotlottie-wc.js"></script>
+<script src="https://unpkg.com/@lottiefiles/lottie-player@2.0.8/dist/lottie-player.js"></script>
 <!-- Iubenda consent solution -->
 <script type="text/javascript" src="https://embeds.iubenda.com/widgets/86c89c54-6493-4edd-8202-8ae507dcc4a2.js"></script>
 </head>
@@ -881,7 +876,7 @@
 <!-- Form success overlay -->
 <div class="form-success" id="formSuccess" role="dialog" aria-modal="true">
   <div class="form-success-card">
-    <dotlottie-wc src="project/assets/face-id.lottie" autoplay></dotlottie-wc>
+    <lottie-player src="project/assets/face-id.json" autoplay speed="1" style="width:160px;height:160px;margin:0 auto"></lottie-player>
     <h3>Messaggio inviato</h3>
     <p>Ti rispondo entro 24 ore.<br>A presto!</p>
   </div>
@@ -1300,7 +1295,7 @@ document.querySelectorAll('.reveal, .reveal-words').forEach(el=>io.observe(el));
 function submitContactForm(e){
   e.preventDefault();
   const overlay = document.getElementById('formSuccess');
-  const player = overlay.querySelector('dotlottie-wc');
+  const player = overlay.querySelector('lottie-player');
   overlay.classList.add('show');
   if(player){ try{ player.play(); }catch(_){} }
   document.getElementById('contactForm').reset();
@@ -1500,7 +1495,6 @@ const pin = document.querySelector('.process-pin');
 const inner = document.getElementById('processInner');
 const bar = document.getElementById('processBar');
 function updateProcess(){
-  if(window.innerWidth <= 768) return;
   const rect = pin.getBoundingClientRect();
   const total = pin.offsetHeight - window.innerHeight;
   const scrolled = Math.min(Math.max(-rect.top, 0), total);
