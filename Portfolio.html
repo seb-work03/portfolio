@@ -473,6 +473,80 @@
   .modal-body .kpis small{color:var(--ink-mute);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
   .modal-close{position:absolute;top:16px;right:16px;width:40px;height:40px;border-radius:50%;background:rgba(16,19,28,.7);border:1px solid var(--line-2);color:var(--ink);cursor:pointer;display:grid;place-items:center;z-index:2}
 
+  /* ===== TABLET (max 1024px) ===== */
+  @media (max-width:1024px){
+    .wrap{padding:0 28px}
+    .why-grid{grid-template-columns:repeat(2,1fr)}
+    .svc-grid{grid-template-columns:repeat(2,1fr)}
+    .pf-grid{grid-template-columns:repeat(2,1fr)}
+    .contact-grid{grid-template-columns:1fr}
+    .contact-card{padding:48px 40px}
+  }
+
+  /* ===== MOBILE (max 768px) ===== */
+  @media (max-width:768px){
+    .wrap{padding:0 20px}
+    /* Sezioni: padding ridotto */
+    .why,.svc,.faq,.portfolio{padding:64px 0}
+    .contact{padding:64px 0 80px}
+    .marquee-section{padding:40px 0 16px}
+    .faq{padding:64px 0}
+    /* Typography */
+    :is(h1,h2).display{font-size:clamp(34px,10vw,52px);line-height:1.05}
+    .lede{font-size:16px;max-width:100%}
+    .section-head{margin-bottom:36px}
+    h2.title{font-size:clamp(28px,7vw,42px)}
+    /* Nav */
+    .nav-cta{padding:7px 12px;font-size:12px}
+    /* Hero */
+    .hero{padding-top:110px;padding-bottom:60px;min-height:auto;align-items:flex-start}
+    .hero-grid{grid-template-columns:1fr;gap:0}
+    .portrait-wrap{display:none}
+    .cta-row{gap:10px}
+    .uvbtn{min-width:unset;width:100%;justify-content:center;height:52px;font-size:15px}
+    .btn{width:100%;justify-content:center}
+    .proof-row{gap:16px;flex-wrap:wrap}
+    /* Process: stacking verticale */
+    .process{padding-top:48px}
+    .process-pin{height:auto !important;margin-top:0}
+    .process-stick{position:relative !important;height:auto !important;overflow:visible;padding-bottom:32px}
+    .process-inner{flex-direction:column;padding:0 20px !important;transform:none !important;gap:16px}
+    .step{min-width:unset !important;width:100%}
+    .process-progress{display:none}
+    /* Impact */
+    .impact-pin{height:250vh}
+    /* Portfolio */
+    .pf-grid{grid-template-columns:1fr}
+    /* Contact */
+    .contact-grid{grid-template-columns:1fr}
+    .contact-card{padding:32px 22px}
+    .contact h2{font-size:clamp(32px,8vw,48px)}
+    /* FAQ */
+    .faq-q{font-size:15px;padding:18px 0}
+    .faq .section-head h2{font-size:clamp(32px,8vw,52px)}
+    /* Footer */
+    footer .wrap{flex-direction:column;align-items:flex-start;gap:14px}
+    /* Why grid */
+    .why-grid{grid-template-columns:1fr}
+    /* Svc */
+    .svc-grid{grid-template-columns:1fr}
+    .svc-card{min-height:unset}
+  }
+
+  /* ===== PICCOLI SCHERMI (max 480px) ===== */
+  @media (max-width:480px){
+    .wrap{padding:0 16px}
+    .nav-logo span{display:none}
+    :is(h1,h2).display{font-size:clamp(30px,9vw,44px)}
+    .eyebrow{font-size:11px;padding:5px 10px}
+    .hero{padding-top:90px}
+    .cta-row{flex-direction:column}
+    .contact-card{padding:24px 18px}
+    .modal-body{padding:24px 20px}
+    .modal-body h3{font-size:22px}
+    .impact-pin{height:220vh}
+  }
+
   @media (prefers-reduced-motion: reduce){
     *{animation-duration:.001ms !important; transition-duration:.001ms !important}
   }
@@ -639,10 +713,10 @@
     <div class="portrait-wrap reveal">
       <div class="portrait-halo"></div>
       <div class="portrait-card" id="tiltCard" style="width:300px;height:100%;aspect-ratio:auto;align-self:stretch">
-        <img src="project/assets/sebastian.jpg" alt="Sebastian Marzola" />
+        <img src="project/assets/sebastian.jpg" alt="Sebastian Marzola" fetchpriority="high" />
       </div>
       <div class="portrait-tag tag-top" style="gap:10px;top:23px;left:7px">
-        <div class="sig"><img src="project/assets/memoji.png" alt="" /></div>
+        <div class="sig"><img src="project/assets/memoji.png" alt="" loading="lazy" /></div>
         <div><h1 style="margin:0;font-weight:700;font-size:16px;line-height:1.1;font-family:'Inter',system-ui,sans-serif;color:#fff">Sebastian Marzola</h1><div style="color:rgba(255,255,255,0.682);font-size:13px;margin-top:2px">Sviluppatore Web</div></div>
       </div>
     </div>
@@ -785,11 +859,10 @@
 
 <footer>
   <div class="wrap" style="display:flex;justify-content:space-between;width:100%;flex-wrap:wrap;gap:12px">
-    <div>© 2026 Sebastian Marzola · P.IVA XXXXXXXXXXX</div>
+    <div>© 2026 Sebastian Marzola</div>
     <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">
       <a href="https://www.iubenda.com/privacy-policy/68800381" class="iubenda-white iubenda-noiframe iubenda-embed" title="Privacy Policy">Privacy Policy</a>
       <a href="https://www.iubenda.com/privacy-policy/68800381/cookie-policy" class="iubenda-white iubenda-noiframe iubenda-embed" title="Cookie Policy">Cookie Policy</a>
-      <a href="#contatti">Contatti</a>
     </div>
   </div>
 </footer>
@@ -894,18 +967,24 @@ void main(void){
   window.addEventListener('resize', resize);
 
   const start = performance.now();
-  let lastDraw = 0;
+  let lastDraw = 0, rafId = null, visible = true;
   function render(now){
-    if(now - lastDraw >= 33){ // ~30fps cap
+    if(visible && now - lastDraw >= 50){ // ~20fps cap
       gl.useProgram(program);
       gl.uniform2f(uRes, canvas.width, canvas.height);
       gl.uniform1f(uTime, (performance.now() - start) * 0.001);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
       lastDraw = now;
     }
-    requestAnimationFrame(render);
+    rafId = requestAnimationFrame(render);
   }
-  requestAnimationFrame(render);
+  const canvasObs = new IntersectionObserver(entries=>{
+    visible = entries[0].isIntersecting;
+    if(visible && !rafId) rafId = requestAnimationFrame(render);
+    else if(!visible && rafId){ cancelAnimationFrame(rafId); rafId = null; }
+  }, {threshold:0});
+  canvasObs.observe(canvas);
+  rafId = requestAnimationFrame(render);
 })();
 
 // Fade hero canvas when scrolled past hero (use rAF to batch)
@@ -938,6 +1017,7 @@ const tools = [
 const mqTrack = document.getElementById('mqTrack');
 const renderTools = () => tools.map(t => `<div class="mq-item" title="${t.name}"><img src="${t.src}" alt="${t.name}" loading="lazy" /></div>`).join('');
 mqTrack.innerHTML = renderTools() + renderTools();
+mqTrack.querySelectorAll('img').forEach(img=>img.setAttribute('loading','lazy'));
 
 /* ============== WHY CARDS ============== */
 const whys = [
@@ -1387,6 +1467,7 @@ const pin = document.querySelector('.process-pin');
 const inner = document.getElementById('processInner');
 const bar = document.getElementById('processBar');
 function updateProcess(){
+  if(window.innerWidth <= 768) return;
   const rect = pin.getBoundingClientRect();
   const total = pin.offsetHeight - window.innerHeight;
   const scrolled = Math.min(Math.max(-rect.top, 0), total);
