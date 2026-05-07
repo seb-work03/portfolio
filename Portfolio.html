@@ -361,18 +361,17 @@
   .impact-pin{position:relative;height:300vh}
   .impact-stick{position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#000;isolation:isolate}
   .impact-stick::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 50% at 50% 50%, rgba(79,139,255,.07), transparent 70%);pointer-events:none}
-  .impact .quote{font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(22px,4vw,64px);line-height:1.18;letter-spacing:-.01em;max-width:min(1100px,90vw);margin:0 auto;transform:scale(.5);transform-origin:50% 50%;text-align:center;padding:0 24px}
-  .impact .quote .word{display:inline-block;color:rgba(255,255,255,.12);margin-right:.22em}
-  .impact .quote .word.lit{color:#fff}
+  .impact .quote{--fs:0%;--fe:0%;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(22px,4vw,64px);line-height:1.18;letter-spacing:-.01em;max-width:min(1100px,90vw);margin:0 auto;transform:scale(.5);transform-origin:50% 50%;text-align:center;padding:0 24px;background:linear-gradient(90deg,#fff 0%,#fff var(--fs),rgba(255,255,255,.12) var(--fe),rgba(255,255,255,.12) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 
   /* Portfolio */
   .portfolio{padding:120px 0}
   .pf-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
   .pf-card{grid-column:span 6;position:relative;border-radius:22px;overflow:hidden;border:1px solid var(--line);background:#0b0e18;aspect-ratio: 16/11;cursor:pointer;transition: transform .45s cubic-bezier(.2,.8,.2,1), border-color .3s}
-  .pf-card:nth-child(3){grid-column:span 4}
-  .pf-card:nth-child(4){grid-column:span 8}
-  .pf-card:nth-child(5){grid-column:span 7}
-  .pf-card:nth-child(6){grid-column:span 5}
+  .pf-card:nth-child(1){grid-column:span 7}
+  .pf-card:nth-child(2){grid-column:span 5}
+  .pf-card:nth-child(3){grid-column:span 5}
+  .pf-card:nth-child(4){grid-column:span 7}
+  .pf-card:nth-child(5){grid-column:span 12}
   @media (max-width:900px){.pf-card,.pf-card:nth-child(n){grid-column:span 12}}
   .pf-card:hover{transform:translateY(-4px);border-color:rgba(120,150,255,.3)}
   .pf-thumb{position:absolute;inset:0;transition:transform .6s, filter .5s}
@@ -437,6 +436,9 @@
   .modal-body .meta{display:flex;gap:8px;margin:14px 0}
   .modal-body .meta span{font-size:11px;padding:4px 9px;border:1px solid var(--line);border-radius:999px;color:var(--ink-dim)}
   .modal-body p{color:var(--ink-dim);line-height:1.6}
+  #modalDesc p{color:var(--ink-dim);line-height:1.7;margin:0 0 12px}
+  #modalDesc ul{color:var(--ink-dim);line-height:1.7;margin:0 0 14px;padding-left:20px}
+  #modalDesc li{margin-bottom:4px}
   .modal-body .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}
   .modal-body .kpis div{padding:16px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.02)}
   .modal-body .kpis b{display:block;font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#cfe0ff;font-size:26px}
@@ -760,7 +762,7 @@
     <div class="modal-body">
       <div class="meta" id="modalMeta"></div>
       <h3 id="modalTitle"></h3>
-      <p id="modalDesc"></p>
+      <div id="modalDesc"></div>
       <div class="kpis" id="modalKpis"></div>
     </div>
   </div>
@@ -931,13 +933,121 @@ document.getElementById('processInner').innerHTML = steps.map((s,i)=>
 ).join('');
 
 /* ============== PORTFOLIO ============== */
+function textToHtml(t){
+  const lines = t.split('\n');
+  let html='', inList=false;
+  for(const line of lines){
+    const tr = line.trim();
+    if(!tr){ if(inList){html+='</ul>';inList=false;} continue; }
+    if(/^[–-]/.test(tr)){
+      if(!inList){html+='<ul>';inList=true;}
+      html+=`<li>${tr.replace(/^[–-]\s*/,'')}</li>`;
+    } else {
+      if(inList){html+='</ul>';inList=false;}
+      html+=`<p>${tr}</p>`;
+    }
+  }
+  if(inList) html+='</ul>';
+  return html;
+}
+
 const projects = [
-  {t:'Clinica Estetica · Nova',m:['Sito','Gestionale','Automazioni'],d:'Sito + prenotazioni online + automazioni WhatsApp per conferma e promemoria. Il front desk risparmia 12h/settimana.',hue:210, k:[['+38%','Prenotazioni'],['-60%','No-show'],['12h','Risparmio/sett']]},
-  {t:'Atelier Lumen · Shopify',m:['Ecommerce','Email'],d:'Store Shopify custom con funnel upsell e flussi Brevo post-purchase. Conversion rate raddoppiato in 2 mesi.',hue:250, k:[['2.1x','Conversion'],['+44%','AOV'],['4 wk','Timeline']]},
-  {t:'Studio Dr. Ferrari',m:['Gestionale'],d:'Gestionale pazienti cloud, agenda condivisa multi-sede, fatturazione integrata con SDI.',hue:190, k:[['3 sedi','Gestite'],['1 click','Fattura'],['0','Carta']]},
-  {t:'LocalBite · App ordini',m:['Web app','Integrazione'],d:'Piattaforma ordini per ristoranti locali con notifiche in cucina e sync con cassa. Zero commissioni.',hue:280, k:[['0%','Commissioni'],['<2min','Ordine→cucina']]},
-  {t:'Monte Consulting',m:['Sito','Lead gen'],d:'Landing page con calcolatore interattivo e automazione CRM. Lead qualificati 3x in un trimestre.',hue:220},
-  {t:'Bottega Ferraro',m:['Ecommerce','Automazioni'],d:'Ecommerce artigianale con gestione personalizzazioni, pagamenti split e follow-up automatici.',hue:260},
+  {t:'Animatrail',m:['Ecommerce','Shopify'],hue:145,
+   d:'E-commerce progettato per valorizzare il prodotto e semplificare l\'acquisto, con un backend pensato per essere gestito in autonomia.',
+   detail:`Animatrail è un brand che vende scarpe, abbigliamento e accessori per il trail running e l'outdoor, con un'attenzione particolare alla qualità dei prodotti e alla sostenibilità.
+
+Per Animatrail ho sviluppato un e-commerce con un focus preciso: esperienza utente premium lato frontend e gestione semplice lato backend. Il sistema è costruito su attributi personalizzati che permettono di comporre dinamicamente contenuti, collezioni e schede prodotto: varianti, label e caratteristiche dei prodotti si aggiornano in modo coerente senza interventi manuali complessi.
+
+La pagina prodotto è ottimizzata per conversione e chiarezza:
+– guide alle taglie integrate a seconda del tipo di prodotto
+– label come "eco-friendly" per aumentare fiducia e trasparenza
+– prezzo dinamico (es. PayPal a 3 rate) e informazioni aggiornate in tempo reale (omnibus compliant)
+– informazioni visive e caratteristiche pensate per una scelta immediata
+
+L'esperienza nel sito è pensata per essere fluida:
+– filtri visivi con logo brand per riconoscere subito i prodotti
+– pulsanti sticky nei punti chiave (aggiungi al carrello, pagamento)
+– call to action adattive (nelle scarpe acquisto diretto, negli altri prodotti quantità selezionabile)
+– calcolo dinamico della soglia per la spedizione gratuita direttamente nel carrello
+– condivisione semplice ed efficace dei prodotti
+– codice sconto newsletter visibile subito dopo l'iscrizione, in modo da portare a termine l'esperienza di acquisto senza distrazioni e prendendo allo stesso tempo il contatto
+
+Il backend è configurato per essere intuitivo e scalabile, permettendo di aggiungere contenuti e prodotti mantenendo la struttura pulita del frontend. A supporto, un blog leggibile e ben navigabile e snippet SEO ottimizzati nelle pagine e nelle caratteristiche dei prodotti per migliorare la visibilità.`},
+
+  {t:'Panozzo Editore',m:['Ecommerce','CMS','Multilingua'],hue:38,
+   d:'E-commerce per una casa editrice con catalogo fisico ed ebook, spedizioni internazionali e cambio valuta automatico.',
+   detail:`Panozzo Editore è una casa editrice che pubblica libri legati al territorio, alla cultura e alla storia locale, con un catalogo che spazia tra narrativa, saggistica e pubblicazioni tematiche. Tra i bestseller è presente anche un manuale per imparare l'italiano distribuito a clienti in tutto il mondo.
+
+Per Panozzo Editore ho sviluppato un e-commerce con un focus su chiarezza dei contenuti, facilità di acquisto e valorizzazione del catalogo editoriale, supportando sia clienti locali che internazionali. Il sistema è strutturato per gestire prodotti fisici ed ebook, con una configurazione completa di spedizioni dinamiche in base a stato e peso dell'ordine, ritiro in sede e cambio valuta automatico.
+
+La pagina prodotto è progettata per facilitare la scelta e aumentare il coinvolgimento:
+– caratteristiche del libro subito visibili
+– trama strutturata e leggibile
+– possibilità di leggere un'anteprima delle prime pagine del libro per invogliare i potenziali clienti
+– accesso a risorse dedicate tramite registrazione, utile per la raccolta lead
+– gestione coerente di formati multipli (cartaceo / ebook)
+
+L'esperienza di navigazione è pensata per un pubblico editoriale:
+– blog pulito e organizzato, con libri associati agli articoli
+– categorie basate sugli autori principali, con presentazione dedicata
+– filtri per genere e periodo di pubblicazione per facilitare la ricerca dell'utente
+
+L'interfaccia è ottimizzata per conversione e usabilità:
+– pulsante "aggiungi al carrello" sticky durante lo scroll
+– struttura chiara e leggibile anche con cataloghi ampi
+– percorso di acquisto semplice e lineare
+
+Il backend è configurato per essere facile da gestire, permettendo di aggiornare catalogo, contenuti e risorse mantenendo una struttura ordinata e scalabile.`},
+
+  {t:'Aletheia Marketing',m:['Sito web','Portfolio'],hue:275,
+   d:'Sito per un\'agenzia di comunicazione digitale, costruito per valorizzare il posizionamento e raccontare i risultati ottenuti con i clienti.',
+   detail:`Aletheia Marketing è un'agenzia che si occupa di strategia, contenuti e comunicazione digitale, con un approccio orientato al valore e alla qualità dei progetti.
+
+Per Aletheia ho sviluppato un sito con un obiettivo preciso: rappresentare in modo chiaro il posizionamento dell'agenzia e valorizzare i risultati ottenuti con i clienti. Il progetto è costruito attorno a una presentazione elegante e coerente, con animazioni fluide e transizioni leggere che accompagnano la navigazione senza distrarre, mantenendo sempre il focus sui contenuti.
+
+Grande importanza è data al portfolio clienti, strutturato per mostrare non solo i progetti realizzati ma anche il metodo di lavoro e lo stile dell'agenzia. Ogni caso è raccontato con contenuti visivi (foto e video) e una descrizione del valore generato.
+
+L'esperienza è pensata per essere chiara e progressiva:
+– gerarchia dei contenuti che guida la lettura
+– sezioni costruite per spiegare servizi e approccio senza sovraccaricare
+– equilibrio tra testo e contenuti visivi
+
+Il sito valorizza anche la produzione di contenuti:
+– integrazione di foto e video come parte centrale della comunicazione
+– layout progettati per dare spazio ai materiali creativi
+– continuità visiva tra progetti e identità del brand
+
+A livello tecnico, la struttura è pensata per essere facilmente aggiornabile con un backend dedicato, così da permettere all'agenzia di aggiungere nuovi progetti e contenuti mantenendo coerenza nel tempo.`},
+
+  {t:'ViDi Creative Studios',m:['Sito web','Multilingua'],hue:195,
+   d:'Sito per uno studio di comunicazione con framework di servizi strutturato in quattro aree operative, disponibile in tre lingue.',
+   detail:`ViDi Creative Studios è uno studio di comunicazione che aiuta i brand a crescere, performare e mantenere una propria identità coerente nel tempo.
+
+Per ViDi ho sviluppato un sito pensato per comunicare in modo chiaro il posizionamento dello studio e strutturare i suoi servizi come un sistema coerente e preciso. La comunicazione è costruita attorno a quattro aree principali, presentate come un framework operativo:
+– Strategy
+– Content Creation
+– Campaigns
+– Web Automation
+
+Ognuna descritta in modo chiaro e orientato al valore. L'interfaccia è progettata per essere chiara, leggibile e altamente strutturata, con una forte enfasi sulla gerarchia dei contenuti e sulla comunicazione del metodo.
+
+Il progetto è inoltre sviluppato in versione multilingua (italiano, inglese e spagnolo) per coprire il bacino internazionale di clienti e garantire una comunicazione efficace verso i diversi mercati.`},
+
+  {t:'Linea Video',m:['Gestionale','Web App'],hue:22,
+   d:'Sistema gestionale interno per la gestione completa delle lavorazioni di digitalizzazione video in un laboratorio fotografico specializzato.',
+   detail:`Gestionale Linea Video è un sistema interno sviluppato per la gestione completa delle lavorazioni di digitalizzazione video e archiviazione per un laboratorio fotografico specializzato.
+
+Il gestionale nasce per digitalizzare un flusso di lavoro tradizionalmente analogico e complesso, trasformando operazioni manuali e frammentate in un sistema unico, strutturato e tracciabile. Tutto il processo operativo è centralizzato: dalla registrazione delle lavorazioni alla gestione dei codici servizio, fino alla fatturazione finale.
+
+Il sistema è costruito attorno a codici di lavorazione personalizzati, che standardizzano servizi come riversamenti, conversioni e duplicazioni, mantenendo coerenza tra operazioni, prezzi e output.
+
+Funzionalità principali:
+– registro lavorazioni con tracciamento per barcode, data e dettaglio attività
+– bolla settimanale automatica per aggregazione lavorazioni per periodo
+– fatturazione mensile con riepilogo completo di imponibile, IVA e totale
+– generazione automatica di documenti PDF pronti per la stampa (bolle, fatture, riepiloghi)
+– funzionalità di backup e ripristino per continuità operativa
+– interfaccia operativa con ricerca per codice o barcode e accesso diretto alle informazioni quotidiane`},
 ];
 document.getElementById('pfGrid').innerHTML = projects.map((p,i)=>`
   <div class="pf-card reveal" data-i="${i}">
@@ -964,9 +1074,8 @@ function openModal(i){
     linear-gradient(135deg, oklch(0.22 0.1 ${p.hue}), oklch(0.14 0.05 ${p.hue}))`;
   document.getElementById('modalMeta').innerHTML = p.m.map(x=>`<span>${x}</span>`).join('');
   document.getElementById('modalTitle').textContent = p.t;
-  document.getElementById('modalDesc').textContent = p.d;
-  const kpis = p.k || [['Custom','Design'],['24/7','Support'],['Scala','Ready']];
-  document.getElementById('modalKpis').innerHTML = kpis.map(k=>`<div><b>${k[0]}</b><small>${k[1]}</small></div>`).join('');
+  document.getElementById('modalDesc').innerHTML = textToHtml(p.detail);
+  document.getElementById('modalKpis').innerHTML = '';
   modal.classList.add('open');
   modal.setAttribute('aria-hidden','false');
 }
@@ -1159,21 +1268,15 @@ document.addEventListener('mousemove', e=>{ tx=e.clientX; ty=e.clientY });
   const impactPin = document.querySelector('.impact-pin');
   const q = document.getElementById('impactQuote');
   if(!q || !impactPin) return;
-  const words = q.textContent.trim().split(/\s+/);
-  q.innerHTML = words.map(w=>`<span class="word">${w}</span>`).join(' ');
-  const spans = q.querySelectorAll('.word');
   function update(){
     const rect = impactPin.getBoundingClientRect();
     const total = impactPin.offsetHeight - window.innerHeight;
     const scrolled = Math.min(Math.max(-rect.top, 0), total);
     const pct = total > 0 ? scrolled / total : 0;
-    // Scale: 0.5 → 1 over full scroll range
-    const scale = 0.5 + pct * 0.5;
-    q.style.transform = `scale(${scale})`;
-    // Light words: start at 15%, finish at 88%
-    const litPct = Math.min(Math.max((pct - 0.15) / 0.73, 0), 1);
-    const n = Math.round(litPct * spans.length);
-    spans.forEach((s,i) => s.classList.toggle('lit', i < n));
+    q.style.transform = `scale(${0.5 + pct * 0.5})`;
+    const fill = Math.min(Math.max((pct - 0.15) / 0.73, 0), 1) * 100;
+    q.style.setProperty('--fs', Math.max(0, fill - 12) + '%');
+    q.style.setProperty('--fe', Math.min(100, fill + 12) + '%');
   }
   window.addEventListener('scroll', update, {passive:true});
   window.addEventListener('resize', update);
