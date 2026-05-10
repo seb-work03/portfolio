@@ -1404,14 +1404,100 @@ const io = new IntersectionObserver((entries)=>{
 }, {threshold:0.05, rootMargin:'0px 0px 80px'});
 document.querySelectorAll('.reveal, .reveal-words').forEach(el=>io.observe(el));
 
-/* ============== FORM SUBMIT + LOTTIE SUCCESS ============== */
-function submitContactForm(e){
+/* ============== FORM SUBMIT + BREVO + LOTTIE SUCCESS ============== */
+async function submitContactForm(e){
   e.preventDefault();
+  const form = document.getElementById('contactForm');
+  const btn = form.querySelector('button[type="submit"]');
+  const nome = form.querySelector('input[type="text"]').value.trim();
+  const email = form.querySelector('input[type="email"]').value.trim();
+  const progetto = form.querySelector('select').value;
+  const messaggio = form.querySelector('textarea').value.trim();
+
+  btn.disabled = true;
+  const origLabel = btn.textContent;
+  btn.textContent = 'Invio in corso…';
+
+  const BREVO_KEY = '__BREVO_API_KEY__';
+  const HEADERS = {'Content-Type':'application/json','api-key':BREVO_KEY};
+  const brevo = (path, body) => fetch('https://api.brevo.com/v3'+path,{method:'POST',headers:HEADERS,body:JSON.stringify(body)});
+
+  const msgEsc = messaggio.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+  const nomeSafe = nome.replace(/</g,'&lt;');
+
+  const thankYouHtml = `<!DOCTYPE html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Messaggio ricevuto</title></head>
+<body style="margin:0;padding:0;background:#07080c;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#07080c;padding:40px 16px">
+<tr><td align="center">
+<table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;border-radius:20px;border:1px solid rgba(79,139,255,.18);background:linear-gradient(160deg,#0d1122 0%,#080a12 100%)">
+<tr><td style="padding:44px 40px 40px">
+  <p style="margin:0 0 24px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#4f8bff;font-weight:600">Sebastian Marzola</p>
+  <h1 style="margin:0 0 18px;font-size:24px;font-weight:400;color:#f0f2f8;line-height:1.25">Ciao ${nomeSafe},<br>ho ricevuto il tuo messaggio.</h1>
+  <p style="margin:0 0 28px;font-size:15px;color:#7a8299;line-height:1.65">Ti risponderò personalmente entro 24 ore.<br>Se vuoi aggiungere qualcosa, rispondi a questa email.</p>
+  <table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid rgba(255,255,255,.07);padding-top:24px;margin-top:4px">
+  <tr><td>
+    <p style="margin:0 0 14px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#3a4460">Riepilogo del tuo messaggio</p>
+    <p style="margin:0 0 8px;font-size:14px;color:#7a8299"><span style="color:#bfc6d6;font-weight:500">Progetto:</span> ${progetto}</p>
+    <p style="margin:0;font-size:14px;color:#7a8299;line-height:1.65"><span style="color:#bfc6d6;font-weight:500">Note:</span> ${msgEsc}</p>
+  </td></tr></table>
+  <table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid rgba(255,255,255,.07);margin-top:28px;padding-top:24px">
+  <tr><td>
+    <p style="margin:0;font-size:13px;color:#3a4460">Sebastian Marzola &nbsp;&middot;&nbsp; <a href="https://sebastian-marzola.it" style="color:#4f8bff;text-decoration:none">sebastian-marzola.it</a></p>
+  </td></tr></table>
+</td></tr>
+</table>
+</td></tr></table>
+</body></html>`;
+
+  const notifyHtml = `<!DOCTYPE html><html lang="it"><head><meta charset="utf-8"></head>
+<body style="margin:0;padding:24px;background:#f4f5f7;font-family:Arial,sans-serif">
+<div style="max-width:540px;margin:0 auto;background:#fff;border-radius:10px;padding:32px;border:1px solid #e0e3ea">
+  <h2 style="margin:0 0 20px;font-size:18px;color:#111;font-weight:600">&#128232; Nuovo contatto dal sito</h2>
+  <table cellpadding="0" cellspacing="0" style="width:100%;font-size:15px;color:#222">
+    <tr><td style="padding:8px 0;color:#666;width:90px">Nome</td><td style="padding:8px 0;font-weight:500">${nomeSafe}</td></tr>
+    <tr><td style="padding:8px 0;color:#666">Email</td><td style="padding:8px 0"><a href="mailto:${email}" style="color:#2563eb">${email}</a></td></tr>
+    <tr><td style="padding:8px 0;color:#666">Progetto</td><td style="padding:8px 0">${progetto}</td></tr>
+  </table>
+  <div style="margin-top:18px;padding:16px;background:#f8f9fb;border-radius:8px;border-left:3px solid #4f8bff">
+    <p style="margin:0;font-size:14px;color:#444;line-height:1.65">${msgEsc}</p>
+  </div>
+  <p style="margin:20px 0 0;font-size:12px;color:#999">Inviato da sebastian-marzola.it</p>
+</div>
+</body></html>`;
+
+  try {
+    await Promise.all([
+      brevo('/contacts', {
+        email,
+        attributes:{ FIRSTNAME: nome },
+        listIds:[3],
+        updateEnabled:true
+      }),
+      brevo('/smtp/email', {
+        sender:{ name:'Sebastian Marzola', email:'info@sebastian-marzola.it' },
+        to:[{ email:'sebastianmarzola.work@gmail.com', name:'Sebastian Marzola' }],
+        replyTo:{ email, name:nome },
+        subject:`Nuovo contatto dal sito — ${nome}`,
+        htmlContent: notifyHtml
+      }),
+      brevo('/smtp/email', {
+        sender:{ name:'Sebastian Marzola', email:'info@sebastian-marzola.it' },
+        to:[{ email, name:nome }],
+        subject:'Ho ricevuto il tuo messaggio — Sebastian Marzola',
+        htmlContent: thankYouHtml
+      })
+    ]);
+  } catch(err){
+    console.error('Brevo error:', err);
+  }
+
+  btn.disabled = false;
+  btn.textContent = origLabel;
   const overlay = document.getElementById('formSuccess');
   const player = overlay.querySelector('lottie-player');
   overlay.classList.add('show');
-  if(player){ try{ player.stop(); setTimeout(()=>player.play(), 50); }catch(_){} }
-  document.getElementById('contactForm').reset();
+  if(player){ try{ player.stop(); setTimeout(()=>player.play(),50); }catch(_){} }
+  form.reset();
   setTimeout(()=>overlay.classList.remove('show'), 4500);
   overlay.addEventListener('click', function handler(ev){
     if(ev.target===overlay){ overlay.classList.remove('show'); overlay.removeEventListener('click',handler); }
