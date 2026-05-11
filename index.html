@@ -407,9 +407,8 @@
   .pf-logo svg,.pf-logo img{width:100%;height:100%;display:block;object-fit:cover}
   .pf-card:hover{transform:translateY(-4px);border-color:rgba(120,150,255,.3)}
   .pf-thumb{position:absolute;inset:0;transition:transform .6s, filter .5s}
-  .pf-mockup{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;opacity:.55;transition:opacity .4s}
-  .pf-card:hover .pf-mockup{opacity:.25}
-  .pf-card:hover .pf-thumb{transform:scale(1.04);filter:blur(2px) brightness(.7)}
+  .pf-mockup{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;}
+  .pf-card:hover .pf-thumb{transform:scale(1.04)}
   .pf-overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:24px;background:linear-gradient(180deg,transparent 40%, rgba(6,7,11,.85));transition:background .3s}
   .pf-meta{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
   .pf-meta span{font-size:11px;padding:4px 9px;border:1px solid rgba(255,255,255,.12);border-radius:999px;color:var(--ink-dim);backdrop-filter:blur(6px);background:rgba(16,19,28,.35)}
@@ -1319,11 +1318,11 @@ document.getElementById('pfGrid').innerHTML = projects.map((p,i)=>`
     </div>
     <div class="pf-logo" id="pf-logo-${i}">${p.logo||''}</div>
     <div class="view"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></div>
-    <div class="pf-overlay">
+    ${p.mockup?'':`<div class="pf-overlay">
       <div class="pf-meta">${p.m.map(x=>`<span>${x}</span>`).join('')}</div>
       <h3>${p.t}</h3>
       <p>${p.d}</p>
-    </div>
+    </div>`}
   </div>
 `).join('');
 
