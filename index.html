@@ -621,7 +621,7 @@
 </style>
 <script defer src="https://unpkg.com/@lottiefiles/lottie-player@2.0.8/dist/lottie-player.js"></script>
 <!-- CookieScript consent solution -->
-<script type="text/javascript" charset="UTF-8" src="//cdn.cookie-script.com/s/a2fb7476056e7028c2ea69e0de959a83.js"></script>
+<script type="text/javascript" charset="UTF-8" src="//cdn.cookie-script.com/s/a2fb7476056e7028c2ea69e0de959a83.js" defer></script>
 <!-- Structured Data -->
 <script type="application/ld+json">
 {
@@ -867,20 +867,6 @@
 </section>
 
 <!-- WHY -->
-<section class="why" id="perche">
-  <div class="wrap">
-    <div class="section-head">
-      
-      <h2 class="title reveal-words" data-words>Meno Lavoro, <span class="em">Più Risultati</span></h2>
-      <p class="section-sub reveal" style="max-width: 750px; width: 750px">Ogni progetto parte dai numeri e dalle persone, non da un template.<br />L’obiettivo è migliorare le performance, farti lavorare meno e costruire sistemi che crescono con te.</p>
-    </div>
-    <div class="why-grid">
-      <!-- 6 cards -->
-      <!-- Injected below -->
-    </div>
-  </div>
-</section>
-
 <!-- SERVICES -->
 <section class="svc" id="servizi">
   <div class="wrap">
@@ -890,6 +876,20 @@
       <p class="section-sub reveal" style="max-width: 750px">Sito che attira, ecommerce che vende, gestionale che organizza, automazioni che lavorano anche mentre dormi. Collegati tra loro, da chi li ha costruiti.</p>
     </div>
     <div class="svc-grid" id="svcGrid"></div>
+  </div>
+</section>
+
+<section class="why" id="perche">
+  <div class="wrap">
+    <div class="section-head">
+
+      <h2 class="title reveal-words" data-words>Meno Lavoro, <span class="em">Più Risultati</span></h2>
+      <p class="section-sub reveal" style="max-width: 750px; width: 750px">Ogni progetto parte dai numeri e dalle persone, non da un template.<br />L’obiettivo è migliorare le performance, farti lavorare meno e costruire sistemi che crescono con te.</p>
+    </div>
+    <div class="why-grid">
+      <!-- 6 cards -->
+      <!-- Injected below -->
+    </div>
   </div>
 </section>
 
@@ -1114,7 +1114,7 @@ void main(void){
   const start = performance.now();
   let lastDraw = 0, rafId = null, visible = true;
   function render(now){
-    if(visible && now - lastDraw >= 50){ // ~20fps cap
+    if(visible && now - lastDraw >= 67){ // ~15fps cap
       gl.useProgram(program);
       gl.uniform2f(uRes, canvas.width, canvas.height);
       gl.uniform1f(uTime, (performance.now() - start) * 0.001);
@@ -1699,11 +1699,13 @@ document.querySelectorAll('.why-card').forEach(c=>{
   });
 });
 
-/* ============== GLOBAL CURSOR GLOW ============== */
-const cg = document.getElementById('cursorGlow');
-let cgx=0,cgy=0,tx=0,ty=0;
-document.addEventListener('mousemove', e=>{ tx=e.clientX; ty=e.clientY });
-(function loop(){ cgx+=(tx-cgx)*.08; cgy+=(ty-cgy)*.08; cg.style.left=cgx+'px'; cg.style.top=cgy+'px'; requestAnimationFrame(loop); })();
+/* ============== GLOBAL CURSOR GLOW (desktop only) ============== */
+if(window.matchMedia('(pointer:fine)').matches){
+  const cg = document.getElementById('cursorGlow');
+  let cgx=0,cgy=0,tx=0,ty=0;
+  document.addEventListener('mousemove', e=>{ tx=e.clientX; ty=e.clientY });
+  (function loop(){ cgx+=(tx-cgx)*.08; cgy+=(ty-cgy)*.08; cg.style.left=cgx+'px'; cg.style.top=cgy+'px'; requestAnimationFrame(loop); })();
+}
 
 /* ============== STABLE VIEWPORT HEIGHT ============== */
 // Captured once at load (URL bar visible = svh equivalent).
