@@ -519,7 +519,7 @@
   .modal-body .kpis div{padding:16px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.02)}
   .modal-body .kpis b{display:block;font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#cfe0ff;font-size:26px}
   .modal-body .kpis small{color:var(--ink-mute);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
-  .modal-close{position:absolute;top:16px;right:16px;width:40px;height:40px;border-radius:50%;background:rgba(16,19,28,.7);border:1px solid var(--line-2);color:var(--ink);cursor:pointer;display:grid;place-items:center;z-index:2}
+  .modal-close{position:sticky;top:16px;float:right;margin:16px 16px -56px 0;width:40px;height:40px;border-radius:50%;background:rgba(16,19,28,.7);border:1px solid var(--line-2);color:var(--ink);cursor:pointer;display:grid;place-items:center;z-index:10;backdrop-filter:blur(8px);flex-shrink:0}
 
   /* ===== TABLET (max 1024px) ===== */
   @media (max-width:1024px){
