@@ -469,6 +469,10 @@
 
   form{display:flex;flex-direction:column;gap:14px}
   .field{display:flex;flex-direction:column;gap:6px}
+  .field-check{margin-top:4px}
+  .check-label{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--ink-dim);cursor:pointer;line-height:1.4}
+  .check-label input[type="checkbox"]{margin-top:2px;flex:none;accent-color:var(--primary);width:15px;height:15px;cursor:pointer}
+  .check-label a{color:var(--ink-dim);text-decoration:underline;text-underline-offset:2px}
   .field label{font-size:12px;color:var(--ink-mute);letter-spacing:.08em;text-transform:uppercase}
   .field input,.field textarea,.field select{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;padding:14px 16px;color:var(--ink);font-family:inherit;font-size:14.5px;transition:border-color .2s, background .2s;resize:none}
   .field textarea{min-height:110px}
@@ -970,6 +974,9 @@
             </select>
           </div>
           <div class="field"><label>Dimmi di più</label><textarea required placeholder="Cosa vorresti ottenere? Tempi, budget, link di riferimento…"></textarea></div>
+          <div class="field field-check">
+            <label class="check-label"><input type="checkbox" required /> Ho letto e accetto la <a href="https://www.iubenda.com/privacy-policy/78332323" target="_blank" rel="noopener">Privacy Policy</a></label>
+          </div>
           <button type="submit">Invia messaggio →</button>
         </form>
       </div>
