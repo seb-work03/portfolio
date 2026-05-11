@@ -1330,10 +1330,12 @@ document.getElementById('pfGrid').innerHTML = projects.map((p,i)=>`
 const modal = document.getElementById('pfModal');
 function openModal(i){
   const p = projects[i];
-  document.getElementById('modalHero').style.background = `
+  const hero = document.getElementById('modalHero');
+  hero.style.background = `
     radial-gradient(70% 50% at 30% 30%, oklch(0.5 0.18 ${p.hue}), transparent 70%),
     radial-gradient(60% 60% at 80% 70%, oklch(0.4 0.2 ${p.hue+30}), transparent 70%),
     linear-gradient(135deg, oklch(0.22 0.1 ${p.hue}), oklch(0.14 0.05 ${p.hue}))`;
+  hero.innerHTML = p.mockup ? `<img src="${p.mockup}" alt="Mockup del progetto ${p.t} sviluppato da Sebastian Marzola" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">` : '';
   document.getElementById('modalMeta').innerHTML = p.m.map(x=>`<span>${x}</span>`).join('');
   document.getElementById('modalTitle').textContent = p.t;
   document.getElementById('modalDesc').innerHTML = textToHtml(p.detail);
