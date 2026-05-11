@@ -1013,6 +1013,7 @@
       <h3 id="modalTitle"></h3>
       <div id="modalDesc"></div>
       <div class="kpis" id="modalKpis"></div>
+      <a id="modalVisit" href="#" target="_blank" rel="noopener" class="btn btn-primary" style="margin-top:24px;display:none">Visita il sito <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
     </div>
   </div>
 </div>
@@ -1214,6 +1215,7 @@ function textToHtml(t){
 
 const projects = [
   {t:'Animatrail',m:['Ecommerce','Shopify'],hue:145,
+   url:'https://animatrail.it/',
    mockup:'project/assets/Anima Trail website mockup.webp',
    logo:`<img src="project/assets/Animatrail.webp" alt="Animatrail">`,
    d:'E-commerce progettato per valorizzare il prodotto e semplificare l\'acquisto, con un backend pensato per essere gestito in autonomia.',
@@ -1237,6 +1239,7 @@ Per Animatrail ho sviluppato un e-commerce con un focus preciso: <strong>esperie
 Il backend è configurato per essere <strong>intuitivo e scalabile</strong>, permettendo di aggiungere contenuti e prodotti mantenendo la struttura pulita del frontend. A supporto, un blog leggibile e <u>snippet SEO ottimizzati</u> nelle pagine e nelle caratteristiche dei prodotti.`},
 
   {t:'Panozzo Editore',m:['Ecommerce','Shopify'],hue:38,
+   url:'https://www.panozzoeditore.com/',
    mockup:'project/assets/Panozzo Editore website mockup.webp',
    logo:`<img src="project/assets/Panozzo_editore.webp" alt="Panozzo Editore">`,
    d:'E-commerce per una casa editrice con catalogo fisico ed ebook, spedizioni internazionali e cambio valuta automatico.',
@@ -1259,6 +1262,7 @@ Per Panozzo ho sviluppato un e-commerce con un focus su <strong>chiarezza dei co
 L'interfaccia è ottimizzata per conversione: pulsante aggiungi al carrello sticky, struttura chiara anche con cataloghi ampi, percorso d'acquisto <strong>semplice e lineare</strong>. Il backend è facilmente gestibile e scalabile.`},
 
   {t:'Aletheia Marketing',m:['Sito web','Portfolio'],hue:275,
+   url:'https://aletheia-marketing.it/',
    mockup:'project/assets/Aletheia marketing website mockup.webp',
    logo:`<img src="project/assets/Aletheia_Marketing.webp" alt="Aletheia Marketing">`,
    d:'Sito per un\'agenzia di comunicazione digitale, costruito per valorizzare il posizionamento e raccontare i risultati ottenuti con i clienti.',
@@ -1281,6 +1285,7 @@ Grande importanza è data al <strong>portfolio clienti</strong>, strutturato per
 La struttura è facilmente aggiornabile con un backend dedicato, permettendo di aggiungere nuovi progetti e contenuti mantenendo <strong>coerenza nel tempo</strong>.`},
 
   {t:'ViDi Creative Studios',m:['Sito web','Multilingua'],hue:195,
+   url:'https://vidicreativestudios.com/',
    mockup:'project/assets/Vidi Creative Studios website mockup.webp',
    logo:`<img src="project/assets/Vidi_Creative_Studios.webp" alt="ViDi Creative Studios">`,
    d:'Sito per uno studio di comunicazione con framework di servizi strutturato in quattro aree operative, disponibile in tre lingue.',
@@ -1345,6 +1350,9 @@ function openModal(i){
   document.getElementById('modalTitle').textContent = p.t;
   document.getElementById('modalDesc').innerHTML = textToHtml(p.detail);
   document.getElementById('modalKpis').innerHTML = '';
+  const visitBtn = document.getElementById('modalVisit');
+  if(p.url){ visitBtn.href = p.url; visitBtn.style.display = 'inline-flex'; }
+  else { visitBtn.style.display = 'none'; }
   modal.classList.add('open');
   modal.setAttribute('aria-hidden','false');
 }
