@@ -575,7 +575,7 @@
     .step{min-width:80vw}
     .step .kpi b{font-size:20px}
     .step .kpi div{font-size:10px}
-    /* Progress bar più alta per non coprire iubenda */
+    /* Progress bar */
     .process-progress{bottom:72px}
     .process-progress .label{font-size:10px;letter-spacing:.02em}
     /* Contact */
@@ -616,8 +616,8 @@
   }
 </style>
 <script defer src="https://unpkg.com/@lottiefiles/lottie-player@2.0.8/dist/lottie-player.js"></script>
-<!-- Iubenda consent solution -->
-<script defer src="https://embeds.iubenda.com/widgets/86c89c54-6493-4edd-8202-8ae507dcc4a2.js"></script>
+<!-- CookieScript consent solution -->
+<script type="text/javascript" charset="UTF-8" src="//cdn.cookie-script.com/s/a2fb7476056e7028c2ea69e0de959a83.js"></script>
 <!-- Structured Data -->
 <script type="application/ld+json">
 {
@@ -988,12 +988,11 @@
   <div class="wrap" style="display:flex;justify-content:space-between;width:100%;flex-wrap:wrap;gap:12px">
     <div>© 2026 <span class="h-card"><a class="p-name u-url" href="https://sebastian-marzola.it" style="color:inherit">Sebastian Marzola</a><span class="p-job-title" style="display:none">Sviluppatore Web Freelance</span><span class="p-country-name" style="display:none">Italia</span></span></div>
     <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">
-      <a href="https://www.iubenda.com/privacy-policy/78332323" class="iubenda-white iubenda-noiframe iubenda-embed" title="Privacy Policy">Privacy Policy</a>
-      <a href="https://www.iubenda.com/privacy-policy/78332323/cookie-policy" class="iubenda-white iubenda-noiframe iubenda-embed" title="Cookie Policy">Cookie Policy</a>
+      <a href="https://www.iubenda.com/privacy-policy/78332323" target="_blank" rel="noopener">Privacy Policy</a>
+      <a href="#" onclick="CookieScript.instance.show();return false;">Gestione Cookie</a>
     </div>
   </div>
 </footer>
-<script type="text/javascript">(function(w,d){var loader=function(){var s=d.createElement("script"),tag=d.getElementsByTagName("script")[0];s.src="https://cdn.iubenda.com/iubenda.js";tag.parentNode.insertBefore(s,tag);};if(w.addEventListener){w.addEventListener("load",loader,false);}else if(w.attachEvent){w.attachEvent("onload",loader);}else{w.onload=loader;}})(window,document);</script>
 
 <!-- Form success overlay -->
 <div class="form-success" id="formSuccess" role="dialog" aria-modal="true">
