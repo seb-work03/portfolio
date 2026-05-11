@@ -493,7 +493,8 @@
   .modal.open{display:flex;opacity:1}
   .modal-card{max-width:960px;width:100%;max-height:86vh;overflow:auto;border-radius:24px;border:1px solid var(--line-2);background:linear-gradient(180deg, rgba(18,24,38,.95), rgba(8,10,16,.95));transform:translateY(20px) scale(.98);transition:transform .4s}
   .modal.open .modal-card{transform:translateY(0) scale(1)}
-  .modal-hero{aspect-ratio:16/9;width:100%;position:relative;overflow:hidden}
+  .modal-hero{width:100%;position:relative;overflow:hidden}
+  .modal-hero img{width:100%;height:auto;display:block}
   .modal-body{padding:32px 36px}
   .modal-body h3{margin:0;font-size:30px;letter-spacing:-.015em;font-weight:500}
   .modal-body .meta{display:flex;gap:8px;margin:14px 0}
@@ -1318,11 +1319,11 @@ document.getElementById('pfGrid').innerHTML = projects.map((p,i)=>`
     </div>
     <div class="pf-logo" id="pf-logo-${i}">${p.logo||''}</div>
     <div class="view"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></div>
-    ${p.mockup?'':`<div class="pf-overlay">
+    <div class="pf-overlay">
       <div class="pf-meta">${p.m.map(x=>`<span>${x}</span>`).join('')}</div>
       <h3>${p.t}</h3>
       <p>${p.d}</p>
-    </div>`}
+    </div>
   </div>
 `).join('');
 
@@ -1335,7 +1336,7 @@ function openModal(i){
     radial-gradient(70% 50% at 30% 30%, oklch(0.5 0.18 ${p.hue}), transparent 70%),
     radial-gradient(60% 60% at 80% 70%, oklch(0.4 0.2 ${p.hue+30}), transparent 70%),
     linear-gradient(135deg, oklch(0.22 0.1 ${p.hue}), oklch(0.14 0.05 ${p.hue}))`;
-  hero.innerHTML = p.mockup ? `<img src="${p.mockup}" alt="Mockup del progetto ${p.t} sviluppato da Sebastian Marzola" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">` : '';
+  hero.innerHTML = p.mockup ? `<img src="${p.mockup}" alt="Mockup del progetto ${p.t} sviluppato da Sebastian Marzola">` : '';
   document.getElementById('modalMeta').innerHTML = p.m.map(x=>`<span>${x}</span>`).join('');
   document.getElementById('modalTitle').textContent = p.t;
   document.getElementById('modalDesc').innerHTML = textToHtml(p.detail);
