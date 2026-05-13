@@ -155,6 +155,7 @@
   /* Per-word delays are set inline by JS; no CSS override */
   .hero .lede strong{color:#fff;font-weight:600}
   .hero .cycle-line{min-width:0;overflow:visible}
+  .mobile-br{display:none}
   @media (max-width:780px){.hero .cycle-line{white-space:normal !important}}
   .hero :is(h1,h2).display .soft{color:rgba(255,255,255,.78)}
   .hero .lede{color:rgba(255,255,255,.88);text-shadow:0 1px 18px rgba(0,0,0,.5)}
@@ -584,6 +585,11 @@
     .uvbtn{min-width:unset;width:100%;justify-content:center;height:52px;font-size:15px}
     .btn{width:100%;justify-content:center}
     .proof-row{gap:12px;flex-wrap:wrap;justify-content:center}
+    .mobile-br{display:block}
+    .hero-grid > div:first-child{text-align:center;align-items:center}
+    .hero-grid > div:first-child h2{margin-left:auto;margin-right:auto}
+    .cta-row{justify-content:center}
+    .proof-row{justify-content:center}
     /* Marquee: centrato, più veloce e compatto */
     .mq-label{text-align:center;justify-content:center}
     .mq-track{gap:20px;animation-duration:22s}
@@ -784,7 +790,7 @@
         Sistemi digitali su misura che <b>eliminano attività ripetitive</b>, centralizzano i processi e rendono le aziende più <strong>efficienti e scalabili</strong>.
       </p>
       <p class="lede reveal cycle-line" style="margin-top: 14px; white-space: nowrap; letter-spacing: 1px">
-        <span class="cycle-wrap"><span class="cycle" id="cycleWord"></span></span>, pensati per la crescita del tuo business.
+        <span class="cycle-wrap"><span class="cycle" id="cycleWord"></span></span>,<br class="mobile-br"> pensati per la crescita del tuo business.
       </p>
       <div class="cta-row reveal">
         <a class="uvbtn" href="#contatti" role="button" aria-label="Prenota una call">
