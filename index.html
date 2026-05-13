@@ -65,6 +65,23 @@
     radial-gradient(900px 700px at 100% 20%, rgba(138,107,255,0.14), transparent 60%),
     linear-gradient(180deg,#06070b 0%, #07080c 50%, #06070b 100%);
   }
+  @media (max-width:768px){
+    .bg-root{background:
+      radial-gradient(80vw 70vw at 15% -5%, rgba(60,120,255,0.65), transparent 60%),
+      radial-gradient(75vw 75vw at 90% 25%, rgba(120,60,255,0.55), transparent 60%),
+      radial-gradient(60vw 55vw at 45% 85%, rgba(50,90,255,0.30), transparent 65%),
+      linear-gradient(180deg,#06070b 0%, #07080c 100%);
+    }
+    .bg-root::before,.bg-root::after{display:block}
+    .bg-root::before{
+      background:radial-gradient(ellipse 90vw 60vw at 25% 15%, rgba(60,120,255,0.45) 0%, transparent 70%);
+      animation:meshFlow 12s ease-in-out infinite alternate;
+    }
+    .bg-root::after{
+      background:radial-gradient(ellipse 80vw 70vw at 75% 65%, rgba(130,70,255,0.40) 0%, transparent 70%);
+      animation:meshFlow2 16s ease-in-out infinite alternate;
+    }
+  }
   #heroWave{
     position:fixed;
     top:0;left:0;
@@ -93,7 +110,7 @@
   .bg-root::after{content:"";position:absolute;inset:-20%;background-repeat:no-repeat}
   .grain{display:none}
   .cursor-glow{display:none}
-  .bg-root::before,.bg-root::after{display:none}
+  @media (min-width:769px){.bg-root::before,.bg-root::after{display:none}}
   @keyframes meshFlow{
     0%{transform:translate3d(0,0,0) scale(1)}
     50%{transform:translate3d(-3%,2%,0) scale(1.05)}
@@ -1119,10 +1136,10 @@ void main(void){
   const start = performance.now();
   let lastDraw = 0, rafId = null, visible = true;
   function render(now){
-    if(visible && now - lastDraw >= 67){ // ~15fps cap
+    if(visible && now - lastDraw >= 50){ // ~20fps
       gl.useProgram(program);
       gl.uniform2f(uRes, canvas.width, canvas.height);
-      gl.uniform1f(uTime, (performance.now() - start) * 0.001);
+      gl.uniform1f(uTime, (performance.now() - start) * 0.0015);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
       lastDraw = now;
     }
