@@ -426,9 +426,9 @@
   .pf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
   .pf-card{position:relative;border-radius:22px;overflow:hidden;border:1px solid var(--line);background:#0b0e18;aspect-ratio:16/11;cursor:pointer;transition:transform .45s cubic-bezier(.2,.8,.2,1), border-color .3s}
   .pf-logo{position:absolute;top:14px;left:14px;width:52px;height:52px;border-radius:50%;background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.45);display:grid;place-items:center;z-index:2;overflow:hidden}
-  .pf-logo svg,.pf-logo img{width:100%;height:100%;display:block;object-fit:cover;padding:0}
+  .pf-logo svg,.pf-logo img{width:100%;height:100%;display:block;object-fit:contain;padding:5px}
   .modal-logo{position:absolute;top:16px;left:16px;width:60px;height:60px;border-radius:50%;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,.5);display:grid;place-items:center;z-index:2;overflow:hidden}
-  .modal-logo svg,.modal-logo img{width:100%;height:100%;display:block;object-fit:cover;padding:0}
+  .modal-logo svg,.modal-logo img{width:100%;height:100%;display:block;object-fit:contain;padding:6px}
   .pf-card:hover{transform:translateY(-4px);border-color:rgba(120,150,255,.3)}
   .pf-thumb{position:absolute;inset:0;transition:transform .6s, filter .5s}
   .pf-mockup{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;}
@@ -1364,7 +1364,7 @@ Il sistema è costruito attorno a <strong>codici di lavorazione personalizzati</
   {t:'SBAM Studio',m:['Sito Web','Branding'],hue:300,
    url:'https://sbam-studio.it/',
    mockup:'project/assets/Mockup sbam studio.webp',
-   logo:`<img src="project/assets/sbam-logo.png" alt="SBAM Studio" style="object-fit:contain;padding:4px">`,
+   logo:`<img src="project/assets/sbam-logo.png" alt="SBAM Studio" style="padding:4px">`,
    d:'Sito per un\'agenzia di comunicazione e branding costruito per rispecchiare un\'identità visiva diretta, riconoscibile e senza compromessi.',
    detail:`SBAM Studio è un'agenzia di comunicazione e branding che trasforma le attività in brand che lasciano il segno. Il loro approccio è diretto, visivo e dichiarato: non vendono servizi, comunicano un punto di vista.
 
@@ -1392,7 +1392,7 @@ Il risultato è un sito che non parla di SBAM, ma <strong>è</strong> SBAM: ogni
 
   {t:'Polisportiva Stella',m:['Gestionale','Web App'],hue:220,
    mockup:'project/assets/Mockup gestionale stella .webp',
-   logo:`<img src="project/assets/Logo-polisportiva-stella.png" alt="Polisportiva Stella" style="object-fit:contain;padding:2px 8px 12px 8px">`,
+   logo:`<img src="project/assets/Logo-polisportiva-stella.png" alt="Polisportiva Stella" style="padding:2px 8px 12px 8px">`,
    d:'Gestionale su misura per una polisportiva storica: iscritti, ordini, fatturato e attività sportive centralizzate in un unico sistema.',
    detail:`Polisportiva Stella è una società sportiva con sede a Rimini, attiva dal 1909, che gestisce discipline come calcio, pallavolo, basket, centro estivo ed eventi. Con centinaia di iscritti e un'operatività basata su fogli Excel e processi manuali, aveva bisogno di uno strumento digitale su misura.
 
