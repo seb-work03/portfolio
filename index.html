@@ -425,8 +425,10 @@
   .portfolio{padding:120px 0}
   .pf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
   .pf-card{position:relative;border-radius:22px;overflow:hidden;border:1px solid var(--line);background:#0b0e18;aspect-ratio:16/11;cursor:pointer;transition:transform .45s cubic-bezier(.2,.8,.2,1), border-color .3s}
-  .pf-logo{position:absolute;top:16px;left:16px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);box-shadow:0 2px 8px rgba(0,0,0,.35);display:grid;place-items:center;z-index:2;overflow:hidden}
-  .pf-logo svg,.pf-logo img{width:100%;height:100%;display:block;object-fit:contain;padding:4px}
+  .pf-logo{position:absolute;top:14px;left:14px;width:52px;height:52px;border-radius:50%;background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.45);display:grid;place-items:center;z-index:2;overflow:hidden}
+  .pf-logo svg,.pf-logo img{width:100%;height:100%;display:block;object-fit:contain;padding:5px}
+  .modal-logo{position:absolute;bottom:16px;left:16px;width:60px;height:60px;border-radius:50%;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,.5);display:grid;place-items:center;z-index:2;overflow:hidden}
+  .modal-logo svg,.modal-logo img{width:100%;height:100%;display:block;object-fit:contain;padding:6px}
   .pf-card:hover{transform:translateY(-4px);border-color:rgba(120,150,255,.3)}
   .pf-thumb{position:absolute;inset:0;transition:transform .6s, filter .5s}
   .pf-mockup{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;}
@@ -527,7 +529,7 @@
   .modal.open{display:flex;opacity:1}
   .modal-card{max-width:960px;width:100%;max-height:86vh;overflow:auto;border-radius:24px;border:1px solid var(--line-2);background:linear-gradient(180deg, rgba(18,24,38,.95), rgba(8,10,16,.95));transform:translateY(20px) scale(.98);transition:transform .4s}
   .modal.open .modal-card{transform:translateY(0) scale(1)}
-  .modal-hero{width:100%;position:relative;overflow:hidden}
+  .modal-hero{width:100%;position:relative;overflow:visible}
   .modal-hero img{width:100%;height:auto;display:block}
   .modal-body{padding:32px 36px}
   .modal-body h3{margin:0;font-size:30px;letter-spacing:-.015em;font-weight:500}
@@ -1387,7 +1389,7 @@ Il risultato è un sito che non parla di SBAM, ma <strong>è</strong> SBAM: ogni
 
   {t:'Polisportiva Stella',m:['Gestionale','Web App'],hue:220,
    mockup:'project/assets/Mockup gestionale stella .webp',
-   logo:`<img src="project/assets/Logo-polisportiva-stella.png" alt="Polisportiva Stella" style="padding:4px 7px 10px 7px">`,
+   logo:`<img src="project/assets/Logo-polisportiva-stella.png" alt="Polisportiva Stella" style="padding:5px 8px 12px 8px">`,
    d:'Gestionale su misura per una polisportiva storica: iscritti, ordini, fatturato e attività sportive centralizzate in un unico sistema.',
    detail:`Polisportiva Stella è una società sportiva con sede a San Giovanni in Marignano, Rimini, attiva dal 1909, che gestisce discipline come calcio, pallavolo, basket, centro estivo ed eventi. Con centinaia di iscritti e un'operatività basata su fogli Excel e processi manuali, aveva bisogno di uno strumento digitale su misura.
 
@@ -1438,7 +1440,7 @@ function openModal(i){
     radial-gradient(70% 50% at 30% 30%, oklch(0.5 0.18 ${p.hue}), transparent 70%),
     radial-gradient(60% 60% at 80% 70%, oklch(0.4 0.2 ${p.hue+30}), transparent 70%),
     linear-gradient(135deg, oklch(0.22 0.1 ${p.hue}), oklch(0.14 0.05 ${p.hue}))`;
-  hero.innerHTML = p.mockup ? `<img src="${p.mockup}" alt="Mockup del progetto ${p.t} sviluppato da Sebastian Marzola">` : '';
+  hero.innerHTML = (p.mockup ? `<img src="${p.mockup}" alt="Mockup del progetto ${p.t} sviluppato da Sebastian Marzola">` : '') + (p.logo ? `<div class="modal-logo">${p.logo}</div>` : '');
   document.getElementById('modalMeta').innerHTML = p.m.map(x=>`<span>${x}</span>`).join('');
   document.getElementById('modalTitle').textContent = p.t;
   document.getElementById('modalDesc').innerHTML = textToHtml(p.detail);
