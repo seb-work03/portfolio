@@ -971,6 +971,9 @@
       <p class="section-sub reveal" style="max-width: 750px">Una selezione di casi in cui sistemi, automazioni ed e-commerce hanno fatto la differenza. Clicca per vedere i dettagli.</p>
     </div>
     <div class="pf-grid" id="pfGrid"></div>
+    <div id="pfMore" style="text-align:center;margin-top:32px">
+      <button onclick="showMoreProjects()" class="btn btn-ghost" style="padding:13px 28px;font-size:15px;border-radius:999px;border:1px solid var(--line-2);color:var(--ink);background:rgba(255,255,255,.04);cursor:pointer;transition:background .2s,border-color .2s" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.borderColor='rgba(120,150,255,.4)'" onmouseout="this.style.background='rgba(255,255,255,.04)';this.style.borderColor='var(--line-2)'">Scopri di più →</button>
+    </div>
   </div>
 </section>
 
@@ -1415,7 +1418,7 @@ Per la Polisportiva Stella ho sviluppato un <strong>gestionale interno completo<
 La piattaforma è stata progettata con un'interfaccia chiara e flussi operativi che rispecchiano il lavoro reale dello staff, eliminando completamente la dipendenza da Excel e processi cartacei.`},
 ];
 document.getElementById('pfGrid').innerHTML = projects.map((p,i)=>`
-  <div class="pf-card reveal" data-i="${i}">
+  <div class="pf-card reveal" data-i="${i}"${i>=3?' style="display:none"':''}>
     <div class="pf-thumb" style="background:
       radial-gradient(70% 50% at 30% 30%, oklch(0.45 0.15 ${p.hue}), transparent 70%),
       radial-gradient(60% 60% at 80% 70%, oklch(0.35 0.17 ${p.hue+30}), transparent 70%),
@@ -1430,6 +1433,12 @@ document.getElementById('pfGrid').innerHTML = projects.map((p,i)=>`
     </div>
   </div>
 `).join('');
+function showMoreProjects(){
+  document.querySelectorAll('#pfGrid .pf-card').forEach((el,i)=>{
+    if(i>=3){ el.style.display=''; requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('in'))); }
+  });
+  document.getElementById('pfMore').style.display='none';
+}
 
 /* ============== MODAL ============== */
 const modal = document.getElementById('pfModal');
