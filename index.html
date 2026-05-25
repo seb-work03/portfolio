@@ -426,9 +426,10 @@
   .pf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
   .pf-card{position:relative;border-radius:22px;overflow:hidden;border:1px solid var(--line);background:#0b0e18;aspect-ratio:16/11;cursor:pointer;transition:transform .45s cubic-bezier(.2,.8,.2,1), border-color .3s}
   .pf-logo{position:absolute;top:14px;left:14px;width:52px;height:52px;border-radius:50%;background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.45);display:grid;place-items:center;z-index:2;overflow:hidden}
-  .pf-logo svg,.pf-logo img{width:100%;height:100%;display:block;object-fit:contain;padding:5px}
+  .pf-logo svg,.pf-logo img{width:100%;height:100%;display:block;object-fit:cover;padding:0}
+  .pf-logo img.logo-contain,.modal-logo img.logo-contain{object-fit:contain !important;padding:5px !important}
   .modal-logo{position:absolute;top:16px;left:16px;width:60px;height:60px;border-radius:50%;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,.5);display:grid;place-items:center;z-index:2;overflow:hidden}
-  .modal-logo svg,.modal-logo img{width:100%;height:100%;display:block;object-fit:contain;padding:6px}
+  .modal-logo svg,.modal-logo img{width:100%;height:100%;display:block;object-fit:cover;padding:0}
   .pf-card:hover{transform:translateY(-4px);border-color:rgba(120,150,255,.3)}
   .pf-thumb{position:absolute;inset:0;transition:transform .6s, filter .5s}
   .pf-mockup{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;}
@@ -529,10 +530,10 @@
   .modal.open{display:flex;opacity:1}
   .modal-card{max-width:960px;width:100%;max-height:86vh;overflow:auto;border-radius:24px;border:1px solid var(--line-2);background:linear-gradient(180deg, rgba(18,24,38,.95), rgba(8,10,16,.95));transform:translateY(20px) scale(.98);transition:transform .4s}
   .modal.open .modal-card{transform:translateY(0) scale(1)}
-  .modal-hero{width:100%;position:relative;overflow:hidden;background:rgba(8,10,16,.98)}
-  .modal-hero img{width:100%;max-height:75vh;object-fit:contain;display:block;margin-top:16px}
+  .modal-hero{width:100%;position:relative;overflow:hidden;background:rgba(8,10,16,.98);padding-top:16px;padding-left:16px;padding-right:16px}
+  .modal-hero img{width:100%;max-height:75vh;object-fit:contain;display:block;border-radius:12px}
   .modal-body{padding:32px 36px;text-align:center}
-  .modal-body h3{margin:0;font-size:27px;letter-spacing:-.015em;font-weight:500}
+  .modal-body h3{margin:0 0 14px;font-size:27px;letter-spacing:-.015em;font-weight:500}
   .modal-body .meta{display:flex;gap:8px;margin:14px 0;justify-content:center}
   .modal-body .meta span{font-size:11px;padding:4px 9px;border:1px solid var(--line);border-radius:999px;color:var(--ink-dim)}
   .modal-body p{color:var(--ink-dim);line-height:1.6}
@@ -1365,7 +1366,7 @@ Il sistema è costruito attorno a <strong>codici di lavorazione personalizzati</
   {t:'SBAM Studio',m:['Sito Web','Branding'],hue:300,
    url:'https://sbam-studio.it/',
    mockup:'project/assets/Mockup sbam studio.webp',
-   logo:`<img src="project/assets/sbam-logo.png" alt="SBAM Studio" style="padding:4px">`,
+   logo:`<img src="project/assets/sbam-logo.png" alt="SBAM Studio" class="logo-contain">`,
    d:'Sito per un\'agenzia di comunicazione e branding costruito per rispecchiare un\'identità visiva diretta, riconoscibile e senza compromessi.',
    detail:`SBAM Studio è un'agenzia di comunicazione e branding che trasforma le attività in brand che lasciano il segno. Il loro approccio è diretto, visivo e dichiarato: non vendono servizi, comunicano un punto di vista.
 
@@ -1393,7 +1394,7 @@ Il risultato è un sito che non parla di SBAM, ma <strong>è</strong> SBAM: ogni
 
   {t:'Polisportiva Stella',m:['Gestionale','Web App'],hue:220,
    mockup:'project/assets/Mockup gestionale stella .webp',
-   logo:`<img src="project/assets/Logo-polisportiva-stella.png" alt="Polisportiva Stella" style="padding:2px 8px 12px 8px">`,
+   logo:`<img src="project/assets/Logo-polisportiva-stella.png" alt="Polisportiva Stella" class="logo-contain" style="padding:2px 8px 12px 8px">`,
    d:'Gestionale su misura per una polisportiva storica: iscritti, ordini, fatturato e attività sportive centralizzate in un unico sistema.',
    detail:`Polisportiva Stella è una società sportiva con sede a Rimini, attiva dal 1909, che gestisce discipline come calcio, pallavolo, basket, centro estivo ed eventi. Con centinaia di iscritti e un'operatività basata su fogli Excel e processi manuali, aveva bisogno di uno strumento digitale su misura.
 
