@@ -1645,7 +1645,10 @@ async function submitContactForm(e){
       player.stop();
       setTimeout(()=>{
         player.play();
-        player.addEventListener('complete', ()=>player.pause(), {once:true});
+        player.addEventListener('complete', ()=>{
+          player.pause();
+          setTimeout(()=>overlay.classList.remove('show'), 800);
+        }, {once:true});
       }, 50);
     }catch(_){}
   }
