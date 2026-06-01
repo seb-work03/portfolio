@@ -1,6 +1,6 @@
 // Cloudflare Worker — Sebastian Marzola Chatbot
-// Deploy su: https://sebastian-chat.sebastianmarzola-work.workers.dev/
-// Variabile ambiente richiesta: ANTHROPIC_API_KEY
+// Usa Cloudflare Workers AI (gratuito) — nessuna API key esterna richiesta
+// Binding richiesto: AI (Workers AI) — da aggiungere in Settings → Bindings
 
 const ALLOWED_ORIGIN = 'https://sebastian-marzola.it';
 
@@ -22,9 +22,9 @@ Sviluppatore web specializzato in e-commerce, gestionali su misura e automazioni
 - Siti multilingua
 
 ## Prezzi indicativi
-- Siti web: da €600
-- E-commerce: da €1.500
-- Gestionali e automazioni: da €400
+- Siti web: da 600 euro
+- E-commerce: da 1.500 euro
+- Gestionali e automazioni: da 400 euro
 Il prezzo definitivo dipende da complessità, funzionalità e integrazioni. Ogni preventivo è trasparente e dettagliato.
 
 ## Tecnologie
@@ -39,8 +39,8 @@ Prima call conoscitiva, analisi e proposta, sviluppo con aggiornamenti costanti,
 - Aletheia Marketing: sito web per agenzia di comunicazione digitale
 - ViDi Creative Studios: sito multilingua (italiano, inglese, spagnolo) per studio di comunicazione
 - Linea Video: gestionale interno per laboratorio fotografico, fatturazione e tracciamento lavorazioni
-- SBAM Studio: sito WordPress per agenzia di branding e comunicazione (con DT E-commerce Consulting)
-- Polisportiva Stella: gestionale WordPress per società sportiva, gestione iscritti e attività (con DT E-commerce Consulting)
+- SBAM Studio: sito WordPress per agenzia di branding e comunicazione
+- Polisportiva Stella: gestionale WordPress per società sportiva, gestione iscritti e attività
 
 ## Formazione
 - Diploma Tecnico Superiore in Digital Project Management — ITS Turismo Marche (in corso)
@@ -80,29 +80,17 @@ export default {
       });
     }
 
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01',
-      },
-      body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 400,
-        system: SYSTEM_PROMPT,
-        messages,
-      }),
+    const aiMessages = [
+      { role: 'system', content: SYSTEM_PROMPT },
+      ...messages,
+    ];
+
+    const response = await env.AI.run('@cf/meta/llama-3.1-8b-instruct', {
+      messages: aiMessages,
+      max_tokens: 400,
     });
 
-    if (!response.ok) {
-      return new Response(JSON.stringify({ error: 'API error' }), {
-        status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
-    }
-
-    const data = await response.json();
-    const text = data.content?.[0]?.text ?? '';
+    const text = response.response ?? '';
 
     return new Response(JSON.stringify({ content: text }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
