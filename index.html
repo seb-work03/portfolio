@@ -1950,7 +1950,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
 .chat-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#2a4bff,#6aa3ff);display:grid;place-items:center;font-size:13px;font-weight:600;color:#fff;flex-shrink:0;overflow:hidden}
 .chat-info{flex:1;min-width:0}
 .chat-name{font-size:13px;font-weight:600;color:#fff}
-.chat-status{font-size:11px;color:rgba(255,255,255,.45);display:flex;align-items:center;gap:4px}
+.chat-status{font-size:11px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:4px}
 #chatClose{background:none;border:none;color:rgba(255,255,255,.4);cursor:pointer;font-size:18px;line-height:1;padding:4px;transition:color .2s}
 #chatClose:hover{color:#fff}
 #chatMessages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;scrollbar-width:thin;scrollbar-color:#2a4bff transparent}
@@ -1978,15 +1978,17 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
 <div id="chatWidget">
   <div id="chatWindow" role="dialog" aria-label="Chat con Sebastian Marzola">
     <div id="chatHeader">
-      <div class="chat-avatar"><img src="project/assets/sebastian marzola.webp" alt="Sebastian Marzola" style="width:100%;height:100%;object-fit:cover;object-position:center 15%;border-radius:50%;display:block"></div>
+      <div class="chat-avatar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M12 2a3 3 0 0 1 3 3v6H9V5a3 3 0 0 1 3-3z"/><circle cx="12" cy="5" r="1" fill="currentColor" stroke="none"/><line x1="8" y1="16" x2="8" y2="16" stroke-width="2.5"/><line x1="12" y1="16" x2="12" y2="16" stroke-width="2.5"/><line x1="16" y1="16" x2="16" y2="16" stroke-width="2.5"/></svg>
+      </div>
       <div class="chat-info">
-        <div class="chat-name">Sebastian Marzola</div>
-        <div class="chat-status">Assistente AI</div>
+        <div class="chat-name">Assistente virtuale</div>
+        <div class="chat-status">Rispondo subito</div>
       </div>
       <button id="chatClose" aria-label="Chiudi chat">✕</button>
     </div>
     <div id="chatMessages">
-      <div class="chat-msg bot">Ciao! Sono l'assistente di Sebastian. Chiedimi dei suoi servizi, dei progetti realizzati o dei prezzi.</div>
+      <div class="chat-msg bot">Ciao! Hai dubbi su cosa posso fare per te, su come funziona il processo o sui costi? Sono qui per aiutarti a capire se sono la persona giusta per il tuo progetto.</div>
     </div>
     <div id="chatTyping" class="hidden">
       <div class="typing-dot"></div>
