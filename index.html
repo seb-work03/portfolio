@@ -1938,6 +1938,136 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   });
 });
 </script>
+<!-- CHATBOT WIDGET -->
+<style>
+#chatWidget{position:fixed;bottom:88px;right:24px;z-index:150;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+#chatToggle{width:52px;height:52px;border-radius:50%;border:1px solid rgba(120,150,255,.35);background:linear-gradient(180deg,#2a4bff,#1e34c8);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 28px rgba(42,75,255,.45);transition:transform .2s,box-shadow .2s}
+#chatToggle:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(42,75,255,.55)}
+#chatToggle svg{width:22px;height:22px;flex-shrink:0}
+#chatWindow{width:320px;max-height:460px;border-radius:20px;border:1px solid rgba(120,150,255,.18);background:rgba(8,10,18,.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 24px 64px rgba(0,0,0,.7);display:flex;flex-direction:column;overflow:hidden;transform:translateY(16px) scale(.96);opacity:0;pointer-events:none;transition:transform .3s cubic-bezier(.2,.8,.2,1),opacity .3s}
+#chatWindow.open{transform:translateY(0) scale(1);opacity:1;pointer-events:all}
+#chatHeader{padding:16px 18px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:12px;flex-shrink:0}
+.chat-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#2a4bff,#6aa3ff);display:grid;place-items:center;font-size:13px;font-weight:600;color:#fff;flex-shrink:0}
+.chat-info{flex:1;min-width:0}
+.chat-name{font-size:13px;font-weight:600;color:#fff}
+.chat-status{font-size:11px;color:#4dd77a;display:flex;align-items:center;gap:4px}
+.chat-status::before{content:"";width:6px;height:6px;border-radius:50%;background:#4dd77a;flex-shrink:0}
+#chatClose{background:none;border:none;color:rgba(255,255,255,.4);cursor:pointer;font-size:18px;line-height:1;padding:4px;transition:color .2s}
+#chatClose:hover{color:#fff}
+#chatMessages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;scrollbar-width:thin;scrollbar-color:#2a4bff transparent}
+#chatMessages::-webkit-scrollbar{width:4px}
+#chatMessages::-webkit-scrollbar-thumb{background:#2a4bff;border-radius:999px}
+.chat-msg{max-width:85%;font-size:13px;line-height:1.55;padding:10px 14px;border-radius:14px;word-break:break-word}
+.chat-msg.bot{background:rgba(255,255,255,.07);color:rgba(255,255,255,.85);border-radius:4px 14px 14px 14px;align-self:flex-start}
+.chat-msg.user{background:linear-gradient(135deg,#2a4bff,#1e34c8);color:#fff;border-radius:14px 4px 14px 14px;align-self:flex-end}
+#chatTyping{padding:0 16px 12px;display:flex;gap:5px;align-items:center}
+#chatTyping.hidden{display:none}
+.typing-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.35);animation:typingPulse 1.2s ease-in-out infinite}
+.typing-dot:nth-child(2){animation-delay:.2s}
+.typing-dot:nth-child(3){animation-delay:.4s}
+@keyframes typingPulse{0%,60%,100%{transform:translateY(0);opacity:.35}30%{transform:translateY(-5px);opacity:.9}}
+#chatInputRow{padding:12px 14px;border-top:1px solid rgba(255,255,255,.07);display:flex;gap:8px;flex-shrink:0}
+#chatInputField{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:9px 12px;color:#fff;font-size:13px;font-family:inherit;outline:none;transition:border-color .2s}
+#chatInputField::placeholder{color:rgba(255,255,255,.3)}
+#chatInputField:focus{border-color:rgba(42,75,255,.6)}
+#chatSendBtn{width:36px;height:36px;border-radius:10px;background:linear-gradient(180deg,#2a4bff,#1e34c8);border:none;color:#fff;cursor:pointer;display:grid;place-items:center;flex-shrink:0;transition:opacity .2s}
+#chatSendBtn:disabled{opacity:.4;cursor:default}
+#chatSendBtn svg{width:16px;height:16px}
+@media(max-width:768px){#chatWidget{bottom:84px;right:16px}#chatWindow{width:calc(100vw - 32px)}}
+</style>
+
+<div id="chatWidget">
+  <div id="chatWindow" role="dialog" aria-label="Chat con Sebastian Marzola">
+    <div id="chatHeader">
+      <div class="chat-avatar">SM</div>
+      <div class="chat-info">
+        <div class="chat-name">Sebastian Marzola</div>
+        <div class="chat-status">Online</div>
+      </div>
+      <button id="chatClose" aria-label="Chiudi chat">✕</button>
+    </div>
+    <div id="chatMessages">
+      <div class="chat-msg bot">Ciao! Chiedimi qualcosa sui servizi, i progetti o come contattare Sebastian.</div>
+    </div>
+    <div id="chatTyping" class="hidden">
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+    </div>
+    <div id="chatInputRow">
+      <input type="text" id="chatInputField" placeholder="Scrivi un messaggio…" maxlength="400" autocomplete="off">
+      <button id="chatSendBtn" aria-label="Invia" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+  </div>
+  <button id="chatToggle" aria-label="Apri chat">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  </button>
+</div>
+
+<script>
+(function(){
+  const WORKER = 'https://sebastian-chat.sebastianmarzola-work.workers.dev/';
+  const win = document.getElementById('chatWindow');
+  const toggle = document.getElementById('chatToggle');
+  const closeBtn = document.getElementById('chatClose');
+  const messages = document.getElementById('chatMessages');
+  const input = document.getElementById('chatInputField');
+  const sendBtn = document.getElementById('chatSendBtn');
+  const typing = document.getElementById('chatTyping');
+  const history = [];
+
+  function openChat(){ win.classList.add('open'); input.focus(); }
+  function closeChat(){ win.classList.remove('open'); }
+
+  toggle.addEventListener('click', ()=> win.classList.contains('open') ? closeChat() : openChat());
+  closeBtn.addEventListener('click', closeChat);
+
+  input.addEventListener('input', ()=>{ sendBtn.disabled = !input.value.trim(); });
+  input.addEventListener('keydown', e=>{ if(e.key==='Enter' && !e.shiftKey && input.value.trim()){ e.preventDefault(); send(); } });
+  sendBtn.addEventListener('click', send);
+
+  function addMsg(role, text){
+    const div = document.createElement('div');
+    div.className = 'chat-msg ' + (role==='user' ? 'user' : 'bot');
+    div.textContent = text;
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+    return div;
+  }
+
+  async function send(){
+    const text = input.value.trim();
+    if(!text) return;
+    input.value = '';
+    sendBtn.disabled = true;
+
+    addMsg('user', text);
+    history.push({role:'user', content: text});
+
+    typing.classList.remove('hidden');
+    messages.scrollTop = messages.scrollHeight;
+
+    try {
+      const res = await fetch(WORKER, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ messages: history })
+      });
+      const data = await res.json();
+      const reply = data.content || 'Si è verificato un errore. Riprova o contattami direttamente.';
+      typing.classList.add('hidden');
+      addMsg('bot', reply);
+      history.push({role:'assistant', content: reply});
+    } catch {
+      typing.classList.add('hidden');
+      addMsg('bot', 'Errore di connessione. Scrivimi a info@sebastian-marzola.it');
+    }
+  }
+})();
+</script>
+
 <!-- Google Analytics 4 — caricato in fondo per non rallentare LCP/FCP -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9X2QGFKCHL"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-9X2QGFKCHL');</script>
