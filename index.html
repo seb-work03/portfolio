@@ -2017,6 +2017,23 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   const sendBtn = document.getElementById('chatSendBtn');
   const typing = document.getElementById('chatTyping');
   const history = [];
+  let inactivityTimer = null;
+  let summarySent = false;
+
+  function sendSummary(){
+    if(summarySent || history.length === 0) return;
+    summarySent = true;
+    const payload = JSON.stringify({ summary: true, messages: history });
+    navigator.sendBeacon(WORKER, new Blob([payload], {type:'application/json'}));
+  }
+
+  function resetInactivityTimer(){
+    if(inactivityTimer) clearTimeout(inactivityTimer);
+    inactivityTimer = setTimeout(sendSummary, 5 * 60 * 1000);
+  }
+
+  document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='hidden') sendSummary(); });
+  window.addEventListener('beforeunload', sendSummary);
 
   function openChat(){ win.classList.add('open'); input.focus(); }
   function closeChat(){ win.classList.remove('open'); }
@@ -2060,6 +2077,8 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
       typing.classList.add('hidden');
       addMsg('bot', reply);
       history.push({role:'assistant', content: reply});
+      summarySent = false;
+      resetInactivityTimer();
     } catch {
       typing.classList.add('hidden');
       addMsg('bot', 'Errore di connessione. Scrivimi a info@sebastian-marzola.it');

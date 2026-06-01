@@ -1,7 +1,3 @@
-// Cloudflare Worker — Sebastian Marzola Chatbot
-// Usa Cloudflare Workers AI (gratuito) — nessuna API key esterna richiesta
-// Binding richiesto: AI (Workers AI) — da aggiungere in Settings → Bindings
-
 const ALLOWED_ORIGIN = 'https://sebastian-marzola.it';
 
 const SYSTEM_PROMPT = `Sei l'assistente virtuale di Sebastian Marzola, sviluppatore web freelance con sede a Rimini.
@@ -53,7 +49,7 @@ Prima call conoscitiva, analisi e proposta, sviluppo con aggiornamenti costanti,
 - Form di contatto: direttamente sul sito sebastian-marzola.it
 
 ## Regola fondamentale
-Se ti vengono chieste informazioni non presenti sopra (preventivi precisi, disponibilità, domande personali), invita sempre l'utente a compilare il form sul sito o scrivere a info@sebastian-marzola.it. Non inventare mai dati non presenti.`;
+Se ti vengono chieste informazioni non presenti sopra, invita sempre l'utente a compilare il form sul sito o scrivere a info@sebastian-marzola.it. Non inventare mai dati non presenti.`;
 
 export default {
   async fetch(request, env) {
@@ -63,34 +59,41 @@ export default {
       'Access-Control-Allow-Headers': 'Content-Type',
     };
 
-    if (request.method === 'OPTIONS') {
-      return new Response(null, { headers: corsHeaders });
-    }
-
-    if (request.method !== 'POST') {
-      return new Response('Method not allowed', { status: 405, headers: corsHeaders });
-    }
+    if (request.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
+    if (request.method !== 'POST') return new Response('Method not allowed', { status: 405, headers: corsHeaders });
 
     let messages;
-    try {
-      ({ messages } = await request.json());
-    } catch {
-      return new Response(JSON.stringify({ error: 'Invalid JSON' }), {
-        status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    try { ({ messages } = await request.json()); }
+    catch { return new Response(JSON.stringify({ error: 'Invalid JSON' }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }); }
+
+    if (!env.GROQ_API_KEY) {
+      return new Response(JSON.stringify({ error: 'GROQ_API_KEY non configurata' }), {
+        status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
 
-    const aiMessages = [
-      { role: 'system', content: SYSTEM_PROMPT },
-      ...messages,
-    ];
-
-    const response = await env.AI.run('@cf/meta/llama-3.1-8b-instruct', {
-      messages: aiMessages,
-      max_tokens: 400,
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${env.GROQ_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: 'llama-3.1-8b-instant',
+        max_tokens: 400,
+        messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
+      }),
     });
 
-    const text = response.response ?? '';
+    if (!res.ok) {
+      const errText = await res.text();
+      return new Response(JSON.stringify({ error: `Groq error ${res.status}: ${errText}` }), {
+        status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+
+    const data = await res.json();
+    const text = data.choices?.[0]?.message?.content ?? 'Nessuna risposta ricevuta.';
 
     return new Response(JSON.stringify({ content: text }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
