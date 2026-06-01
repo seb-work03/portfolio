@@ -1972,7 +1972,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
 #chatSendBtn{width:36px;height:36px;border-radius:10px;background:linear-gradient(180deg,#2a4bff,#1e34c8);border:none;color:#fff;cursor:pointer;display:grid;place-items:center;flex-shrink:0;transition:opacity .2s}
 #chatSendBtn:disabled{opacity:.4;cursor:default}
 #chatSendBtn svg{width:16px;height:16px}
-@media(max-width:768px){#chatWidget{bottom:84px;right:16px}#chatWindow{width:calc(100vw - 32px);max-height:65vh}}
+@media(max-width:768px){#chatWidget{bottom:84px;right:24px}#chatWindow{width:calc(100vw - 48px);max-height:65vh}}
 </style>
 
 <div id="chatWidget">
@@ -2038,7 +2038,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   if(window.visualViewport){
     window.visualViewport.addEventListener('resize', ()=>{
       const offset = window.innerHeight - window.visualViewport.height;
-      document.getElementById('chatWidget').style.bottom = (88 + offset) + 'px';
+      document.getElementById('chatWidget').style.bottom = (88 + offset * 0.6) + 'px';
     });
   }
 
