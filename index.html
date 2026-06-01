@@ -1950,8 +1950,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
 .chat-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#2a4bff,#6aa3ff);display:grid;place-items:center;font-size:13px;font-weight:600;color:#fff;flex-shrink:0;overflow:hidden}
 .chat-info{flex:1;min-width:0}
 .chat-name{font-size:13px;font-weight:600;color:#fff}
-.chat-status{font-size:11px;color:#4dd77a;display:flex;align-items:center;gap:4px}
-.chat-status::before{content:"";width:6px;height:6px;border-radius:50%;background:#4dd77a;flex-shrink:0}
+.chat-status{font-size:11px;color:rgba(255,255,255,.45);display:flex;align-items:center;gap:4px}
 #chatClose{background:none;border:none;color:rgba(255,255,255,.4);cursor:pointer;font-size:18px;line-height:1;padding:4px;transition:color .2s}
 #chatClose:hover{color:#fff}
 #chatMessages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;scrollbar-width:thin;scrollbar-color:#2a4bff transparent}
@@ -1982,12 +1981,12 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
       <div class="chat-avatar"><img src="project/assets/sebastian marzola.webp" alt="Sebastian Marzola" style="width:100%;height:100%;object-fit:cover;object-position:center 15%;border-radius:50%;display:block"></div>
       <div class="chat-info">
         <div class="chat-name">Sebastian Marzola</div>
-        <div class="chat-status">Online</div>
+        <div class="chat-status">Assistente AI</div>
       </div>
       <button id="chatClose" aria-label="Chiudi chat">✕</button>
     </div>
     <div id="chatMessages">
-      <div class="chat-msg bot">Ciao! Chiedimi qualcosa sui servizi, i progetti o come contattare Sebastian.</div>
+      <div class="chat-msg bot">Ciao! Sono l'assistente di Sebastian. Chiedimi dei suoi servizi, dei progetti realizzati o dei prezzi.</div>
     </div>
     <div id="chatTyping" class="hidden">
       <div class="typing-dot"></div>
