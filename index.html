@@ -1978,8 +1978,8 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
 </script>
 <!-- CHATBOT WIDGET -->
 <style>
-#chatWidget{position:fixed;bottom:28px;right:24px;z-index:150;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
-#chatToggle{width:48px;height:48px;border-radius:50%;border:1px solid rgba(120,150,255,.35);background:linear-gradient(180deg,#2a4bff,#1e34c8);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 28px rgba(42,75,255,.45);transition:transform .2s,box-shadow .2s}
+#chatWidget{position:fixed;bottom:28px;right:24px;z-index:150;display:flex;flex-direction:column;align-items:flex-end;gap:10px;pointer-events:none}
+#chatToggle{pointer-events:auto;width:48px;height:48px;border-radius:50%;border:1px solid rgba(120,150,255,.35);background:linear-gradient(180deg,#2a4bff,#1e34c8);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 28px rgba(42,75,255,.45);transition:transform .2s,box-shadow .2s}
 #chatToggle:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(42,75,255,.55)}
 #chatToggle svg{width:20px;height:20px;flex-shrink:0}
 #chatWindow{width:320px;max-height:460px;border-radius:20px;border:1px solid rgba(120,150,255,.18);background:rgba(8,10,18,.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 24px 64px rgba(0,0,0,.7);display:flex;flex-direction:column;overflow:hidden;transform:translateY(16px) scale(.96);opacity:0;pointer-events:none;transition:transform .3s cubic-bezier(.2,.8,.2,1),opacity .3s}
