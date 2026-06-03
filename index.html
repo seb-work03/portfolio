@@ -239,7 +239,7 @@
   .uvbtn-text{display:flex;align-items:center;justify-content:center;margin:0;color:#1b1d22}
   .uvbtn-icon{position:absolute;left:0;top:0;bottom:0;margin:auto;transform:scale(1.25);transition:all .3s ease;display:flex;align-items:center;justify-content:center;color:#1b1d22}
   .uvbtn-icon svg{overflow:visible}
-  .uvbtn-outline{position:absolute;border-radius:inherit;overflow:hidden;z-index:1;opacity:0;transition:opacity .4s ease;inset:-2px -3.5px}
+  .uvbtn-outline{position:absolute;border-radius:inherit;overflow:hidden;z-index:1;opacity:0;pointer-events:none;transition:opacity .4s ease;inset:-2px -3.5px}
   .uvbtn-outline::before{content:"";position:absolute;inset:-100%;background:conic-gradient(from 180deg, transparent 60%, white 80%, transparent 100%);animation:uvbtnSpin 2s linear infinite;animation-play-state:paused}
   @keyframes uvbtnSpin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
   .uvbtn:hover .uvbtn-outline{opacity:1}
@@ -1469,8 +1469,20 @@ function openModal(i){
   modal.classList.add('open');
   modal.setAttribute('aria-hidden','false');
   document.getElementById('modalCard').scrollTop = 0;
+  document.body.style.top = `-${window.scrollY}px`;
+  document.body.style.position = 'fixed';
+  document.body.style.width = '100%';
 }
-function closeModal(){modal.classList.remove('open');modal.setAttribute('aria-hidden','true')}
+function closeModal(){
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden','true');
+  const sy = parseInt(document.body.style.top||'0')*-1;
+  document.body.style.position='';
+  document.body.style.top='';
+  document.body.style.width='';
+  document.body.style.overflow='';
+  window.scrollTo(0, sy);
+}
 document.getElementById('pfGrid').addEventListener('click', e=>{
   const card = e.target.closest('.pf-card');
   if(card) openModal(+card.dataset.i);
