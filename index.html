@@ -382,8 +382,8 @@
 
   /* Process - horizontal scroll pinned */
   .process{position:relative;padding-top:80px}
-  .process-pin{position:relative;height:420vh;height:420svh;margin-top:-180px;}
-  .process-stick{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;overflow:clip;display:flex;align-items:center;padding-top:0}
+  .process-pin{position:relative;height:420vh;height:420svh;height:calc(var(--appvh, 1svh) * 420);margin-top:-180px;}
+  .process-stick{position:sticky;top:0;height:100vh;height:100svh;height:calc(var(--appvh, 1svh) * 100);overflow:hidden;overflow:clip;display:flex;align-items:center;padding-top:0}
   .process-inner{display:flex;gap:24px;padding: 0 8vw;will-change:transform}
   .step{flex:none;width:min(520px, 80vw);height:min(420px, 60vh);border-radius:28px;padding:34px;position:relative;overflow:hidden;background:linear-gradient(160deg, rgba(20,28,50,.75), rgba(10,14,22,.85));border:1px solid var(--line-2);backdrop-filter:blur(10px);display:flex;flex-direction:column;justify-content:space-between}
   .step .step-num{font-family:'Instrument Serif',serif;font-style:italic;font-size:140px;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(140,170,255,.35);position:absolute;top:18px;right:28px;user-select:none}
@@ -413,8 +413,8 @@
 
   /* Impact */
   .impact{position:relative;background:var(--bg)}
-  .impact-pin{position:relative;height:300vh;height:300svh}
-  .impact-stick{position:sticky;top:0;height:100vh;height:100svh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#000;isolation:isolate}
+  .impact-pin{position:relative;height:300vh;height:300svh;height:calc(var(--appvh, 1svh) * 300)}
+  .impact-stick{position:sticky;top:0;height:100vh;height:100svh;height:calc(var(--appvh, 1svh) * 100);display:flex;align-items:center;justify-content:center;overflow:hidden;background:#000;isolation:isolate}
   .impact-stick::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 50% at 50% 50%, rgba(79,139,255,.07), transparent 70%);pointer-events:none}
   .impact .quote{font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(22px,4vw,64px);line-height:1.18;letter-spacing:-.01em;max-width:min(1100px,90vw);margin:0 auto;transform:scale(.5);transform-origin:50% 50%;text-align:center;padding:0 24px}
   .impact .quote::before{content:'\201C';font-family:'Instrument Serif',serif;font-style:italic;color:#4f8bff;margin-right:.12em;font-size:1.2em;vertical-align:-.08em;line-height:0}
@@ -606,7 +606,7 @@
     .mq-track{gap:20px;animation-duration:22s}
     .mq-item{padding:12px 16px}
     /* Impact */
-    .impact-pin{height:250vh;height:250svh}
+    .impact-pin{height:250vh;height:250svh;height:calc(var(--appvh, 1svh) * 250)}
     /* Portfolio: testo sempre visibile su mobile */
     .pf-grid{grid-template-columns:1fr}
     .pf-card p{opacity:1;transform:translateY(0)}
@@ -646,7 +646,7 @@
     .contact-card{padding:24px 18px}
     .modal-body{padding:24px 20px}
     .modal-body h3{font-size:22px}
-    .impact-pin{height:220vh;height:220svh}
+    .impact-pin{height:220vh;height:220svh;height:calc(var(--appvh, 1svh) * 220)}
     .portrait-card{width:min(190px,65vw) !important}
     .impact .quote{font-size:clamp(28px,8vw,44px);padding:0 8px}
     .process-progress{bottom:80px}
@@ -1836,8 +1836,14 @@ if(window.matchMedia('(pointer:fine)').matches){
 // Captured once at load (URL bar visible = svh equivalent).
 // Updated only on orientation change, never during scroll.
 let stableVH = window.innerHeight;
+// Fixed px-per-1%-of-height, captured once. Pinned sections use calc(var(--appvh)*N)
+// so their heights never change when the mobile URL bar shows/hides during scroll.
+function setAppVH(){
+  document.documentElement.style.setProperty('--appvh', (window.innerHeight / 100) + 'px');
+}
+setAppVH();
 window.addEventListener('orientationchange', ()=>{
-  setTimeout(()=>{ stableVH = window.innerHeight; recacheAll(); }, 400);
+  setTimeout(()=>{ stableVH = window.innerHeight; setAppVH(); recacheAll(); }, 400);
 });
 
 /* ============== IMPACT QUOTE — pinned scroll ============== */
@@ -1874,7 +1880,7 @@ window.addEventListener('orientationchange', ()=>{
     impactRaf = requestAnimationFrame(()=>{ impactRaf=null; update(); });
   }
   window.addEventListener('scroll', onImpactScroll, {passive:true});
-  window.addEventListener('resize', ()=>setTimeout(window._recacheImpact, 300));
+  // recache handled globally by onRealResize -> recacheAll -> _recacheImpact
   update();
 })();
 
@@ -1912,17 +1918,20 @@ function onProcessScroll(){
   processRaf = requestAnimationFrame(()=>{ processRaf=null; updateProcess(); });
 }
 window.addEventListener('scroll', onProcessScroll, {passive:true});
-window.addEventListener('resize', ()=>setTimeout(recacheAll, 300));
 window.addEventListener('load', ()=>setTimeout(recacheAll, 100));
-// Recache when scroll stops so URL bar / layout has settled
-let scrollEndTimer, lastVW = window.innerWidth, lastVH = window.innerHeight;
-window.addEventListener('scroll', ()=>{
-  clearTimeout(scrollEndTimer);
-  scrollEndTimer = setTimeout(()=>{
-    const vw = window.innerWidth, vh = window.innerHeight;
-    if(vw !== lastVW || vh !== lastVH){ lastVW=vw; lastVH=vh; recacheAll(); }
-  }, 300);
-}, {passive:true});
+// Recache ONLY on real width changes (rotation / desktop window resize).
+// On mobile the URL bar show/hide changes height only — ignoring it prevents
+// the scroll "jump" when scrolling down then back up.
+let lastVW = window.innerWidth;
+function onRealResize(){
+  const vw = window.innerWidth;
+  if(vw === lastVW) return;
+  lastVW = vw;
+  stableVH = window.innerHeight;
+  setAppVH();
+  recacheAll();
+}
+window.addEventListener('resize', ()=>setTimeout(onRealResize, 300));
 updateProcess();
 
 /* ============== BACK TO TOP ============== */
@@ -1978,7 +1987,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
 </script>
 <!-- CHATBOT WIDGET -->
 <style>
-#chatWidget{position:fixed;bottom:28px;right:24px;z-index:150;display:flex;flex-direction:column;align-items:flex-end;gap:10px;pointer-events:none}
+#chatWidget{position:fixed;bottom:28px;right:24px;z-index:250;display:flex;flex-direction:column;align-items:flex-end;gap:10px;pointer-events:none}
 #chatToggle{pointer-events:auto;width:48px;height:48px;border-radius:50%;border:1px solid rgba(120,150,255,.35);background:linear-gradient(180deg,#2a4bff,#1e34c8);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 28px rgba(42,75,255,.45);transition:transform .2s,box-shadow .2s}
 #chatToggle:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(42,75,255,.55)}
 #chatToggle svg{width:20px;height:20px;flex-shrink:0}
@@ -2010,7 +2019,15 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
 #chatSendBtn{width:36px;height:36px;border-radius:10px;background:linear-gradient(180deg,#2a4bff,#1e34c8);border:none;color:#fff;cursor:pointer;display:grid;place-items:center;flex-shrink:0;transition:opacity .2s}
 #chatSendBtn:disabled{opacity:.4;cursor:default}
 #chatSendBtn svg{width:16px;height:16px}
-@media(max-width:768px){#chatWidget{bottom:24px;right:24px}#chatWindow{width:calc(100vw - 48px);max-height:65vh}}
+@media(max-width:768px){
+  #chatWidget{bottom:24px;right:24px}
+  /* Fullscreen Zendesk-style chat on mobile */
+  #chatWindow{position:fixed;top:0;left:0;width:100vw;height:100dvh;max-height:none;border-radius:0;border:none;opacity:1;transform:translateY(100%);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+  #chatWindow.open{transform:translateY(0)}
+  #chatHeader{padding-top:max(16px, env(safe-area-inset-top))}
+  #chatInputRow{padding-bottom:max(12px, env(safe-area-inset-bottom))}
+  #chatWidget.chat-open #chatToggle{display:none}
+}
 #cookiescript_badge{bottom:28px !important;left:24px !important;right:auto !important}
 @media(max-width:768px){#cookiescript_badge{bottom:24px !important;left:16px !important}}
 </style>
@@ -2079,15 +2096,42 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='hidden') sendSummary(true); });
   window.addEventListener('beforeunload', ()=>sendSummary(true));
 
+  const widget = document.getElementById('chatWidget');
+
+  // On mobile the chat is fullscreen. Keep it pinned to the visible area so the
+  // on-screen keyboard never hides the conversation or the input field.
+  function syncMobileChat(){
+    if(window.innerWidth <= 768 && win.classList.contains('open') && window.visualViewport){
+      const vv = window.visualViewport;
+      win.style.height = vv.height + 'px';
+      win.style.top = vv.offsetTop + 'px';
+      messages.scrollTop = messages.scrollHeight;
+    } else {
+      win.style.height = '';
+      win.style.top = '';
+    }
+  }
   if(window.visualViewport){
-    window.visualViewport.addEventListener('resize', ()=>{
-      const offset = window.innerHeight - window.visualViewport.height;
-      document.getElementById('chatWidget').style.bottom = (28 + offset * 0.6) + 'px';
-    });
+    window.visualViewport.addEventListener('resize', syncMobileChat);
+    window.visualViewport.addEventListener('scroll', syncMobileChat);
   }
 
-  function openChat(){ win.classList.add('open'); input.focus(); }
-  function closeChat(){ win.classList.remove('open'); }
+  function openChat(){
+    win.classList.add('open');
+    widget.classList.add('chat-open');
+    if(window.innerWidth <= 768){ document.body.style.overflow = 'hidden'; }
+    syncMobileChat();
+    // delay focus until the slide-in finishes so iOS doesn't fight the animation
+    setTimeout(()=>{ input.focus(); messages.scrollTop = messages.scrollHeight; }, 320);
+  }
+  function closeChat(){
+    win.classList.remove('open');
+    widget.classList.remove('chat-open');
+    document.body.style.overflow = '';
+    win.style.height = '';
+    win.style.top = '';
+    input.blur();
+  }
 
   toggle.addEventListener('click', ()=> win.classList.contains('open') ? closeChat() : openChat());
   closeBtn.addEventListener('click', closeChat);
