@@ -2081,24 +2081,29 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   let inactivityTimer = null;
   let summarySent = false;
 
-  function sendSummary(useBeacon){
+  function sendSummary(){
     if(summarySent || history.length === 0) return;
     summarySent = true;
     const payload = JSON.stringify({ summary: true, messages: history });
-    if(useBeacon && navigator.sendBeacon){
-      navigator.sendBeacon(WORKER, new Blob([payload], {type:'application/json'}));
-    } else {
-      fetch(WORKER, {method:'POST', headers:{'Content-Type':'application/json'}, body:payload}).catch(()=>{});
-    }
+    // IMPORTANT: use text/plain (a CORS-safelisted content-type) so the request
+    // is "simple" and triggers NO preflight — otherwise the beacon is silently
+    // dropped while the page is unloading/backgrounding. The worker parses the
+    // body as JSON regardless of the Content-Type header.
+    const blob = new Blob([payload], {type:'text/plain'});
+    if(navigator.sendBeacon && navigator.sendBeacon(WORKER, blob)) return;
+    fetch(WORKER, {method:'POST', headers:{'Content-Type':'text/plain'}, body:payload, keepalive:true}).catch(()=>{});
   }
 
   function resetInactivityTimer(){
     if(inactivityTimer) clearTimeout(inactivityTimer);
-    inactivityTimer = setTimeout(()=>sendSummary(false), 5 * 60 * 1000);
+    inactivityTimer = setTimeout(sendSummary, 5 * 60 * 1000);
   }
 
-  document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='hidden') sendSummary(true); });
-  window.addEventListener('beforeunload', ()=>sendSummary(true));
+  // Fire when the user leaves: visibilitychange + pagehide cover mobile (where
+  // beforeunload is unreliable / never fires on iOS Safari), plus the 5-min timer.
+  document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='hidden') sendSummary(); });
+  window.addEventListener('pagehide', sendSummary);
+  window.addEventListener('beforeunload', sendSummary);
 
   const widget = document.getElementById('chatWidget');
 
