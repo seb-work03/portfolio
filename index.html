@@ -2085,13 +2085,13 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
     if(summarySent || history.length === 0) return;
     summarySent = true;
     const payload = JSON.stringify({ summary: true, messages: history });
-    // IMPORTANT: use text/plain (a CORS-safelisted content-type) so the request
-    // is "simple" and triggers NO preflight — otherwise the beacon is silently
-    // dropped while the page is unloading/backgrounding. The worker parses the
-    // body as JSON regardless of the Content-Type header.
-    const blob = new Blob([payload], {type:'text/plain'});
-    if(navigator.sendBeacon && navigator.sendBeacon(WORKER, blob)) return;
-    fetch(WORKER, {method:'POST', headers:{'Content-Type':'text/plain'}, body:payload, keepalive:true}).catch(()=>{});
+    // keepalive fetch survives page unload (like sendBeacon) but lets us omit
+    // credentials. With text/plain + credentials:'omit' the request stays a
+    // "simple" CORS request: no preflight, and no Access-Control-Allow-Credentials
+    // needed on the response. (sendBeacon always sends cookies, which would force
+    // the worker to return Allow-Credentials:true.) The worker parses the body as
+    // JSON regardless of Content-Type.
+    fetch(WORKER, { method:'POST', headers:{'Content-Type':'text/plain'}, body:payload, keepalive:true, credentials:'omit', mode:'cors' }).catch(()=>{});
   }
 
   function resetInactivityTimer(){
