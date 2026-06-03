@@ -2022,8 +2022,8 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
 @media(max-width:768px){
   #chatWidget{bottom:24px;right:24px}
   /* Fullscreen Zendesk-style chat on mobile */
-  #chatWindow{position:fixed;top:0;left:0;width:100vw;height:100dvh;max-height:none;border-radius:0;border:none;opacity:1;transform:translateY(100%);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
-  #chatWindow.open{transform:translateY(0)}
+  #chatWindow{position:fixed;top:0;left:0;width:100vw;height:100vh;height:100dvh;max-height:none;border-radius:0;border:none;opacity:1;transform:translateY(100%);visibility:hidden;transition:transform .35s cubic-bezier(.2,.8,.2,1),visibility 0s linear .35s}
+  #chatWindow.open{transform:translateY(0);visibility:visible;transition:transform .35s cubic-bezier(.2,.8,.2,1),visibility 0s}
   #chatHeader{padding-top:max(16px, env(safe-area-inset-top))}
   #chatInputRow{padding-bottom:max(12px, env(safe-area-inset-bottom))}
   #chatWidget.chat-open #chatToggle{display:none}
