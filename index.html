@@ -1063,7 +1063,7 @@
 </div>
 
 <!-- BACK TO TOP BUTTON -->
-<button id="backToTop" aria-label="Torna su" style="position:fixed;bottom:28px;right:24px;z-index:200;width:48px;height:48px;border-radius:50%;border:1px solid rgba(120,150,255,.3);background:rgba(10,14,26,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transform:translateY(12px);transition:opacity .3s,transform .3s;box-shadow:0 4px 24px rgba(0,0,0,.4)">
+<button id="backToTop" aria-label="Torna su" style="position:fixed;bottom:88px;right:24px;z-index:200;width:48px;height:48px;border-radius:50%;border:1px solid rgba(120,150,255,.3);background:rgba(10,14,26,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transform:translateY(12px);transition:opacity .3s,transform .3s;box-shadow:0 4px 24px rgba(0,0,0,.4)">
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
 </button>
 
@@ -1947,7 +1947,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
 </script>
 <!-- CHATBOT WIDGET -->
 <style>
-#chatWidget{position:fixed;bottom:88px;right:24px;z-index:150;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+#chatWidget{position:fixed;bottom:28px;right:24px;z-index:150;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
 #chatToggle{width:48px;height:48px;border-radius:50%;border:1px solid rgba(120,150,255,.35);background:linear-gradient(180deg,#2a4bff,#1e34c8);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 28px rgba(42,75,255,.45);transition:transform .2s,box-shadow .2s}
 #chatToggle:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(42,75,255,.55)}
 #chatToggle svg{width:20px;height:20px;flex-shrink:0}
@@ -1979,7 +1979,9 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
 #chatSendBtn{width:36px;height:36px;border-radius:10px;background:linear-gradient(180deg,#2a4bff,#1e34c8);border:none;color:#fff;cursor:pointer;display:grid;place-items:center;flex-shrink:0;transition:opacity .2s}
 #chatSendBtn:disabled{opacity:.4;cursor:default}
 #chatSendBtn svg{width:16px;height:16px}
-@media(max-width:768px){#chatWidget{bottom:84px;right:24px}#chatWindow{width:calc(100vw - 48px);max-height:65vh}}
+@media(max-width:768px){#chatWidget{bottom:24px;right:24px}#chatWindow{width:calc(100vw - 48px);max-height:65vh}}
+#cookiescript_badge{bottom:28px !important;left:24px !important;right:auto !important}
+@media(max-width:768px){#cookiescript_badge{bottom:24px !important;left:16px !important}}
 </style>
 
 <div id="chatWidget">
@@ -2049,7 +2051,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   if(window.visualViewport){
     window.visualViewport.addEventListener('resize', ()=>{
       const offset = window.innerHeight - window.visualViewport.height;
-      document.getElementById('chatWidget').style.bottom = (88 + offset * 0.6) + 'px';
+      document.getElementById('chatWidget').style.bottom = (28 + offset * 0.6) + 'px';
     });
   }
 
