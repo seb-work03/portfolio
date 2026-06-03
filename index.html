@@ -233,7 +233,7 @@
   .uvbtn::before{
     content:"";inset:7px 6px 6px 6px;position:absolute;
     background:linear-gradient(to top, var(--neutral-1), var(--neutral-2));
-    border-radius:10px;filter:blur(0.5px);z-index:2;
+    border-radius:10px;filter:blur(0.5px);z-index:2;pointer-events:none;
   }
   .uvbtn-state{padding-left:29px;z-index:3;display:flex;position:relative;align-items:center}
   .uvbtn-text{display:flex;align-items:center;justify-content:center;margin:0;color:#1b1d22}
@@ -527,11 +527,11 @@
   .cursor-glow{position:fixed;width:420px;height:420px;border-radius:50%;background:radial-gradient(50% 50% at 50% 50%, rgba(79,139,255,.18), transparent 70%);pointer-events:none;z-index:-1;transform:translate(-50%,-50%);transition:opacity .3s;mix-blend-mode:screen}
 
   /* Modal */
-  .modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(3,4,8,.7);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);opacity:0;transition:opacity .3s}
-  .modal.open{display:flex;opacity:1}
-  .modal-card{max-width:960px;width:100%;max-height:86vh;overflow-y:scroll;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y;border-radius:24px;border:1px solid var(--line-2);background:linear-gradient(180deg, rgba(18,24,38,.95), rgba(8,10,16,.95));transform:translateY(20px) scale(.98);transition:transform .4s}
-  .modal.open .modal-card{transform:translateY(0) scale(1)}
-  @media(max-width:768px){.modal{backdrop-filter:none;-webkit-backdrop-filter:none;padding:12px}.modal-card{max-height:92vh}}
+  .modal{position:fixed;inset:0;z-index:100;display:none;background:rgba(3,4,8,.7);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);opacity:0;transition:opacity .3s}
+  .modal.open{display:block;opacity:1}
+  .modal-card{position:fixed;top:50%;left:50%;z-index:101;width:min(960px,calc(100vw - 48px));height:86vh;overflow-y:scroll;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y;border-radius:24px;border:1px solid var(--line-2);background:linear-gradient(180deg, rgba(18,24,38,.95), rgba(8,10,16,.95));transform:translate(-50%,calc(-50% + 20px)) scale(.98);transition:transform .4s}
+  .modal.open .modal-card{transform:translate(-50%,-50%) scale(1)}
+  @media(max-width:768px){.modal{backdrop-filter:none;-webkit-backdrop-filter:none}.modal-card{top:auto;bottom:0;left:0;width:100%;height:92vh;border-radius:20px 20px 0 0;transform:translateY(20px)}.modal.open .modal-card{transform:translateY(0)}}
   .modal-hero{width:100%;position:relative;overflow:hidden;background:rgba(8,10,16,.98);padding-top:16px;padding-left:16px;padding-right:16px}
   .modal-hero img{width:100%;max-height:75vh;object-fit:contain;display:block;border-radius:20px}
   .modal-body{padding:32px 36px;text-align:center}
@@ -1481,7 +1481,6 @@ function closeModal(){
   document.body.style.position='';
   document.body.style.top='';
   document.body.style.width='';
-  document.body.style.overflow='';
   window.scrollTo(0, sy);
 }
 document.getElementById('pfGrid').addEventListener('click', e=>{
@@ -1929,14 +1928,14 @@ updateProcess();
 /* ============== BACK TO TOP ============== */
 (function(){
   const btn = document.getElementById('backToTop');
-  const faq = document.querySelector('.faq');
-  if(!btn || !faq) return;
-  let faqTop = 0;
-  function cacheFaqTop(){ faqTop = faq.getBoundingClientRect().top + window.scrollY; }
-  cacheFaqTop();
-  window.addEventListener('resize', ()=>setTimeout(cacheFaqTop, 300));
+  const progetti = document.getElementById('progetti');
+  if(!btn || !progetti) return;
+  let progettiTop = 0;
+  function cacheTop(){ progettiTop = progetti.getBoundingClientRect().top + window.scrollY; }
+  cacheTop();
+  window.addEventListener('resize', ()=>setTimeout(cacheTop, 300));
   window.addEventListener('scroll', ()=>{
-    const show = window.scrollY >= faqTop - 80;
+    const show = window.scrollY + window.innerHeight * 0.6 >= progettiTop;
     btn.style.opacity = show ? '1' : '0';
     btn.style.pointerEvents = show ? 'auto' : 'none';
     btn.style.transform = show ? 'translateY(0)' : 'translateY(12px)';
@@ -1945,18 +1944,37 @@ updateProcess();
 })();
 
 /* ============== SMOOTH SCROLL FOR INTERNAL ANCHORS ============== */
+function smoothScrollTo(id){
+  const target = document.getElementById(id) || document.querySelector('[name="'+id+'"]');
+  if(!target) return;
+  const top = target.getBoundingClientRect().top + window.scrollY - 80;
+  window.scrollTo({top, behavior:'smooth'});
+}
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
   a.addEventListener('click', e=>{
     const id = a.getAttribute('href').slice(1);
     if(!id) return;
-    const target = document.getElementById(id) || document.querySelector('[name="'+id+'"]');
-    if(!target) return;
+    if(!document.getElementById(id) && !document.querySelector('[name="'+id+'"]')) return;
     e.preventDefault();
-    const offset = 80; // nav height clearance
-    const top = target.getBoundingClientRect().top + window.scrollY - offset;
-    window.scrollTo({top, behavior:'smooth'});
+    smoothScrollTo(id);
   });
+  a.addEventListener('touchend', e=>{
+    const id = a.getAttribute('href').slice(1);
+    if(!id) return;
+    if(!document.getElementById(id) && !document.querySelector('[name="'+id+'"]')) return;
+    e.preventDefault();
+    smoothScrollTo(id);
+  }, {passive:false});
 });
+
+/* Scopri di più touchend fallback */
+(function(){
+  const pfMoreBtn = document.querySelector('#pfMore button');
+  if(pfMoreBtn) pfMoreBtn.addEventListener('touchend', e=>{
+    e.preventDefault();
+    showMoreProjects();
+  }, {passive:false});
+})();
 </script>
 <!-- CHATBOT WIDGET -->
 <style>
