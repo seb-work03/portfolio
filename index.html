@@ -88,18 +88,52 @@
       animation:meshFlow2 16s ease-in-out infinite alternate;
     }
   }
-  #heroWave{
-    position:fixed;
-    top:0;left:0;
-    width:100vw;height:100vh;height:100svh;
-    z-index:-1;
+  /* ===== HERO NEON BULBS (lightweight CSS background) ===== */
+  .neon-bulb{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(70px);
     pointer-events:none;
-    display:block;
-    filter:blur(1px);
-    transition:opacity .4s;
     will-change:transform;
-    transform:translateZ(0);
+    mix-blend-mode:screen;
   }
+  .neon-bulb.b1{
+    width:46vw;height:46vw;max-width:640px;max-height:640px;
+    top:-10%;left:-6%;
+    background:radial-gradient(circle, rgba(60,120,255,0.85) 0%, rgba(40,90,255,0.35) 45%, transparent 70%);
+    animation:bulbFloat1 24s ease-in-out infinite alternate;
+  }
+  .neon-bulb.b2{
+    width:40vw;height:40vw;max-width:540px;max-height:540px;
+    top:28%;right:-8%;
+    background:radial-gradient(circle, rgba(40,150,255,0.80) 0%, rgba(30,90,255,0.30) 45%, transparent 70%);
+    animation:bulbFloat2 28s ease-in-out infinite alternate;
+  }
+  .neon-bulb.b3{
+    width:38vw;height:38vw;max-width:500px;max-height:500px;
+    bottom:-12%;left:34%;
+    background:radial-gradient(circle, rgba(90,170,255,0.75) 0%, rgba(50,110,255,0.28) 45%, transparent 70%);
+    animation:bulbFloat3 32s ease-in-out infinite alternate;
+  }
+  @keyframes bulbFloat1{
+    0%{transform:translate3d(0,0,0) scale(1)}
+    50%{transform:translate3d(18vw,14vh,0) scale(1.15)}
+    100%{transform:translate3d(8vw,30vh,0) scale(.95)}
+  }
+  @keyframes bulbFloat2{
+    0%{transform:translate3d(0,0,0) scale(1.05)}
+    50%{transform:translate3d(-22vw,18vh,0) scale(.9)}
+    100%{transform:translate3d(-10vw,-12vh,0) scale(1.2)}
+  }
+  @keyframes bulbFloat3{
+    0%{transform:translate3d(0,0,0) scale(1)}
+    50%{transform:translate3d(-16vw,-22vh,0) scale(1.1)}
+    100%{transform:translate3d(20vw,-8vh,0) scale(.95)}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .neon-bulb{animation:none !important}
+  }
+  @media (max-width:768px){.neon-bulb{display:none}}
   html{background:#06070b}
   body{background:transparent}
   @media (min-width:769px){.hero{overflow:visible !important}}
@@ -738,7 +772,7 @@
   html{ --tweak-accent:#007fff; --tweak-accent-2:#6aa3ff; --tweak-shader-hue: 0deg; --tweak-shader-sat: 1; }
 
   /* Re-tint accents — only for non-default moods so the original aurora design is preserved */
-  html[data-mood="violet"] #heroWave, html[data-mood="sunset"] #heroWave, html[data-mood="mono"] #heroWave{ filter: hue-rotate(var(--tweak-shader-hue)) saturate(var(--tweak-shader-sat, 1)); }
+  html[data-mood="violet"] .neon-bulb, html[data-mood="sunset"] .neon-bulb, html[data-mood="mono"] .neon-bulb{ filter: blur(70px) hue-rotate(var(--tweak-shader-hue)) saturate(var(--tweak-shader-sat, 1)); }
   html[data-mood="violet"] .nav-cta, html[data-mood="sunset"] .nav-cta, html[data-mood="mono"] .nav-cta{ background: var(--tweak-accent) !important; box-shadow: 0 8px 22px color-mix(in oklch, var(--tweak-accent) 35%, transparent); }
   html[data-mood="violet"] .btn.primary, html[data-mood="sunset"] .btn.primary, html[data-mood="mono"] .btn.primary{ background: var(--tweak-accent) !important; box-shadow: 0 12px 30px color-mix(in oklch, var(--tweak-accent) 35%, transparent); }
   html[data-mood="violet"] .em, html[data-mood="sunset"] .em, html[data-mood="mono"] .em{ background: linear-gradient(180deg, var(--tweak-accent-2), var(--tweak-accent)) !important; -webkit-background-clip:text; background-clip:text; }
@@ -757,7 +791,7 @@
   html[data-vibe] .reveal-words span{transition-duration: var(--tweak-reveal-dur), var(--tweak-reveal-dur), var(--tweak-reveal-dur);filter:blur(calc(var(--tweak-blur) + 2px))}
   html[data-vibe] .reveal.in, html[data-vibe] .reveal-words.in span{filter:blur(0)}
   html[data-vibe] .marquee-track{animation-duration: var(--tweak-marquee-dur) !important}
-  html[data-vibe] #heroWave{opacity: calc(.6 + var(--tweak-glow))}
+  html[data-vibe] .neon-bulb{opacity: calc(.6 + var(--tweak-glow))}
   html[data-vibe] .lede .cycle{text-shadow: 0 0 calc(22px + var(--tweak-glow) * 30px) color-mix(in oklch, var(--tweak-accent) 60%, transparent)}
   html[data-vibe] .portrait-halo{opacity: calc(.4 + var(--tweak-glow) * .8)}
 
@@ -773,7 +807,11 @@
   html[data-density] .hero :is(h1,h2).display{font-size: clamp(32px, calc(4.2vw * var(--tweak-display-scale)), 64px) !important}
 </style>
 
-<div class="bg-root" aria-hidden="true"></div>
+<div class="bg-root" aria-hidden="true">
+  <span class="neon-bulb b1"></span>
+  <span class="neon-bulb b2"></span>
+  <span class="neon-bulb b3"></span>
+</div>
 <div class="grid-lines" aria-hidden="true"></div>
 <div class="grain" aria-hidden="true"></div>
 <div class="cursor-glow" id="cursorGlow"></div>
@@ -794,7 +832,6 @@
 
 <!-- HERO -->
 <section class="hero">
-  <canvas id="heroWave" aria-hidden="true"></canvas>
   <div class="hero-shade" aria-hidden="true"></div>
   <div class="wrap hero-grid">
     <div>
@@ -1073,125 +1110,6 @@
 </button>
 
 <script>
-/* ============== HERO WEBGL SHADER (blue nebula) ============== */
-(function(){
-  const canvas = document.getElementById('heroWave');
-  if(!canvas) return;
-  // Skip WebGL on touch/mobile — too expensive, CSS gradient fallback is enough
-  if(!window.matchMedia('(pointer:fine)').matches) return;
-  const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
-  if(!gl) return;
-
-  const vs = `#version 300 es
-precision highp float;
-in vec4 position;
-void main(){gl_Position=position;}`;
-
-  const fs = `#version 300 es
-precision highp float;
-out vec4 O;
-uniform vec2 resolution;
-uniform float time;
-#define FC gl_FragCoord.xy
-#define T time
-#define R resolution
-#define MN min(R.x,R.y)
-float rnd(vec2 p){p=fract(p*vec2(12.9898,78.233));p+=dot(p,p+34.56);return fract(p.x*p.y);}
-float noise(in vec2 p){vec2 i=floor(p),f=fract(p),u=f*f*(3.-2.*f);
-  float a=rnd(i),b=rnd(i+vec2(1,0)),c=rnd(i+vec2(0,1)),d=rnd(i+1.);
-  return mix(mix(a,b,u.x),mix(c,d,u.x),u.y);}
-float fbm(vec2 p){float t=.0,a=1.;mat2 m=mat2(1.,-.5,.2,1.2);
-  for(int i=0;i<5;i++){t+=a*noise(p);p*=2.*m;a*=.5;}return t;}
-float clouds(vec2 p){float d=1.,t=.0;
-  for(float i=.0;i<3.;i++){float a=d*fbm(i*10.+p.x*.2+.2*(1.+i)*p.y+d+i*i+p);
-    t=mix(t,d,a);d=a;p*=2./(i+1.);}return t;}
-void main(void){
-  vec2 uv=(FC-.5*R)/MN,st=uv*vec2(2,1);
-  vec3 col=vec3(0);
-  float bg=clouds(vec2(st.x+T*.25,-st.y));
-  uv*=1.-.25*(sin(T*.15)*.5+.5);
-  for(float i=1.;i<7.;i++){
-    uv+=.1*cos(i*vec2(.1+.01*i,.8)+i*i+T*.3+.1*uv.x);
-    vec2 p=uv;
-    float d=length(p);
-    col+=.00135/d*(cos(sin(i)*vec3(0.0,1.8,3.0))+vec3(0.2,0.7,1.2));
-    float b=noise(i+p+bg*1.731);
-    col+=.0022*b/length(max(p,vec2(b*p.x*.02,p.y)))*vec3(0.1,0.5,1.0);
-    col=mix(col,vec3(bg*.03, bg*.18, bg*.42),d);
-  }
-  col.b*=1.15;
-  col.r*=0.4;
-  O=vec4(col,1);
-}`;
-
-  function compile(type, src){
-    const s = gl.createShader(type);
-    gl.shaderSource(s, src); gl.compileShader(s);
-    if(!gl.getShaderParameter(s, gl.COMPILE_STATUS)){
-      console.warn('Shader error', gl.getShaderInfoLog(s));
-    }
-    return s;
-  }
-
-  const program = gl.createProgram();
-  gl.attachShader(program, compile(gl.VERTEX_SHADER, vs));
-  gl.attachShader(program, compile(gl.FRAGMENT_SHADER, fs));
-  gl.linkProgram(program);
-
-  const buf = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,1,-1,-1,1,1,1,-1]), gl.STATIC_DRAW);
-
-  const posLoc = gl.getAttribLocation(program, 'position');
-  gl.enableVertexAttribArray(posLoc);
-  gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
-
-  const uRes = gl.getUniformLocation(program, 'resolution');
-  const uTime = gl.getUniformLocation(program, 'time');
-
-  function resize(){
-    const dpr = 1;
-    canvas.width = Math.floor(window.innerWidth * dpr * 0.7);
-    canvas.height = Math.floor(window.innerHeight * dpr * 0.7);
-    gl.viewport(0, 0, canvas.width, canvas.height);
-  }
-  resize();
-  window.addEventListener('resize', resize);
-
-  const start = performance.now();
-  let lastDraw = 0, rafId = null, visible = true;
-  function render(now){
-    if(visible && now - lastDraw >= 50){ // ~20fps
-      gl.useProgram(program);
-      gl.uniform2f(uRes, canvas.width, canvas.height);
-      gl.uniform1f(uTime, (performance.now() - start) * 0.0015);
-      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-      lastDraw = now;
-    }
-    rafId = requestAnimationFrame(render);
-  }
-  const canvasObs = new IntersectionObserver(entries=>{
-    visible = entries[0].isIntersecting;
-    if(visible && !rafId) rafId = requestAnimationFrame(render);
-    else if(!visible && rafId){ cancelAnimationFrame(rafId); rafId = null; }
-  }, {threshold:0});
-  canvasObs.observe(canvas);
-  rafId = requestAnimationFrame(render);
-})();
-
-// Fade hero canvas when scrolled past hero (use rAF to batch)
-const heroCanvas = document.getElementById('heroWave');
-const heroSec = document.querySelector('.hero');
-let ticking = false;
-function updateHeroBg(){
-  const r = heroSec.getBoundingClientRect();
-  const pct = Math.max(0, Math.min(1, r.bottom/window.innerHeight));
-  heroCanvas.style.opacity = pct;
-  ticking = false;
-}
-window.addEventListener('scroll', ()=>{
-  if(!ticking){ requestAnimationFrame(updateHeroBg); ticking = true; }
-}, {passive:true});
 
 /* ============== TOOL MARQUEE ============== */
 const tools = [
