@@ -66,7 +66,7 @@
   .mono{font-family:'JetBrains Mono',monospace}
 
   /* ===== ANIMATED BACKGROUND (global, fixed) ===== */
-  .bg-root{position:fixed;inset:0;z-index:-1;overflow:hidden;background:
+  .bg-root{position:fixed;inset:0;z-index:-1;overflow:hidden;isolation:isolate;contain:strict;transform:translateZ(0);background:
     radial-gradient(1200px 800px at 10% -10%, rgba(79,139,255,0.18), transparent 60%),
     radial-gradient(900px 700px at 100% 20%, rgba(138,107,255,0.14), transparent 60%),
     linear-gradient(180deg,#06070b 0%, #07080c 50%, #06070b 100%);
@@ -1806,11 +1806,18 @@ updateProcess();
   function cacheTop(){ progettiTop = progetti.getBoundingClientRect().top + window.scrollY; }
   cacheTop();
   window.addEventListener('resize', ()=>setTimeout(cacheTop, 300));
-  window.addEventListener('scroll', ()=>{
+  let b2tRaf, b2tShown = null;
+  function updateBackToTop(){
+    b2tRaf = null;
     const show = window.scrollY + window.innerHeight * 0.6 >= progettiTop;
+    if(show === b2tShown) return;        // only touch the DOM when state flips
+    b2tShown = show;
     btn.style.opacity = show ? '1' : '0';
     btn.style.pointerEvents = show ? 'auto' : 'none';
     btn.style.transform = show ? 'translateY(0)' : 'translateY(12px)';
+  }
+  window.addEventListener('scroll', ()=>{
+    if(!b2tRaf) b2tRaf = requestAnimationFrame(updateBackToTop);
   }, {passive:true});
   btn.addEventListener('click', ()=>{ window.scrollTo({top:0, behavior:'smooth'}); });
 })();
