@@ -94,10 +94,9 @@
   .neon-bulb{
     position:absolute;
     border-radius:50%;
-    filter:blur(55px);
+    filter:blur(32px);
     pointer-events:none;
     will-change:transform;
-    mix-blend-mode:screen;
   }
   .neon-bulb.b1{
     width:46vw;height:46vw;max-width:640px;max-height:640px;
@@ -135,6 +134,7 @@
   @media (prefers-reduced-motion:reduce){
     .neon-bulb{animation:none !important}
   }
+  .bg-paused .neon-bulb{animation-play-state:paused}
   @media (max-width:768px){.neon-bulb{display:none}}
   html{background:#06070b}
   body{background:transparent}
@@ -787,7 +787,7 @@
   html{ --tweak-accent:#007fff; --tweak-accent-2:#6aa3ff; --tweak-shader-hue: 0deg; --tweak-shader-sat: 1; }
 
   /* Re-tint accents — only for non-default moods so the original aurora design is preserved */
-  html[data-mood="violet"] .neon-bulb, html[data-mood="sunset"] .neon-bulb, html[data-mood="mono"] .neon-bulb{ filter: blur(55px) hue-rotate(var(--tweak-shader-hue)) saturate(var(--tweak-shader-sat, 1)); }
+  html[data-mood="violet"] .neon-bulb, html[data-mood="sunset"] .neon-bulb, html[data-mood="mono"] .neon-bulb{ filter: blur(32px) hue-rotate(var(--tweak-shader-hue)) saturate(var(--tweak-shader-sat, 1)); }
   html[data-mood="violet"] .nav-cta, html[data-mood="sunset"] .nav-cta, html[data-mood="mono"] .nav-cta{ background: var(--tweak-accent) !important; box-shadow: 0 8px 22px color-mix(in oklch, var(--tweak-accent) 35%, transparent); }
   html[data-mood="violet"] .btn.primary, html[data-mood="sunset"] .btn.primary, html[data-mood="mono"] .btn.primary{ background: var(--tweak-accent) !important; box-shadow: 0 12px 30px color-mix(in oklch, var(--tweak-accent) 35%, transparent); }
   html[data-mood="violet"] .em, html[data-mood="sunset"] .em, html[data-mood="mono"] .em{ background: linear-gradient(180deg, var(--tweak-accent-2), var(--tweak-accent)) !important; -webkit-background-clip:text; background-clip:text; }
@@ -1708,9 +1708,18 @@ document.querySelectorAll('.why-card').forEach(c=>{
 /* ============== GLOBAL CURSOR GLOW (desktop only) ============== */
 if(window.matchMedia('(pointer:fine)').matches){
   const cg = document.getElementById('cursorGlow');
-  let cgx=0,cgy=0,tx=0,ty=0;
-  document.addEventListener('mousemove', e=>{ tx=e.clientX; ty=e.clientY });
-  (function loop(){ cgx+=(tx-cgx)*.08; cgy+=(ty-cgy)*.08; cg.style.left=cgx+'px'; cg.style.top=cgy+'px'; requestAnimationFrame(loop); })();
+  // Skip the per-frame loop entirely when the glow is not rendered.
+  if(cg && getComputedStyle(cg).display !== 'none'){
+    let cgx=0,cgy=0,tx=0,ty=0,moved=false;
+    document.addEventListener('mousemove', e=>{ tx=e.clientX; ty=e.clientY; moved=true; });
+    (function loop(){
+      if(moved){
+        cgx+=(tx-cgx)*.08; cgy+=(ty-cgy)*.08;
+        cg.style.transform = `translate(${cgx}px,${cgy}px) translate(-50%,-50%)`;
+      }
+      requestAnimationFrame(loop);
+    })();
+  }
 }
 
 /* ============== STABLE VIEWPORT HEIGHT ============== */
@@ -1745,15 +1754,19 @@ window.addEventListener('orientationchange', ()=>{
     update();
   };
 
+  const lastAlpha = new Float32Array(spans.length).fill(-1);
   function update(){
     const scrolled = Math.min(Math.max(window.scrollY - pinTop, 0), total);
     const pct = total > 0 ? scrolled / total : 0;
     q.style.transform = `scale(${0.5 + pct * 0.5})`;
     const litCount = Math.min(Math.max((pct - 0.15) / 0.73, 0), 1) * spans.length;
-    spans.forEach((s, i) => {
+    for(let i=0;i<spans.length;i++){
       const alpha = Math.min(Math.max(litCount - i, 0), 1);
-      s.style.color = `rgba(255,255,255,${(0.12 + alpha * 0.88).toFixed(3)})`;
-    });
+      // Only touch the DOM when this word's brightness actually changes.
+      if(Math.abs(alpha - lastAlpha[i]) < 0.004) continue;
+      lastAlpha[i] = alpha;
+      spans[i].style.color = `rgba(255,255,255,${(0.12 + alpha * 0.88).toFixed(3)})`;
+    }
   }
   let impactRaf;
   function onImpactScroll(){
@@ -1763,6 +1776,16 @@ window.addEventListener('orientationchange', ()=>{
   window.addEventListener('scroll', onImpactScroll, {passive:true});
   // recache handled globally by onRealResize -> recacheAll -> _recacheImpact
   update();
+})();
+
+/* ============== PAUSE HERO BULBS WHEN HERO IS OFF-SCREEN ============== */
+(function(){
+  const hero = document.querySelector('.hero');
+  if(!hero || !('IntersectionObserver' in window)) return;
+  const io = new IntersectionObserver(([e])=>{
+    document.documentElement.classList.toggle('bg-paused', !e.isIntersecting);
+  }, {threshold:0});
+  io.observe(hero);
 })();
 
 /* ============== HORIZONTAL PROCESS SCROLL ============== */
