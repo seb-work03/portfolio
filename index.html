@@ -92,7 +92,7 @@
   .neon-bulb{
     position:absolute;
     border-radius:50%;
-    filter:blur(70px);
+    filter:blur(55px);
     pointer-events:none;
     will-change:transform;
     mix-blend-mode:screen;
@@ -100,20 +100,20 @@
   .neon-bulb.b1{
     width:46vw;height:46vw;max-width:640px;max-height:640px;
     top:-10%;left:-6%;
-    background:radial-gradient(circle, rgba(60,120,255,0.85) 0%, rgba(40,90,255,0.35) 45%, transparent 70%);
-    animation:bulbFloat1 24s ease-in-out infinite alternate;
+    background:radial-gradient(circle, rgba(70,140,255,1) 0%, rgba(45,100,255,0.55) 45%, transparent 72%);
+    animation:bulbFloat1 14s ease-in-out infinite alternate;
   }
   .neon-bulb.b2{
     width:40vw;height:40vw;max-width:540px;max-height:540px;
     top:28%;right:-8%;
-    background:radial-gradient(circle, rgba(40,150,255,0.80) 0%, rgba(30,90,255,0.30) 45%, transparent 70%);
-    animation:bulbFloat2 28s ease-in-out infinite alternate;
+    background:radial-gradient(circle, rgba(50,165,255,0.95) 0%, rgba(35,105,255,0.50) 45%, transparent 72%);
+    animation:bulbFloat2 17s ease-in-out infinite alternate;
   }
   .neon-bulb.b3{
     width:38vw;height:38vw;max-width:500px;max-height:500px;
     bottom:-12%;left:34%;
-    background:radial-gradient(circle, rgba(90,170,255,0.75) 0%, rgba(50,110,255,0.28) 45%, transparent 70%);
-    animation:bulbFloat3 32s ease-in-out infinite alternate;
+    background:radial-gradient(circle, rgba(100,185,255,0.9) 0%, rgba(55,120,255,0.45) 45%, transparent 72%);
+    animation:bulbFloat3 19s ease-in-out infinite alternate;
   }
   @keyframes bulbFloat1{
     0%{transform:translate3d(0,0,0) scale(1)}
@@ -772,7 +772,7 @@
   html{ --tweak-accent:#007fff; --tweak-accent-2:#6aa3ff; --tweak-shader-hue: 0deg; --tweak-shader-sat: 1; }
 
   /* Re-tint accents — only for non-default moods so the original aurora design is preserved */
-  html[data-mood="violet"] .neon-bulb, html[data-mood="sunset"] .neon-bulb, html[data-mood="mono"] .neon-bulb{ filter: blur(70px) hue-rotate(var(--tweak-shader-hue)) saturate(var(--tweak-shader-sat, 1)); }
+  html[data-mood="violet"] .neon-bulb, html[data-mood="sunset"] .neon-bulb, html[data-mood="mono"] .neon-bulb{ filter: blur(55px) hue-rotate(var(--tweak-shader-hue)) saturate(var(--tweak-shader-sat, 1)); }
   html[data-mood="violet"] .nav-cta, html[data-mood="sunset"] .nav-cta, html[data-mood="mono"] .nav-cta{ background: var(--tweak-accent) !important; box-shadow: 0 8px 22px color-mix(in oklch, var(--tweak-accent) 35%, transparent); }
   html[data-mood="violet"] .btn.primary, html[data-mood="sunset"] .btn.primary, html[data-mood="mono"] .btn.primary{ background: var(--tweak-accent) !important; box-shadow: 0 12px 30px color-mix(in oklch, var(--tweak-accent) 35%, transparent); }
   html[data-mood="violet"] .em, html[data-mood="sunset"] .em, html[data-mood="mono"] .em{ background: linear-gradient(180deg, var(--tweak-accent-2), var(--tweak-accent)) !important; -webkit-background-clip:text; background-clip:text; }
