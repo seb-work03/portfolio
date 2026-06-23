@@ -28,15 +28,17 @@
 <meta name="twitter:title" content="Sebastian Marzola | Sviluppatore Web" />
 <meta name="twitter:description" content="Realizzo siti web, e-commerce Shopify e gestionali su misura per eliminare il lavoro ripetitivo e far crescere la tua azienda." />
 <meta name="twitter:image" content="https://sebastian-marzola.it/project/assets/sebastian%20marzola.webp" />
-<!-- Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Fonts (self-hosted, latin subset) -->
 <link rel="preconnect" href="https://www.googletagmanager.com">
 <link rel="preconnect" href="https://cdn.cookie-script.com">
-<link rel="preconnect" href="https://unpkg.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400&display=swap">
-<link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400&display=swap">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400&display=swap"></noscript>
+<link rel="preload" as="font" type="font/woff2" href="fonts/instrument-serif-400.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/inter.woff2" crossorigin>
+<style>
+@font-face{font-family:'Instrument Serif';font-style:italic;font-weight:400;font-display:swap;src:url(fonts/instrument-serif-400-italic.woff2) format('woff2')}
+@font-face{font-family:'Instrument Serif';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/instrument-serif-400.woff2) format('woff2')}
+@font-face{font-family:'Inter';font-style:normal;font-weight:400 600;font-display:swap;src:url(fonts/inter.woff2) format('woff2')}
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/jetbrains-mono-400.woff2) format('woff2')}
+</style>
 <style>
   :root{
     --bg: #07080c;
@@ -694,7 +696,20 @@
     *{animation-duration:.001ms !important; transition-duration:.001ms !important}
   }
 </style>
-<script defer src="https://unpkg.com/@lottiefiles/lottie-player@2.0.8/dist/lottie-player.js"></script>
+<!-- Lottie player loaded on demand (only for the form-success animation) -->
+<script>
+  window.loadLottie = function(){
+    if(window._lottiePromise) return window._lottiePromise;
+    window._lottiePromise = new Promise((resolve, reject)=>{
+      const s = document.createElement('script');
+      s.src = 'https://unpkg.com/@lottiefiles/lottie-player@2.0.8/dist/lottie-player.js';
+      s.onload = ()=>customElements.whenDefined('lottie-player').then(resolve);
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
+    return window._lottiePromise;
+  };
+</script>
 <!-- CookieScript consent solution -->
 <script type="text/javascript" charset="UTF-8" src="//cdn.cookie-script.com/s/a2fb7476056e7028c2ea69e0de959a83.js" defer></script>
 <!-- Structured Data -->
@@ -1517,16 +1532,19 @@ async function submitContactForm(e){
   const player = overlay.querySelector('lottie-player');
   overlay.classList.add('show');
   if(player){
-    try{
-      player.stop();
-      setTimeout(()=>{
-        player.play();
-        player.addEventListener('complete', ()=>{
-          player.pause();
-          setTimeout(()=>overlay.classList.remove('show'), 800);
-        }, {once:true});
-      }, 50);
-    }catch(_){}
+    // Load the Lottie library on demand, then play the success animation.
+    (window.loadLottie ? window.loadLottie() : Promise.resolve())
+      .then(()=>{
+        try{
+          player.stop();
+          player.play();
+          player.addEventListener('complete', ()=>{
+            player.pause();
+            setTimeout(()=>overlay.classList.remove('show'), 800);
+          }, {once:true});
+        }catch(_){}
+      })
+      .catch(()=>{ setTimeout(()=>overlay.classList.remove('show'), 2500); });
   }
   form.reset();
   overlay.addEventListener('click', function handler(ev){
