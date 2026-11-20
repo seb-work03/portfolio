@@ -462,7 +462,7 @@
   .portfolio{padding:120px 0}
   .pf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
   .pf-card{position:relative;border-radius:22px;overflow:hidden;border:1px solid var(--line);background:#0b0e18;aspect-ratio:16/11;cursor:pointer;touch-action:manipulation;transition:transform .45s cubic-bezier(.2,.8,.2,1), border-color .3s}
-  .pf-logo{position:absolute;top:14px;left:14px;width:52px;height:52px;border-radius:50%;background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.45);display:grid;place-items:center;z-index:2;overflow:hidden}
+  .pf-logo{width:52px;height:52px;border-radius:50%;background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.45);display:grid;place-items:center;z-index:2;overflow:hidden;align-self:center;margin-bottom:10px}
   .pf-logo svg,.pf-logo img{width:100%;height:100%;display:block;object-fit:cover;padding:0}
   .pf-logo img.logo-contain,.modal-logo img.logo-contain{object-fit:contain !important;padding:5px !important}
   .modal-logo{position:absolute;top:16px;left:16px;width:60px;height:60px;border-radius:50%;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,.5);display:grid;place-items:center;z-index:2;overflow:hidden}
@@ -1120,7 +1120,7 @@
 </div>
 
 <!-- BACK TO TOP BUTTON -->
-<button id="backToTop" aria-label="Torna su" style="position:fixed;bottom:88px;right:24px;z-index:200;width:48px;height:48px;border-radius:50%;border:1px solid rgba(120,150,255,.3);background:rgba(10,14,26,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transform:translateY(12px);transition:opacity .3s,transform .3s;box-shadow:0 4px 24px rgba(0,0,0,.4)">
+<button id="backToTop" aria-label="Torna su" style="position:fixed;bottom:28px;right:24px;z-index:200;width:48px;height:48px;border-radius:50%;border:1px solid rgba(120,150,255,.3);background:rgba(10,14,26,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transform:translateY(12px);transition:opacity .3s,transform .3s;box-shadow:0 4px 24px rgba(0,0,0,.4)">
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
 </button>
 
@@ -1438,10 +1438,10 @@ document.getElementById('pfGrid').innerHTML = projects.map((p,i)=>`
       radial-gradient(60% 60% at 80% 70%, oklch(0.35 0.17 ${p.hue+30}), transparent 70%),
       linear-gradient(135deg, oklch(0.2 0.08 ${p.hue}), oklch(0.12 0.04 ${p.hue}));">${p.mockup?`<img src="${p.mockup}" alt="Mockup del progetto ${p.t} sviluppato da Sebastian Marzola" class="pf-mockup" loading="lazy">`:''}
     </div>
-    <div class="pf-logo" id="pf-logo-${i}">${p.logo||''}</div>
     <div class="view"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></div>
     <div class="pf-overlay">
       <div class="pf-meta">${p.m.map(x=>`<span>${x}</span>`).join('')}</div>
+      <div class="pf-logo" id="pf-logo-${i}">${p.logo||''}</div>
       <h3>${p.t}</h3>
       <p>${p.d}</p>
     </div>
@@ -1962,7 +1962,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
 </script>
 <style>
 #cookiescript_badge{bottom:28px !important;left:24px !important;right:auto !important}
-@media(max-width:768px){#cookiescript_badge{bottom:24px !important;left:16px !important}}
+@media(max-width:768px){#cookiescript_badge{bottom:24px !important;left:16px !important}#backToTop{bottom:24px !important;right:16px !important}}
 </style>
 
 <!-- Google Analytics 4 — caricato in fondo per non rallentare LCP/FCP -->
